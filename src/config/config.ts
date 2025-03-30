@@ -3,18 +3,18 @@ import type {
   NavBarConfig,
   ProfileConfig,
   SiteConfig,
-} from './types/config'
-import { LinkPreset } from './types/config'
+} from '../types/config'
+import { LinkPreset } from '../types/config'
 
 export const siteConfig: SiteConfig = {
-  title: 'Greg Aster',
-  subtitle: 'Experimental Videographer & Creator',
+  title: 'Temporal Flow',
+  subtitle: 'A Decentralized Content Platform',
   lang: 'en',
   themeColor: {
     hue: 200,
     fixed: false,
   },
-//banner is no longer needed but to keep the code from breaking I will keep it here
+  //banner is no longer needed but to keep the code from breaking I will keep it here
   banner: {
     enable: false,
     src: '/assets/banner/0001.png',
@@ -47,28 +47,28 @@ export const navBarConfig: NavBarConfig = {
       url: '/archive/', // Main projects page
       dropdown: [
         {
-          name: 'Mega Meal Timeline',
+          name: 'Timeline Example',
           url: '/posts/timeline/',
           //external: false,
         },
         {
-          name: 'Various',
-          url: 'https://www.youtube.com/playlist?list=PLLmfUsn8D20UBMoTa_cT-rwJRkps-UmRR',
-          external: true,
+          name: 'Project One',
+          url: '/projects/project-one/',
+          //external: false,
         },
         {
-          name: 'Untilted Cosmic Horror',
-          url: 'https://youtu.be/IM0lMXFbPuw?feature=shared',
-          external: true,
+          name: 'Project Two',
+          url: '/projects/project-two/',
+          //external: false,
         },
         {
-          name: 'Escape Earth',
-          url: 'https://youtu.be/YBo0yp5xe6k?feature=shared',
-          external: true,
+          name: 'Project Three',
+          url: '/projects/project-three/',
+          //external: false,
         },
         {
-          name: 'DNDIY',
-          url: 'https://www.youtube.com/playlist?list=PLLmfUsn8D20VycbenIVhZm-ZhQTODXLit',
+          name: 'External Project',
+          url: 'https://example.com/project',
           external: true,
         },
         // Add more dropdown items as needed
@@ -78,8 +78,8 @@ export const navBarConfig: NavBarConfig = {
     LinkPreset.Archive,
     LinkPreset.About,
 /*     {
-      name: 'YouTube',
-      url: 'https://www.youtube.com/dndiy',
+      name: 'External Link',
+      url: 'https://example.com',
       external: true,
     }, */
   ],
@@ -92,23 +92,23 @@ export const profileConfig: ProfileConfig = {
    // '/src/assets/images/avatar2.jpg',
    //]
    ,
-  name: 'Greg Aster',
-  bio: 'Filmmaker, Animator, and Creator of Strange Worlds',
+  name: 'Site Owner',
+  bio: 'Content Creator & Digital Storyteller',
   links: [
     {
-      name: 'Bluesky',
-      icon: 'fa6-brands:bluesky',
-      url: 'https://bsky.app/profile/astervisualarts.bsky.social',
+      name: 'Twitter',
+      icon: 'fa6-brands:twitter',
+      url: 'https://twitter.com/example',
     },
     {
       name: 'Discord',
       icon: 'fa6-brands:discord',
-      url: 'https://discord.gg/e69ZEcnY',
+      url: 'https://discord.gg/example',
     },
     {
       name: 'GitHub',
       icon: 'fa6-brands:github',
-      url: 'https://github.com/Greg-Aster',
+      url: 'https://github.com/example',
     },
   ],
 }
@@ -118,4 +118,3 @@ export const licenseConfig: LicenseConfig = {
   name: 'CC BY-NC-SA 4.0',
   url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
 }
-

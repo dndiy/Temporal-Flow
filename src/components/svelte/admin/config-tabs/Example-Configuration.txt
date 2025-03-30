@@ -114,7 +114,7 @@ The configuration values are available to your components after saving:
 
 ```javascript
 // Example: Using the updated site title in a component
-import { siteConfig } from '../config';
+import { siteConfig } from '../config/config';
 
 function Header() {
   return (

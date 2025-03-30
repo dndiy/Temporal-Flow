@@ -11,7 +11,7 @@
     removeFriend,
     updateFriend
   } from '../../../stores/friendStore';
-  import { siteConfig, profileConfig } from '../../../config';
+  import { siteConfig, profileConfig } from '../../../config/config';
   
   // Props
   export let savedFriends = [];

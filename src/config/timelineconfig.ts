@@ -76,13 +76,13 @@ export const defaultTimelineViewConfig: TimelineViewConfig = {
 
 // Define era display names with ability to customize
 export const defaultEraDisplayNames: { [key: string]: string } = {
-  'ancient-epoch': 'The Ancient Epoch',
-  'awakening-era': 'The Awakening Era',
-  'golden-age': 'The Corporate Golden Age',
-  'conflict-epoch': 'The Conflict Epoch',
-  'singularity-conflict': 'Transtemporal Singularity Conflict',
-  'transcendent-age': 'The Transcendent Age',
-  'final-epoch': 'The Final Epoch',
+  'early-history': 'Early History',
+  'middle-period': 'Middle Period',
+  'modern-era': 'Modern Era',
+  'contemporary': 'Contemporary Period',
+  'future-vision': 'Future Vision',
+  'alternative-timeline': 'Alternative Timeline',
+  'speculative': 'Speculative Period',
   'unknown': 'Unknown Era'
 };
 
@@ -110,82 +110,82 @@ export const defaultEraConfig: EraConfigMap = {
   'all-time': {
     displayName: 'All-Time',
     startYear: 1,
-    endYear: 50000,
+    endYear: 2100,
     zoomLevel: 1,
-    panToYear: 25000,
-    backgroundImage: '/posts/timeline/universe.png'
+    panToYear: 2000,
+    backgroundImage: '/posts/timeline/timeline-bg.png'
   },
   'all-eras': {
     displayName: 'All-Eras',
     startYear: 1,
-    endYear: 50000,
+    endYear: 2100,
     zoomLevel: 1.3,
-    panToYear: 25000,
-    backgroundImage: '/posts/timeline/universe.png'
+    panToYear: 2000,
+    backgroundImage: '/posts/timeline/timeline-bg.png'
   },
-  'ancient-epoch': {
-    displayName: 'The Ancient Epoch',
+  'early-history': {
+    displayName: 'Early History',
     startYear: 1,
-    endYear: 5000,
+    endYear: 1500,
     zoomLevel: 3.5,
-    panToYear: 2500,
-    backgroundImage: '/posts/timeline/singularity-conflict.png'
+    panToYear: 750,
+    backgroundImage: '/posts/timeline/early-history.png'
   },
-  'awakening-era': {
-    displayName: 'The Awakening Era',
-    startYear: 5001,
-    endYear: 15000,
+  'middle-period': {
+    displayName: 'Middle Period',
+    startYear: 1501,
+    endYear: 1900,
     zoomLevel: 2.75,
-    panToYear: 1000,
-    backgroundImage: '/posts/timeline/awakening-era.png'
+    panToYear: 1700,
+    backgroundImage: '/posts/timeline/middle-period.png'
   },
-  'golden-age': {
-    displayName: 'The Corporate Golden Age',
-    startYear: 15001,
-    endYear: 25000,
+  'modern-era': {
+    displayName: 'Modern Era',
+    startYear: 1901,
+    endYear: 2000,
     zoomLevel: 2.75,
-    panToYear: 20000,
-    backgroundImage: '/posts/timeline/golden-era.png'
+    panToYear: 1950,
+    backgroundImage: '/posts/timeline/modern-era.png'
   },
-  'conflict-epoch': {
-    displayName: 'Extinction Epoch',
-    startYear: 25001,
-    endYear: 35000,
+  'contemporary': {
+    displayName: 'Contemporary Period',
+    startYear: 2001,
+    endYear: 2025,
     zoomLevel: 2.75,
-    panToYear: 30000,
-    backgroundImage: '/posts/timeline/conflict-era.png'
+    panToYear: 2010,
+    backgroundImage: '/posts/timeline/contemporary.png'
   },
-  'transcendent-age': {
-    displayName: 'The Transcendent Age',
-    startYear: 35001,
-    endYear: 45000,
+  'future-vision': {
+    displayName: 'Future Vision',
+    startYear: 2026,
+    endYear: 2100,
     zoomLevel: 2.75,
-    panToYear: 40000,
-    backgroundImage: '/posts/timeline/singularity-conflict.png'
+    panToYear: 2050,
+    backgroundImage: '/posts/timeline/future-vision.png'
   },
   // Overlapping era - spans multiple epochs
-  'singularity-conflict': {
-    displayName: 'Transtemporal Singularity Conflict',
-    startYear: 15000,
-    endYear: 48000,
+  'alternative-timeline': {
+    displayName: 'Alternative Timeline',
+    startYear: 1900,
+    endYear: 2050,
     zoomLevel: 2,
-    panToYear: 30000,
-    backgroundImage: '/posts/timeline/singularity-conflict.png'
+    panToYear: 1975,
+    backgroundImage: '/posts/timeline/alternative.png'
   },
-  'final-epoch': {
-    displayName: 'The Final Epoch',
-    startYear: 45001,
-    endYear: 50000,
+  'speculative': {
+    displayName: 'Speculative Period',
+    startYear: 2050,
+    endYear: 2100,
     zoomLevel: 2.5,
-    panToYear: 50000,
-    backgroundImage: '/posts/timeline/singularity-conflict.png'
+    panToYear: 2075,
+    backgroundImage: '/posts/timeline/speculative.png'
   },
   'unknown': {
     displayName: 'Unknown Era',
     startYear: -Infinity,
     endYear: Infinity,
     zoomLevel: 1,
-    backgroundImage: '/posts/timeline/singularity-conflict.png'
+    backgroundImage: '/posts/timeline/unknown.png'
   }
 };
 
@@ -211,11 +211,11 @@ export function getEraFromYear(year: number, eraConfig?: {[key: string]: [number
   // Find which era contains this year
   for (const [era, [startYear, endYear]] of Object.entries(config)) {
     if (year >= startYear && year < endYear) {
-      // Singularity conflict is a special case, priority given to main epoch eras
-      if (era === 'singularity-conflict') {
+      // Alternative timeline is a special case, priority given to main epoch eras
+      if (era === 'alternative-timeline') {
         // Check if year also belongs to one of the main epochs
-        if (year >= defaultRanges['conflict-epoch'][0] && year < defaultRanges['conflict-epoch'][1]) {
-          // Let the event decide its era - do not automatically assign to singularity-conflict
+        if (year >= defaultRanges['contemporary'][0] && year < defaultRanges['contemporary'][1]) {
+          // Let the event decide its era - do not automatically assign to alternative-timeline
           continue;
         }
       }
@@ -238,8 +238,8 @@ export function getEraConfigForYear(
   eraConfigs: EraConfigMap
 ): {key: string, config: EraConfig} | null {
   // First check main epochs
-  const mainEpochs = ['ancient-epoch', 'awakening-era', 'golden-age', 
-                     'conflict-epoch', 'transcendent-age', 'final-epoch'];
+  const mainEpochs = ['early-history', 'middle-period', 'modern-era', 
+                     'contemporary', 'future-vision', 'speculative'];
   
   for (const eraKey of mainEpochs) {
     const config = eraConfigs[eraKey];
@@ -297,19 +297,19 @@ export function getEraClasses(era: string, customConfig?: EraConfigMap): string 
   
   // Default styling based on era
   switch(era) {
-    case 'ancient-epoch':
+    case 'early-history':
       return 'bg-[oklch(0.8_0.1_var(--hue))/0.1] dark:bg-[oklch(0.8_0.1_var(--hue))/0.2] text-[oklch(0.3_0.1_var(--hue))] dark:text-[oklch(0.8_0.1_var(--hue))]';
-    case 'awakening-era':
+    case 'middle-period':
       return 'bg-[oklch(0.7_0.2_var(--hue))/0.1] dark:bg-[oklch(0.7_0.2_var(--hue))/0.2] text-[oklch(0.3_0.2_var(--hue))] dark:text-[oklch(0.7_0.2_var(--hue))]';
-    case 'golden-age':
+    case 'modern-era':
       return 'bg-[oklch(0.6_0.3_var(--hue))/0.1] dark:bg-[oklch(0.6_0.3_var(--hue))/0.2] text-[oklch(0.3_0.3_var(--hue))] dark:text-[oklch(0.6_0.3_var(--hue))]';
-    case 'conflict-epoch':
+    case 'contemporary':
       return 'bg-[oklch(0.5_0.1_var(--hue))/0.1] dark:bg-[oklch(0.5_0.1_var(--hue))/0.2] text-[oklch(0.2_0.1_var(--hue))] dark:text-[oklch(0.5_0.1_var(--hue))]';
-    case 'singularity-conflict':
+    case 'alternative-timeline':
       return 'bg-[oklch(0.4_0.3_var(--hue))/0.1] dark:bg-[oklch(0.4_0.3_var(--hue))/0.2] text-[oklch(0.2_0.3_var(--hue))] dark:text-[oklch(0.4_0.3_var(--hue))]';
-    case 'transcendent-age':
+    case 'future-vision':
       return 'bg-[oklch(0.4_0.2_var(--hue))/0.1] dark:bg-[oklch(0.4_0.2_var(--hue))/0.2] text-[oklch(0.2_0.2_var(--hue))] dark:text-[oklch(0.4_0.2_var(--hue))]';
-    case 'final-epoch':
+    case 'speculative':
       return 'bg-[oklch(0.3_0.3_var(--hue))/0.1] dark:bg-[oklch(0.3_0.3_var(--hue))/0.2] text-[oklch(0.1_0.3_var(--hue))] dark:text-[oklch(0.3_0.3_var(--hue))]';
     default:
       return 'bg-[oklch(0.9_0.05_var(--hue))/0.1] dark:bg-[oklch(0.3_0.05_var(--hue))/0.2] text-[oklch(0.4_0.05_var(--hue))] dark:text-[oklch(0.9_0.05_var(--hue))]';
