@@ -1,0 +1,198 @@
+---
+title: "Friend Content Sharing: Connect Your Blog with Others"
+published: 2025-03-27
+description: "Learn how to use our new Friend Content Sharing feature to create a network of connected blogs that share content with each other."
+image: "/posts/friend-sharing/network.jpg"
+tags: [Tutorial, Feature, Content Sharing, Social, Networking]
+category: "Features"
+---
+
+# Friend Content Sharing
+
+The Friend Content Sharing system allows blogs built with our framework to connect and share content with each other, creating a decentralized network of related blogs. When you add a friend's blog, your site will automatically fetch and display their content in your feed when you're logged in, while regular visitors continue to see just your content.
+
+## How It Works
+
+Unlike traditional social networks that require a central server, our Friend Content Sharing works directly between blogs:
+
+1. **Connect with friends** by adding their blog URL to your friends list
+2. **Content is automatically fetched** from their site and displayed in your feed
+3. **You control the experience** - visitors see only your content, you see both
+4. **No central authority** - connections are direct between blogs
+
+## Setting Up Friend Sharing
+
+Friend sharing is **enabled by default** on all blogs built with our framework. During the build process, a special `friend-content.json` file is automatically generated in your public directory, which contains information about your blog and your recent posts.
+
+However, for this to work properly across different domains, you need to set up CORS headers based on your hosting platform.
+
+### GitHub Pages
+
+If you're hosting on GitHub Pages, add a file named `_headers` to your repository root:
+
+```
+# Set CORS headers for the friend-content.json file
+/friend-content.json
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET
+  Access-Control-Allow-Headers: Content-Type
+```
+
+### Netlify
+
+For Netlify hosting, create a `netlify.toml` file in your repository root:
+
+```toml
+[[headers]]
+  for = "/friend-content.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET"
+    Access-Control-Allow-Headers = "Content-Type"
+```
+
+### Vercel
+
+If you're using Vercel, add a `vercel.json` file to your repository root:
+
+```json
+{
+  "headers": [
+    {
+      "source": "/friend-content.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Other Hosting Providers
+
+For other hosting providers, you'll need to add the following HTTP headers to requests for `/friend-content.json`:
+
+```
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Headers: Content-Type
+```
+
+Check your hosting provider's documentation for how to add custom headers to specific files.
+
+## Using Friend Content Sharing
+
+### Adding a Friend's Blog
+
+Once you've set up CORS headers, you can start connecting with other blogs:
+
+1. Log in to your blog as an administrator
+2. Navigate to the `/friends` page
+3. Enter your friend's blog name and URL
+4. Click "Add Friend"
+
+The system will automatically validate the site and try to fetch content. If the friend's site also uses our framework (with the `friend-content.json` file), their content will be immediately available in your feed.
+
+### Managing Friend Content
+
+The Friends page gives you complete control over your connections:
+
+- **Sync content** to get the latest posts from your friends
+- **Toggle visibility** to control whether friend content appears in your feed
+- **Remove friends** if you no longer want to see their content
+
+### Viewing Friend Content
+
+When logged in as an administrator, friend content will appear:
+
+1. At the top of your main feed
+2. Clearly labeled with the friend's name and site
+3. With links to view the original post on their site
+
+Regular visitors to your site will only see your content, maintaining your site's focus.
+
+## Tips for Building Your Network
+
+1. **Connect with blogs in your niche** to create a relevant content ecosystem
+2. **Regularly sync content** to keep your feed fresh with new posts
+3. **Add descriptive friend names** to help you identify content sources
+4. **Share your site URL** with other blog owners using our framework
+5. **Check the "Last synced"** timestamp to see when content was last updated
+
+## For Developers: Technical Details
+
+### Content File Format
+
+The `friend-content.json` file follows this structure:
+
+```json
+{
+  "site": {
+    "name": "Blog Name",
+    "description": "Blog description",
+    "url": "https://myblog.com",
+    "owner": "Blog Owner",
+    "avatar": "/images/avatar.jpg"
+  },
+  "cors": true,
+  "version": "1.0",
+  "generated": "2025-03-27T12:00:00Z",
+  "posts": [
+    {
+      "id": "post-1",
+      "title": "Post Title",
+      "slug": "post-slug",
+      "description": "Post description",
+      "published": "2025-03-20T09:00:00Z",
+      "content": "<p>Post content preview...</p>",
+      "tags": ["tag1", "tag2"]
+    }
+  ]
+}
+```
+
+### Fallback Methods
+
+If a site doesn't have the `friend-content.json` file, the system tries these methods in order:
+
+1. Look for a JSON feed at `/api/posts.json`
+2. Try to parse an RSS feed at `/rss.xml`
+3. Attempt to scrape the homepage for blog links
+4. Provide a fallback "site exists" post if all else fails
+
+This gives the system flexibility to work with many different types of blogs, even those not using our framework.
+
+## Privacy and Security
+
+Friend Content Sharing respects privacy and security:
+
+- Content is only shared with sites that explicitly add your blog as a friend
+- No personal data is included in the shared content
+- You control exactly which blogs you connect with
+- Regular visitors never see content from connected blogs
+- You can remove connections at any time
+
+## Getting Started Today
+
+To start building your network of connected blogs:
+
+1. Add the appropriate CORS headers for your hosting platform
+2. Share your blog URL with other users of our framework
+3. Visit the `/friends` page to start adding connections
+
+With Friend Content Sharing, you're not just creating a blog—you're joining a network of connected content creators sharing ideas across the web.
+
+---
+
+Have questions about Friend Content Sharing? Ask in the comments below!

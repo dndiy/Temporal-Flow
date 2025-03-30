@@ -1,4 +1,472 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Greg Aster</title><description>Experimental Videographer &amp; Creator</description><link>https://dndiy.org/</link><language>en</language><item><title>MEGA MEAL Universe Timeline</title><link>https://dndiy.org/posts/timeline/</link><guid isPermaLink="true">https://dndiy.org/posts/timeline/</guid><description>Explore the complete chronology of the MEGA MEAL Universe, from the Beginning of Time through the Transtemporal Singularity Conflict and beyond.</description><pubDate>Tue, 25 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;MEGA MEAL Universe Timeline&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Greg Aster</title><description>Experimental Videographer &amp; Creator</description><link>https://dndiy.org/</link><language>en</language><item><title>Friend Content Sharing: Connect Your Blog with Others</title><link>https://dndiy.org/posts/friend-content-blog-post/</link><guid isPermaLink="true">https://dndiy.org/posts/friend-content-blog-post/</guid><description>Learn how to use our new Friend Content Sharing feature to create a network of connected blogs that share content with each other.</description><pubDate>Thu, 27 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Friend Content Sharing&lt;/h1&gt;
+&lt;p&gt;The Friend Content Sharing system allows blogs built with our framework to connect and share content with each other, creating a decentralized network of related blogs. When you add a friend&apos;s blog, your site will automatically fetch and display their content in your feed when you&apos;re logged in, while regular visitors continue to see just your content.&lt;/p&gt;
+&lt;h2&gt;How It Works&lt;/h2&gt;
+&lt;p&gt;Unlike traditional social networks that require a central server, our Friend Content Sharing works directly between blogs:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Connect with friends&lt;/strong&gt; by adding their blog URL to your friends list&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Content is automatically fetched&lt;/strong&gt; from their site and displayed in your feed&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;You control the experience&lt;/strong&gt; - visitors see only your content, you see both&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No central authority&lt;/strong&gt; - connections are direct between blogs&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Setting Up Friend Sharing&lt;/h2&gt;
+&lt;p&gt;Friend sharing is &lt;strong&gt;enabled by default&lt;/strong&gt; on all blogs built with our framework. During the build process, a special &lt;code&gt;friend-content.json&lt;/code&gt; file is automatically generated in your public directory, which contains information about your blog and your recent posts.&lt;/p&gt;
+&lt;p&gt;However, for this to work properly across different domains, you need to set up CORS headers based on your hosting platform.&lt;/p&gt;
+&lt;h3&gt;GitHub Pages&lt;/h3&gt;
+&lt;p&gt;If you&apos;re hosting on GitHub Pages, add a file named &lt;code&gt;_headers&lt;/code&gt; to your repository root:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Set CORS headers for the friend-content.json file
+/friend-content.json
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET
+  Access-Control-Allow-Headers: Content-Type
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Netlify&lt;/h3&gt;
+&lt;p&gt;For Netlify hosting, create a &lt;code&gt;netlify.toml&lt;/code&gt; file in your repository root:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[[headers]]
+  for = &quot;/friend-content.json&quot;
+  [headers.values]
+    Access-Control-Allow-Origin = &quot;*&quot;
+    Access-Control-Allow-Methods = &quot;GET&quot;
+    Access-Control-Allow-Headers = &quot;Content-Type&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Vercel&lt;/h3&gt;
+&lt;p&gt;If you&apos;re using Vercel, add a &lt;code&gt;vercel.json&lt;/code&gt; file to your repository root:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;headers&quot;: [
+    {
+      &quot;source&quot;: &quot;/friend-content.json&quot;,
+      &quot;headers&quot;: [
+        {
+          &quot;key&quot;: &quot;Access-Control-Allow-Origin&quot;,
+          &quot;value&quot;: &quot;*&quot;
+        },
+        {
+          &quot;key&quot;: &quot;Access-Control-Allow-Methods&quot;,
+          &quot;value&quot;: &quot;GET&quot;
+        },
+        {
+          &quot;key&quot;: &quot;Access-Control-Allow-Headers&quot;,
+          &quot;value&quot;: &quot;Content-Type&quot;
+        }
+      ]
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Other Hosting Providers&lt;/h3&gt;
+&lt;p&gt;For other hosting providers, you&apos;ll need to add the following HTTP headers to requests for &lt;code&gt;/friend-content.json&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Headers: Content-Type
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Check your hosting provider&apos;s documentation for how to add custom headers to specific files.&lt;/p&gt;
+&lt;h2&gt;Using Friend Content Sharing&lt;/h2&gt;
+&lt;h3&gt;Adding a Friend&apos;s Blog&lt;/h3&gt;
+&lt;p&gt;Once you&apos;ve set up CORS headers, you can start connecting with other blogs:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Log in to your blog as an administrator&lt;/li&gt;
+&lt;li&gt;Navigate to the &lt;code&gt;/friends&lt;/code&gt; page&lt;/li&gt;
+&lt;li&gt;Enter your friend&apos;s blog name and URL&lt;/li&gt;
+&lt;li&gt;Click &quot;Add Friend&quot;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The system will automatically validate the site and try to fetch content. If the friend&apos;s site also uses our framework (with the &lt;code&gt;friend-content.json&lt;/code&gt; file), their content will be immediately available in your feed.&lt;/p&gt;
+&lt;h3&gt;Managing Friend Content&lt;/h3&gt;
+&lt;p&gt;The Friends page gives you complete control over your connections:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sync content&lt;/strong&gt; to get the latest posts from your friends&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Toggle visibility&lt;/strong&gt; to control whether friend content appears in your feed&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Remove friends&lt;/strong&gt; if you no longer want to see their content&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Viewing Friend Content&lt;/h3&gt;
+&lt;p&gt;When logged in as an administrator, friend content will appear:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;At the top of your main feed&lt;/li&gt;
+&lt;li&gt;Clearly labeled with the friend&apos;s name and site&lt;/li&gt;
+&lt;li&gt;With links to view the original post on their site&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Regular visitors to your site will only see your content, maintaining your site&apos;s focus.&lt;/p&gt;
+&lt;h2&gt;Tips for Building Your Network&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Connect with blogs in your niche&lt;/strong&gt; to create a relevant content ecosystem&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Regularly sync content&lt;/strong&gt; to keep your feed fresh with new posts&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Add descriptive friend names&lt;/strong&gt; to help you identify content sources&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Share your site URL&lt;/strong&gt; with other blog owners using our framework&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Check the &quot;Last synced&quot;&lt;/strong&gt; timestamp to see when content was last updated&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;For Developers: Technical Details&lt;/h2&gt;
+&lt;h3&gt;Content File Format&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;friend-content.json&lt;/code&gt; file follows this structure:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;site&quot;: {
+    &quot;name&quot;: &quot;Blog Name&quot;,
+    &quot;description&quot;: &quot;Blog description&quot;,
+    &quot;url&quot;: &quot;https://myblog.com&quot;,
+    &quot;owner&quot;: &quot;Blog Owner&quot;,
+    &quot;avatar&quot;: &quot;/images/avatar.jpg&quot;
+  },
+  &quot;cors&quot;: true,
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;generated&quot;: &quot;2025-03-27T12:00:00Z&quot;,
+  &quot;posts&quot;: [
+    {
+      &quot;id&quot;: &quot;post-1&quot;,
+      &quot;title&quot;: &quot;Post Title&quot;,
+      &quot;slug&quot;: &quot;post-slug&quot;,
+      &quot;description&quot;: &quot;Post description&quot;,
+      &quot;published&quot;: &quot;2025-03-20T09:00:00Z&quot;,
+      &quot;content&quot;: &quot;&amp;lt;p&amp;gt;Post content preview...&amp;lt;/p&amp;gt;&quot;,
+      &quot;tags&quot;: [&quot;tag1&quot;, &quot;tag2&quot;]
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Fallback Methods&lt;/h3&gt;
+&lt;p&gt;If a site doesn&apos;t have the &lt;code&gt;friend-content.json&lt;/code&gt; file, the system tries these methods in order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Look for a JSON feed at &lt;code&gt;/api/posts.json&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Try to parse an RSS feed at &lt;code&gt;/rss.xml&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attempt to scrape the homepage for blog links&lt;/li&gt;
+&lt;li&gt;Provide a fallback &quot;site exists&quot; post if all else fails&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This gives the system flexibility to work with many different types of blogs, even those not using our framework.&lt;/p&gt;
+&lt;h2&gt;Privacy and Security&lt;/h2&gt;
+&lt;p&gt;Friend Content Sharing respects privacy and security:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Content is only shared with sites that explicitly add your blog as a friend&lt;/li&gt;
+&lt;li&gt;No personal data is included in the shared content&lt;/li&gt;
+&lt;li&gt;You control exactly which blogs you connect with&lt;/li&gt;
+&lt;li&gt;Regular visitors never see content from connected blogs&lt;/li&gt;
+&lt;li&gt;You can remove connections at any time&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Getting Started Today&lt;/h2&gt;
+&lt;p&gt;To start building your network of connected blogs:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Add the appropriate CORS headers for your hosting platform&lt;/li&gt;
+&lt;li&gt;Share your blog URL with other users of our framework&lt;/li&gt;
+&lt;li&gt;Visit the &lt;code&gt;/friends&lt;/code&gt; page to start adding connections&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;With Friend Content Sharing, you&apos;re not just creating a blog—you&apos;re joining a network of connected content creators sharing ideas across the web.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Have questions about Friend Content Sharing? Ask in the comments below!&lt;/p&gt;
+</content:encoded></item><item><title>Developer&apos;s Guide to Friend Content Sharing</title><link>https://dndiy.org/posts/friend-feature-technical-guide/</link><guid isPermaLink="true">https://dndiy.org/posts/friend-feature-technical-guide/</guid><description>A technical deep dive into how the Friend Content Sharing feature works, how to customize it, and advanced implementation options.</description><pubDate>Wed, 26 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Developer&apos;s Guide to Friend Content Sharing&lt;/h1&gt;
+&lt;p&gt;This guide provides a technical deep dive into the Friend Content Sharing feature for developers who want to understand how it works, customize it, or contribute to its development.&lt;/p&gt;
+&lt;h2&gt;Architecture Overview&lt;/h2&gt;
+&lt;p&gt;The Friend Content Sharing feature is built with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Astro&lt;/strong&gt; for static site generation and routing&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Svelte&lt;/strong&gt; for interactive components&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Svelte Stores&lt;/strong&gt; for state management&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;localStorage&lt;/strong&gt; for client-side data persistence&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Component Structure&lt;/h3&gt;
+&lt;p&gt;The feature consists of these main components:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;src/
+├── components/
+│   └── svelte/
+│       └── friends/
+│           ├── FriendContentFeed.svelte
+│           ├── FriendContentRenderer.svelte
+│           └── FriendManager.svelte
+├── pages/
+│   ├── [...slug].astro
+│   ├── friends.astro
+│   └── index.astro (modified)
+└── stores/
+    └── friendStore.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;How It Works&lt;/h2&gt;
+&lt;h3&gt;State Management&lt;/h3&gt;
+&lt;p&gt;The system uses Svelte stores to manage state in &lt;code&gt;friendStore.js&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Core stores
+const friendsStore = writable([]);
+const friendContentEnabledStore = writable(true);
+const isAuthenticatedStore = writable(false);
+
+// Derived store for content display
+export const friendContent = derived(
+  [friendsStore, friendContentEnabledStore, isAuthenticatedStore],
+  ([$friends, $enabled, $authenticated]) =&amp;gt; {
+    // Logic to compute content to display
+  }
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This approach provides reactive state management that keeps the UI in sync with the underlying data.&lt;/p&gt;
+&lt;h3&gt;Authentication&lt;/h3&gt;
+&lt;p&gt;Authentication is handled through localStorage:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Check if user is authenticated
+const isAuthenticated = localStorage.getItem(&apos;isAuthenticated&apos;) === &apos;true&apos;;
+
+// Set authentication state
+localStorage.setItem(&apos;isAuthenticated&apos;, &apos;true&apos;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For production, you might want to implement more robust authentication methods such as JWT tokens or OAuth.&lt;/p&gt;
+&lt;h3&gt;Content Fetching&lt;/h3&gt;
+&lt;p&gt;The system attempts to fetch content from friend sites using several methods:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;JSON Feed&lt;/strong&gt;: Tries to access a &lt;code&gt;/api/posts.json&lt;/code&gt; endpoint&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Sitemap&lt;/strong&gt;: Falls back to parsing the sitemap.xml&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HTML Scraping&lt;/strong&gt;: Can extract content directly from HTML if needed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In the demo implementation, content fetching is simulated, but you can extend this with real fetch logic:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export async function fetchFriendContent(friendUrl) {
+  // Format URL for consistency
+  const formattedUrl = formatUrl(friendUrl);
+  
+  try {
+    // First attempt: JSON feed
+    const jsonFeedUrl = `${formattedUrl}/api/posts.json`;
+    const jsonResponse = await fetch(jsonFeedUrl);
+    
+    if (jsonResponse.ok) {
+      return await jsonResponse.json();
+    }
+    
+    // Second attempt: Parse sitemap
+    const sitemapUrl = `${formattedUrl}/sitemap.xml`;
+    // ... implementation details ...
+    
+    // Third attempt: Scrape HTML
+    // ... implementation details ...
+  } catch (error) {
+    console.error(&apos;Error fetching friend content:&apos;, error);
+    return [];
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Customization Options&lt;/h2&gt;
+&lt;h3&gt;Extending the Friend Data Model&lt;/h3&gt;
+&lt;p&gt;The current friend model includes:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  id: string,
+  name: string,
+  url: string,
+  bio: string,
+  avatar: string,
+  postCount: number,
+  lastSynced: string,
+  posts: Array
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can extend this with additional fields:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  // Existing fields...
+  
+  // New fields
+  categories: Array,  // Content categories
+  tags: Array,        // Content tags
+  subscribed: boolean, // Whether to include in feed
+  feedLimit: number,  // Max posts to show
+  displayOrder: number // Order in the friends list
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Update the store and components accordingly when extending the model.&lt;/p&gt;
+&lt;h3&gt;Custom Content Renderers&lt;/h3&gt;
+&lt;p&gt;You can create custom renderers for different content types:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- src/components/svelte/friends/CustomVideoContentRenderer.svelte --&amp;gt;
+&amp;lt;script&amp;gt;
+  export let content;
+  
+  // Custom video handling logic
+&amp;lt;/script&amp;gt;
+
+{#if content.type === &apos;video&apos;}
+  &amp;lt;div class=&quot;video-container&quot;&amp;gt;
+    &amp;lt;iframe src={content.videoUrl} title={content.title} /&amp;gt;
+  &amp;lt;/div&amp;gt;
+{:else}
+  &amp;lt;!-- Fallback rendering --&amp;gt;
+{/if}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Server-Side Integration&lt;/h3&gt;
+&lt;p&gt;For more advanced implementation, you might want to move beyond client-side storage to server-side processing:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Create an API endpoint&lt;/strong&gt; for friend content&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// src/pages/api/friends.js
+export async function get({ request }) {
+  // Authentication checks
+  // Database queries
+  // Return friend data
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Use a database&lt;/strong&gt; instead of localStorage&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SQLite for simple deployments&lt;/li&gt;
+&lt;li&gt;Postgres/MongoDB for more complex requirements&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Implement server-side fetching&lt;/strong&gt; to avoid CORS issues&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Proxy requests through your server&lt;/li&gt;
+&lt;li&gt;Cache content server-side&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Advanced Topics&lt;/h2&gt;
+&lt;h3&gt;Content Standardization&lt;/h3&gt;
+&lt;p&gt;For better interoperability, consider implementing a standardized content format:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Standard content object
+{
+  id: string,            // Unique identifier
+  title: string,         // Content title
+  description: string,   // Short description
+  content: string,       // Main content (HTML or Markdown)
+  published: string,     // ISO date string
+  updated: string,       // ISO date string
+  author: {              // Author information
+    name: string,
+    url: string,
+    avatar: string
+  },
+  source: {              // Source information
+    site: string,
+    url: string
+  },
+  meta: {                // Additional metadata
+    tags: Array,
+    category: string,
+    readingTime: number
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Content Transformation&lt;/h3&gt;
+&lt;p&gt;To handle different content formats from friend sites, implement a transformation layer:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function transformContent(sourceContent, format) {
+  switch(format) {
+    case &apos;wordpress&apos;:
+      return transformWordPressContent(sourceContent);
+    case &apos;ghost&apos;:
+      return transformGhostContent(sourceContent);
+    case &apos;markdown&apos;:
+      return transformMarkdownContent(sourceContent);
+    default:
+      return transformDefaultContent(sourceContent);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Content Filtering&lt;/h3&gt;
+&lt;p&gt;Implement content filtering to allow users to control what appears in their feed:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// In friendStore.js
+export const filteredFriendContent = derived(
+  [friendContent, filterCriteriaStore],
+  ([$content, $criteria]) =&amp;gt; {
+    return $content.filter(post =&amp;gt; {
+      // Filter by date
+      if ($criteria.dateRange) {
+        const postDate = new Date(post.published);
+        if (postDate &amp;lt; $criteria.dateRange.from || postDate &amp;gt; $criteria.dateRange.to) {
+          return false;
+        }
+      }
+      
+      // Filter by tags
+      if ($criteria.tags &amp;amp;&amp;amp; $criteria.tags.length &amp;gt; 0) {
+        if (!post.tags || !post.tags.some(tag =&amp;gt; $criteria.tags.includes(tag))) {
+          return false;
+        }
+      }
+      
+      // Filter by search term
+      if ($criteria.searchTerm) {
+        const term = $criteria.searchTerm.toLowerCase();
+        return post.title.toLowerCase().includes(term) || 
+               post.description.toLowerCase().includes(term) ||
+               post.content.toLowerCase().includes(term);
+      }
+      
+      return true;
+    });
+  }
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Performance Considerations&lt;/h2&gt;
+&lt;h3&gt;Optimizing Content Loading&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Lazy loading&lt;/strong&gt;: Only load friend content when needed&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// In FriendContentFeed.svelte
+let loadContent = false;
+
+onMount(() =&amp;gt; {
+  // Delay content loading
+  setTimeout(() =&amp;gt; {
+    loadContent = true;
+  }, 100);
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Pagination&lt;/strong&gt;: Limit how much content is rendered at once&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// In FriendContentFeed.svelte
+let page = 1;
+let perPage = 5;
+$: paginatedContent = friendContent.slice((page - 1) * perPage, page * perPage);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Content caching&lt;/strong&gt;: Store fetched content in cache&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// In friendStore.js
+function cacheFriendContent(friendId, content) {
+  const cacheKey = `friend-content-${friendId}`;
+  const cacheData = {
+    timestamp: Date.now(),
+    content: content
+  };
+  localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Memory Management&lt;/h3&gt;
+&lt;p&gt;For large numbers of friends or content items:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Virtualized lists&lt;/strong&gt;: Only render what&apos;s visible&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Chunked loading&lt;/strong&gt;: Load content in smaller batches&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cleanup idle content&lt;/strong&gt;: Remove content from memory when not needed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Security Considerations&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Content Sanitization&lt;/strong&gt;: Always sanitize HTML content from friend sites&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import DOMPurify from &apos;dompurify&apos;;
+
+function sanitizeContent(html) {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [&apos;p&apos;, &apos;a&apos;, &apos;ul&apos;, &apos;ol&apos;, &apos;li&apos;, &apos;strong&apos;, &apos;em&apos;, &apos;h1&apos;, &apos;h2&apos;, &apos;h3&apos;, &apos;img&apos;],
+    ALLOWED_ATTR: [&apos;href&apos;, &apos;src&apos;, &apos;alt&apos;, &apos;title&apos;, &apos;class&apos;]
+  });
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;CORS Handling&lt;/strong&gt;: Handle cross-origin requests properly&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Data Validation&lt;/strong&gt;: Validate all friend data before processing&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Future Enhancements&lt;/h2&gt;
+&lt;p&gt;Some potential enhancements for the feature:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;WebSocket updates&lt;/strong&gt; for real-time content notifications&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ActivityPub support&lt;/strong&gt; for connecting with the Fediverse&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Content recommendation&lt;/strong&gt; based on user preferences&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Subscription management&lt;/strong&gt; with notification options&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Comment integration&lt;/strong&gt; across connected blogs&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Contributing&lt;/h2&gt;
+&lt;p&gt;If you&apos;d like to contribute to improving the Friend Content Sharing feature:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open issues for bugs or feature requests&lt;/li&gt;
+&lt;li&gt;Create pull requests with improvements&lt;/li&gt;
+&lt;li&gt;Share your custom renderers or extensions&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We welcome contributions that make the system more robust, accessible, and feature-rich!&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;This technical guide should help developers understand and extend the Friend Content Sharing feature. For questions or further assistance, check out our developer forums or GitHub repository.&lt;/p&gt;
+</content:encoded></item><item><title>MEGA MEAL Universe Timeline</title><link>https://dndiy.org/posts/timeline/</link><guid isPermaLink="true">https://dndiy.org/posts/timeline/</guid><description>Explore the complete chronology of the MEGA MEAL Universe, from the Beginning of Time through the Transtemporal Singularity Conflict and beyond.</description><pubDate>Tue, 25 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;MEGA MEAL Universe Timeline&lt;/h1&gt;
 &lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
 &quot;Time is just one digestive tract through which all existence must pass.&quot; - Ancient Qarnivore Proverb
 &amp;lt;/div&amp;gt;&lt;/p&gt;
@@ -199,604 +667,180 @@
 &lt;p&gt;&lt;strong&gt;Quantum Echo Events&lt;/strong&gt; - Certain evolutionary pathways, technological discoveries, and cosmic developments show statistical distributions that deviate significantly from what random chance would predict. These anomalies create a distinctive &quot;fingerprint&quot; that allows for the retrospective identification of time periods and phenomena subjected to retrocausal influence by future intelligences.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-</content:encoded></item><item><title>A MEGA MEAL SAGA | Qarnivor</title><link>https://dndiy.org/posts/mega-meal-3/</link><guid isPermaLink="true">https://dndiy.org/posts/mega-meal-3/</guid><description>A rare first-hand account of the mysterious Snuggloid emergence on Qarnivor following the nuclear extinction event.</description><pubDate>Wed, 05 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;{/* YouTube Embed &lt;em&gt;/}
-{/&lt;/em&gt; &amp;lt;div className=&quot;card-base p-8 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition rounded-md shadow-lg mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;relative pb-[56.25%]&quot;&amp;gt;
-&amp;lt;iframe
-src=&quot;https://www.youtube.com/embed/uXagUhT1fb0?controls=1&quot;
-title=&quot;YouTube video player&quot;
-frameBorder=&quot;0&quot;
-allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;&quot;
-referrerPolicy=&quot;strict-origin-when-cross-origin&quot;
-allowFullScreen
-className=&quot;absolute top-0 left-0 w-full h-full&quot;
-&amp;gt;&amp;lt;/iframe&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt; */}&lt;/p&gt;
-&lt;p&gt;&amp;lt;div class=&quot;font-jetbrains-mono pl-10 pr-10 Pm-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
-&amp;lt;h2 class=&quot;text-2xl font-bold mb-4&quot;&amp;gt;MEGA MEAL - Appendix A&amp;lt;/h2&amp;gt;
-&amp;lt;p class=&quot;italic&quot;&amp;gt;Excerpt from Galactic Time Scale B Historical Documents&amp;lt;/p&amp;gt;
-&amp;lt;p class=&quot;font-bold&quot;&amp;gt;Pre-Extinction Event&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;blockquote class=&quot;mt-4 text-xl text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
-Immediately following the events on planet Qarnivore after the Corporate Empire.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Despite the incomplete transcript and unreliable nature of the narrator—there exists a single account of an encounter with the Snuggaloids that is of some scholarly interest.  
-
-Of particular note: the timeline between the emergence of the Snuggaloids and the extinction of the Qarnivores. It was previously assumed that there was no overlap between these two events. If this account is taken at face value and assumed correct, there may be some link between the two.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/blockquote&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&quot;mt-6 pb-4 text-right font-bold&quot;&amp;gt;
-— Galactic Time Scale B Historical Documents
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-800 dark:text-neutral-200&quot;&amp;gt;Archival Note&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;This account is believed to be from the enigmatic figure mentioned in Qarnivor historical records as &quot;&amp;lt;span className=&quot;text-gray-700 dark:text-neutral-400&quot; style={{ fontStyle: &quot;italic&quot; }}&amp;gt;(name redacted for legal reasons)&amp;lt;/span&amp;gt;,&quot; whose documented visit to Qarnivor shortly after the nuclear devastation provides one of the only eyewitness accounts of the Snuggloid emergence.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The narrator&apos;s description of &quot;glowing fur&quot; and entities that &quot;phased in and out of visibility&quot; aligns precisely with later scientific observations of the Snuggloids. Particularly notable is the reference to the &quot;Starbug,&quot; which appears in several other historical accounts across different extinction events.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;For a more comprehensive scientific analysis of the Snuggloid phenomenon, see &amp;lt;a href=&quot;/posts/timelines/snuggaliod-emergence/&quot; className=&quot;text-[oklch(0.5_0.3_var(--hue))] hover:underline&quot;&amp;gt; The Snuggloid Emergence&amp;lt;/a&amp;gt;.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-</content:encoded></item><item><title>MEGA MEAL Finally Explained</title><link>https://dndiy.org/posts/mega-meal-explained/</link><guid isPermaLink="true">https://dndiy.org/posts/mega-meal-explained/</guid><description>Why? Just why.</description><pubDate>Wed, 19 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;import CollapsibleScript from &apos;../../components/CollapsibleScript.astro&apos;;
-import ImageWrapper from &apos;../../components/misc/ImageWrapper.astro&apos;;&lt;/p&gt;
-&lt;p&gt;&amp;lt;CollapsibleScript /&amp;gt;&lt;/p&gt;
-&lt;p&gt;{/* YouTube Embed &lt;em&gt;/}
-{/&lt;/em&gt; &amp;lt;div className=&quot;card-base p-8 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition rounded-md shadow-lg mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;relative pb-[56.25%]&quot;&amp;gt;
-&amp;lt;iframe
-src=&quot;https://www.youtube.com/embed/4tR6VLaYJFA?controls=1&quot;
-title=&quot;YouTube video player&quot;
-frameBorder=&quot;0&quot;
-allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;&quot;
-referrerPolicy=&quot;strict-origin-when-cross-origin&quot;
-allowFullScreen
-className=&quot;absolute top-0 left-0 w-full h-full&quot;
-&amp;gt;&amp;lt;/iframe&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;text-center font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-## &lt;strong&gt;MEGA-MEAL Trailer&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt; */}&lt;/p&gt;
-&lt;p&gt;{/* Welcome Message */}
-&amp;lt;div className=&quot;card-base p-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
-&amp;lt;div className=&quot;relative w-full aspect-[/43] rounded-lg overflow-hidden&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/gif/logo3.gif&quot;
-alt=&quot;Mega Meal Neon Sign&quot;
-class=&quot;w-full h-full object-cover brightness-100 dark:brightness-100 transition&quot;
-style={{ filter: &apos;hue-rotate(var(--hue, 0deg))&apos; }}
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;text-center font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-## &lt;strong&gt;Choose your size below:&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;{/* Kiddie Size &lt;em&gt;/}
-&amp;lt;div className=&quot;card-base p-0 pl-4 pt-4 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] shadow-lg mb-8&quot;&amp;gt;
-&amp;lt;button className=&quot;collapsible-header w-auto mx-auto flex justify-center px-4 py-1.5 bg-gradient-to-r from-[oklch(0.35_0.2_var(--hue))] to-[oklch(0.45_0.3_var(--hue))] text-white rounded-lg transition-colors&quot; style={{ &quot;--hue&quot;: &quot;120&quot; }}&amp;gt;
-&amp;lt;span className=&quot;font-sriracha text-xl font-bold neon-text&quot;&amp;gt;KIDDIE MEAL&amp;lt;/span&amp;gt;
-&amp;lt;svg className=&quot;indicator-arrow inline-block ml-2 w-5 h-5 transition-transform duration-300&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; strokeWidth=&quot;2&quot; strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot;&amp;gt;
-&amp;lt;polyline points=&quot;6 9 12 15 18 9&quot;&amp;gt;&amp;lt;/polyline&amp;gt;
-&amp;lt;/svg&amp;gt;
-&amp;lt;/button&amp;gt;
-{/&lt;/em&gt; Content */}
-&amp;lt;div className=&quot;collapsible-content transition-all duration-500 ease-in-out max-h-0 opacity-0 overflow-hidden text-lg text-gray-700 dark:text-neutral-300 space-y-6 mt-4&quot;&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-between gap-12&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full px-4&quot;&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/fake-trailer-2.png&quot;
-alt=&quot;neon sign&quot;
-class=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;{/* Large Size */}
-&amp;lt;div className=&quot;card-base p-0 pl-0 pt-4 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] shadow-lg mb-8&quot;&amp;gt;
-&amp;lt;button className=&quot;collapsible-header w-auto mx-auto flex justify-center px-4 py-1.5 bg-gradient-to-r from-[oklch(0.35_0.2_var(--hue))] to-[oklch(0.45_0.3_var(--hue))] text-white rounded-lg transition-colors&quot; style={{ &quot;--hue&quot;: &quot;240&quot; }}&amp;gt;
-&amp;lt;span className=&quot;font-sriracha text-3xl font-bold neon-text&quot;&amp;gt;LARGE MEAL&amp;lt;/span&amp;gt;
-&amp;lt;svg className=&quot;indicator-arrow inline-block ml-2 w-5 h-5 transition-transform duration-300&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; strokeWidth=&quot;2&quot; strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot;&amp;gt;
-&amp;lt;polyline points=&quot;6 9 12 15 18 9&quot;&amp;gt;&amp;lt;/polyline&amp;gt;
-&amp;lt;/svg&amp;gt;
-&amp;lt;/button&amp;gt;&lt;/p&gt;
-&lt;p&gt;{/* Content */}
-&amp;lt;div className=&quot;collapsible-content transition-all duration-500 ease-in-out max-h-0 opacity-0 overflow-hidden text-lg text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full px-4&quot;&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/med-wide1.png&quot;
-alt=&quot;wide shot title&quot;
-class=&quot;w-full h-auto rounded-lg&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center mt-6&quot;&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;p&amp;gt;The video is a fake movie trailer—a parody of over-the-top films. A mysterious character &amp;lt;span style={{ color: &quot;grey&quot;, fontStyle: &quot;italic&quot; }}&amp;gt;(name redacted for legal reasons)&amp;lt;/span&amp;gt; is introduced in a cyberpunk city filled with holographic fast-food ads and corporate dystopia. The protagonist, clad in prison stripes and a fedora, exudes an enigmatic energy as a deep, raspy voiceover narrates.&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;The trailer teases a world of intrigue, rebellion, and fast-food capitalism. It&apos;s cheesy, self-aware, and exactly what you&apos;d expect—if your favorite fast-food mascots became sentient horrors in a future dystopian world.&amp;lt;/p&amp;gt;
-&amp;lt;p&amp;gt;The world these characters inhabit is dense and layered—like a delicious Froozie Shake. Don&apos;t expect to catch every reference. It&apos;s meal-messy, questionable, but oddly satisfying if you&apos;re in the right mood.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full px-4 mt-6&quot;&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/butt2.png&quot;
-alt=&quot;Man butt&quot;
-class=&quot;w-full h-auto rounded-lg&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;{/* Mega Size */}
-&amp;lt;div className=&quot;card-base p-0 pl-4 pt-4 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] shadow-lg mb-8&quot;&amp;gt;
-&amp;lt;button className=&quot;collapsible-header w-auto mx-auto flex justify-center px-4 py-1.5 bg-gradient-to-r from-[oklch(0.35_0.2_var(--hue))] to-[oklch(0.45_0.3_var(--hue))] text-white rounded-lg transition-colors&quot; style={{ &quot;--hue&quot;: &quot;360&quot; }}&amp;gt;
-&amp;lt;span className=&quot;font-sriracha text-5xl font-bold neon-text&quot;&amp;gt;MEGA MEAL&amp;lt;/span&amp;gt;
-&amp;lt;svg className=&quot;indicator-arrow inline-block ml-2 w-5 h-5 transition-transform duration-300&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; strokeWidth=&quot;2&quot; strokeLinecap=&quot;round&quot; strokeLinejoin=&quot;round&quot;&amp;gt;
-&amp;lt;polyline points=&quot;6 9 12 15 18 9&quot;&amp;gt;&amp;lt;/polyline&amp;gt;
-&amp;lt;/svg&amp;gt;
-&amp;lt;/button&amp;gt;
-&amp;lt;div id=&quot;section-title&quot; className=&quot;collapsible-content transition-all duration-500 ease-in-out max-h-0 opacity-0 overflow-hidden text-lg text-gray-700 dark:text-neutral-300 space-y-4 mt-4 pr-4&quot;&amp;gt;
-&amp;lt;div className=&quot;font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-## &lt;strong&gt;MEGA-MEAL Explained&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-### &lt;strong&gt;Introduction&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The trailer opens with an ominous siren blaring over a maximum-security prison, search lights sweeping the scene as if searching for an escapee. Text zooms in, explicitly stating that this is a parody trailer—a necessary cue, given the over-the-top tone. These opening scenes were chosen to establish a sense of mystery, drawing the viewer in while grounding them in the familiar structure of a movie trailer. The goal is to spark curiosity and stay fresh without straying too into a format audiences my find confusing.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra1.png&quot;
-alt=&quot;futuristic prison&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/establishing.png&quot;
-alt=&quot;Dystopian megacity&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The scene transitions to a bustling futuristic dystopian city, viewed from above. Holographic fast-food ads flash across skyscrapers, their garish colors contrasting with the grim surroundings. The music builds, adding tension. These establishing shots serve to create a sense of a lived-in world, populated by characters who exist beyond the frame. Strongly suggesting a larger, unseen narrative.&amp;lt;/p&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/walking.png&quot;
-alt=&quot;boots walking&quot;
-className=&quot;float-center w-full h-auto ml-4 mb-4 rounded-lg shadow-md&quot;
-/&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The camera shifts to a slow, deliberate shot of legs walking down a rainy alleyway, teasing the introduction of a mysterious enigmatic character. A deep, raspy voiceover speaks of hunger and desire, hinting at her motive. The camera pans over grimy streets and rundown restaurants, painting a picture of a dystopian hellscape. The stranger—provocatively dressed in prison stripes, a fedora, and yellow gloves—walks among the crowd, her presence standing out. A dramatic title slams onto the screen, accompanied by an explosion. The stage is set, and the image lingers just long enough for the audience to absorb the scene before moving on.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/mme-title.jpg&quot;
-alt=&quot;Title&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra-headquarters.png&quot;
-alt=&quot;Dystopian megacity&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center md:items-start justify-center gap-8&quot;&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The camera returns to an aerial view of the city, suggesting a new location. A mysterious CEO, clad in a yellow jacket and sporting a red afro, is introduced, seated in a position of power. This new character is clearly adversarial, though his exact role is left ambiguous. Text overlays—titles and fake movie reviews—pan across the screen. It&apos;s a humorous jab, insinuating that other humans have seen this video—so to fit in with the masses—you should too.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra-ceo.png&quot;
-alt=&quot;a ceo&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center md:items-start justify-center gap-8&quot;&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra-wanted.png&quot;
-alt=&quot;a ceo&quot;
-className=&quot;float-left w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;Next, we see the mysterious character again, standing with her back turned. Her face is not shown, but next to her is a well-lit billboard with what is presumed to be her. Words below say &quot;WANTED&quot;. From the shadows, a male figure watches—a subtle nod to the character&apos;s parody origins and her bold, audacious nature.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-### &lt;strong&gt;The Heist&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra-headquarters.png&quot;
-alt=&quot;Headquarters&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra-sign.png&quot;
-alt=&quot;No Adults&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The scene changes again, this time to an establishing shot of the W Corporation&apos;s towering headquarters. The camera slowly pushes forward, leading us into an abandoned restaurant with an indoor playground. A camera pulls focus—on a sign reading &quot;No Adults in the Ball Pit&quot;. A low, wide shot from the ball pit&apos;s perspective reveals a head wearing a fedora slowly emerging from the sea of plastic balls. The music shifts, blending mystery with a touch of humor.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/ultra-balls.png&quot;
-alt=&quot;Ball Pit&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/security.png&quot;
-alt=&quot;Security Guard&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;A security guard walks down a hallway full of server mannequins. The &amp;lt;span style={{ color: &quot;grey&quot;, fontStyle: &quot;italic&quot; }}&amp;gt;(name redacted for legal reasons)&amp;lt;/span&amp;gt; stands absolutely still, blending in with her surroundings. The guard walks by, unaware. Then she breaks the fourth wall and winks at the camera, sharing the joke with the audience.&amp;lt;/p&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/Aurora.png&quot;
-alt=&quot;boots walking&quot;
-className=&quot;float-center w-full h-auto ml-4 mb-4 rounded-lg shadow-md&quot;
-/&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;Next, a build of suspense—our destination is reached—a lab with a vault door labeled &quot;Secret Recipe&quot;. The tension builds as we slowly approach the door. A hamburger is shown sealed in a container, and a yellow-gloved hand reaches in and pulls it out. The music shifts to a cool tropical song—a note of success, then the scene fades out, but the music continues, making an &apos;L&apos; cut.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/safe.png&quot;
-alt=&quot;Secret Recipe&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/burger-hole.png&quot;
-alt=&quot;Burger Hole&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The view returns. It is a stark contrast to the preceding darkness: a tropical, colorful, and vibrant setting. Fat men in shorts perform happy dances, their enthusiasm bordering on absurd. The &amp;lt;span style={{ color: &quot;grey&quot;, fontStyle: &quot;italic&quot; }}&amp;gt;(name redacted for legal reasons)&amp;lt;/span&amp;gt;, her face revealed for the first time—no longer in disguise—joins the dancing, holding her stolen prize... the camera zooms in on the Secret Recipe hamburger...&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/dance.png&quot;
-alt=&quot;Dancers&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/dance2.png&quot;
-alt=&quot;Aurora2&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;It is screaming.&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;Just when we thought things were over—a surprise twist. Things aren&apos;t always as they seem.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full h-auto transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/scream-burger.png&quot;
-alt=&quot;A screaming cheeseburger&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-### &lt;strong&gt;A Wider Stage&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;An ominous drone noise fills the air, followed by a surge of sinister music. In a shock-and-awe tactic, fast-food parody characters from various franchises burst onto the scene, shattering our set expectations and pulling back the curtain to reveal a much larger world. The stage widens to a futuristic floating fortress shaped like a king&apos;s crown. The king&apos;s army of supersoldiers, clad in gold armor and wielding energized baton scepters, marches forward in formation. Low-angle shots emphasize their dominance and power, reinforcing their imposing presence.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/king.png&quot;
-alt=&quot;King&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/castle.png&quot;
-alt=&quot;Castle&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center md:items-start justify-center gap-8&quot;&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;A high view of the &amp;lt;span style={{ color: &quot;grey&quot;, fontStyle: &quot;italic&quot; }}&amp;gt;(name redacted for legal reasons)&amp;lt;/span&amp;gt; overlooking the city symbolizes a hero&apos;s journey of conflict, understanding, responsibility, hope, inspiration, adversity, perseverance, sacrifice, resilience, endurance, determination, grit, tenacity, fortitude, breakthrough, resolve, persistence, willpower, dedication, holdfastion, courage, hardship, triumph, struggle, persistara, defiance, overcoming, gritstone, and a redemption arc.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/overlook.png&quot;
-alt=&quot;Hero&apos;s dilemma&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center md:items-start justify-center gap-8&quot;&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/wendi.png&quot;
-alt=&quot;Wendi&quot;
-className=&quot;float-left w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;A counter-shot shows a dark factory with an interdimensional portal yawning open. The scene is in turmoil. Fast-food wrappers whip through the air. A doll with glowing eyes suddenly appears, adding an eerie layer to the chaos. The scene is well-composed, with dynamic motion and effective blocking. The portal acts as a visual frame, Mindi blocks the path to it with a suggestion of supernatural abilities. Her eyes light up—a creative use of light to transition between scenes.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/rooster.png&quot;
-alt=&quot;Rooster w cleaver&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;w-full md:w-1/2 transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/dip.png&quot;
-alt=&quot;The Dip&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The city descends into chaos as reality itself begins to fracture. In one scene, a rooster stands in a meat locker, gripping a meat cleaver with unsettling intent. A billboard looms overhead, advertising a new product: The Infinite Dip. Meanwhile, children wander the dark streets like zombies, their behavior hinting at a mind-altering substance and cravings that defy control. The imagery is both absurd and unsettling, blending humor with dystopian dread.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;relative grid grid-cols-1 md:grid-cols-2 gap-8 py-16&quot;&amp;gt;
-&amp;lt;div className=&quot;relative min-h-[600px]&quot;&amp;gt;
-&amp;lt;span className=&quot;absolute top-[5%] left-[10%] text-xl font-bold transform rotate-1&quot;&amp;gt;Sexy man butts&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[15%] left-[40%] text-sm transform -rotate-1&quot;&amp;gt;Weird, unappetizing food&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[25%] left-[20%] text-lg&quot;&amp;gt;Sentient mayo merges and begins to take over the city&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[30%] left-[60%] text-base font-light&quot;&amp;gt;A giant purple &lt;em&gt;thing&lt;/em&gt; (what is it supposed to be, anyway?)&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[40%] left-[15%] text-2xl font-bold transform rotate-1&quot;&amp;gt;Jak Sawce accidentally kills his opponent in a match&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[50%] left-[45%] text-xs&quot;&amp;gt;Living mannequins as food servers&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[55%] left-[25%] text-sm italic&quot;&amp;gt;The chickens rise up&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[65%] left-[55%] text-base&quot;&amp;gt;The mayo grows&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[70%] left-[10%] text-lg transform -rotate-2&quot;&amp;gt;Bio-Terrorism&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[85%] left-[40%] text-xs&quot;&amp;gt;Explosions&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[85%] left-[70%] text-base font-bold&quot;&amp;gt;Restaurants are filled with dancing, intelligent cockroaches&amp;lt;/span&amp;gt;
-&amp;lt;span className=&quot;absolute top-[80%] left-[20%] text-sm&quot;&amp;gt;Burgers twitch in the streets like mimics in disguise&amp;lt;/span&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;flex flex-col space-y-4&quot;&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/mayo.png&quot;
-alt=&quot;may&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/jak.png&quot;
-alt=&quot;jak sawce&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/bomb.png&quot;
-alt=&quot;an exploding restaurant&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/burger.png&quot;
-alt=&quot;burger mimic&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/roaches.png&quot;
-alt=&quot;lil buddies&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;The streets flood. The Hamburgler is gone.&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;Perhaps it was all a dream?&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;We take a breath, and we&apos;re back on a building. The Hamburgler overlooks the city. It&apos;s time to fight back. She dives into the action—literally falling and falling, and falling and falling, and falling. Reality shifts around her. Her legs are shown again, this time running—faster and faster—this time with purpose.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-&amp;lt;div className=&quot;w-full h-auto transform&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/gif/running_720p.gif&quot;
-alt=&quot;Final action shot&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;A final shot reveals the CEO of W Corporation in his office—a clown. Storm clouds gather around him, and his face turns sinister. Then, the &lt;em&gt;Mega Meal&lt;/em&gt; logo hits, punctuated by an explosion... A teaser says it will be released in 2066—an indication it may never happen.&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;A surprise final outro at a fast-food drive-through features a demonic voice saying, &lt;em&gt;No pickles&lt;/em&gt;. Then, black.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;font-sriracha text-xl font-bold text-gray-700 dark:text-neutral-400&quot;&amp;gt;
-### &lt;strong&gt;Final Thoughts:&lt;/strong&gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;text-lg text-gray-700 dark:text-neutral-300 space-y-6&quot;&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;- The video takes the form of a movie trailer for a film that doesn&apos;t exist. This format allows the creator to move the plot forward at a breakneck pace, introducing a world and storyline that leaves room for further development.&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;- In this world, the &amp;lt;span style={{ color: &quot;grey&quot;, fontStyle: &quot;italic&quot; }}&amp;gt;(name redacted for legal reasons)&amp;lt;/span&amp;gt; character is clad in a bikini with prison stripes—a distinctive getup that&apos;s not intended to sexualize her, but instead is a nod to other characters and numerous tropes in different series and film properties—the intent is to have those tropes reimagined with a strong female protagonist.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;flex flex-col md:flex-row items-stretch justify-center gap-8 min-h-[300px]&quot;&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2&quot;&amp;gt;
-&amp;lt;ImageWrapper
-src=&quot;content/posts/Mega-Meal-Explained/Poses.png&quot;
-alt=&quot;a ceo&quot;
-className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;
-/&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;div className=&quot;md:w-1/2 flex items-center justify-center&quot;&amp;gt;
-&amp;lt;p className=&quot;font-bold text-center&quot;&amp;gt;Characters were developed from different frameworks. &amp;lt;br /&amp;gt; Using still images made first, then interpolated.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;- The video&apos;s quality is &quot;fair,&quot; with many glitches and imperfections. While it&apos;s possible to hyper-focus on quality and create a seamless product, the labor involved as a solo creator makes that nearly impossible. Compromises were made to keep the project moving forward. That being said—the door is open for a more refined video in the future if it&apos;s needed.&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;Ultimately, the project suffers from the same issues as any indie production: &lt;em&gt;budget, labor, and audience&lt;/em&gt;. Larger studios have entire teams—writers, directors, artists, marketers, and equipment at the ready. A single creator working at this scale is bound to hit a labor ceiling.&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;mb-4&quot;&amp;gt;In that sense, what&apos;s been achieved so far is impressive—but will the series continue? Hopefully...but I&apos;ve been down this road before. Labor is the food this project eats, and overcoming the labor problem—when there&apos;s no support, the project will likely be too weak to survive, emaciated and forgotten, in some dark alley. The world at large won&apos;t even notice its pathetic attempts to crawl before death by starvation. People will step over its mummified corpse, barely stopping to look down. The work of strangers is so much more sexy and alluring, while people you may know sit alone, slowly sinking into poverty, waiting for the last nail in the coffin to be hammered in.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;  &amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt;
-    &amp;lt;div className=&quot;w-full h-auto transform&quot;&amp;gt;
-      &amp;lt;ImageWrapper src=&quot;content/posts/Mega-Meal-Explained/watch2.png&quot; alt=&quot;Final action shot&quot; className=&quot;w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;/&amp;gt;
-    &amp;lt;/div&amp;gt;
-  &amp;lt;/div&amp;gt;
-  &amp;lt;div className=&quot;text-center&quot;&amp;gt;
-    ### **Would you like &amp;lt;span className=&quot;font-sriracha text-yellow-500&quot;&amp;gt;Fries&amp;lt;/span&amp;gt; or &amp;lt;span className=&quot;font-sriracha text-yellow-700&quot;&amp;gt;Onion Rings&amp;lt;/span&amp;gt;?**
-  &amp;lt;/div&amp;gt;
-  &amp;lt;div className=&quot;flex flex-col md:flex-row items-center justify-center gap-4&quot;&amp;gt; 
-    &amp;lt;div className=&quot;cursor-pointer&quot; onclick=&quot;chooseFries()&quot;&amp;gt;
-      &amp;lt;ImageWrapper src=&quot;content/posts/Mega-Meal-Explained/gif/fries1.gif&quot; alt=&quot;Fries&quot; className=&quot;float-left w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;/&amp;gt;
-      &amp;lt;p className=&quot;font-sriracha text-yellow-700 text-2xl font-bold text-center mt-2&quot;&amp;gt;Fries&amp;lt;/p&amp;gt;
-    &amp;lt;/div&amp;gt;
-    &amp;lt;div className=&quot;cursor-pointer&quot; onclick=&quot;chooseOnionRings()&quot;&amp;gt;
-      &amp;lt;ImageWrapper src=&quot;content/posts/Mega-Meal-Explained/gif/orings1.gif&quot; alt=&quot;Onion Rings&quot; className=&quot;float-right w-full h-auto rounded-lg shadow-md object-contain brightness-100 dark:brightness-100 transition&quot;/&amp;gt;
-      &amp;lt;p className=&quot;font-sriracha text-yellow-500 text-2xl font-bold text-center mt-2&quot;&amp;gt;Onion Rings&amp;lt;/p&amp;gt;
-    &amp;lt;/div&amp;gt;
-  &amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-</content:encoded></item><item><title>The Melancholy Adventures of Steamboat Willie</title><link>https://dndiy.org/posts/the-melencholy-adventures-of-steamboat-willie/</link><guid isPermaLink="true">https://dndiy.org/posts/the-melencholy-adventures-of-steamboat-willie/</guid><description>A retrospective view on the project.</description><pubDate>Sat, 08 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&amp;lt;!-- &amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/GS9bdSrCvfw?si=3-TWFDISeYHEQ7Bv&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; &quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt; --&amp;gt;&lt;/p&gt;
-&lt;h3&gt;&lt;strong&gt;The Melancholy adventures of Steamboat Willie: A Retrospective on the Project&lt;/strong&gt;&lt;/h3&gt;
-&lt;h4&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;New and unique creative works often struggle to gain traction, while parodies or familiar characters tend to engage audiences more easily. This observation inspired the decision to update and colorize &lt;em&gt;Steamboat Willie&lt;/em&gt;, a cartoon that had just entered the public domain. The project became a blend of nostalgia, experimentation, and irony, offering an opportunity to explore creative editing and graphics techniques.&lt;/p&gt;
-&lt;p&gt;This blog post provides a behind-the-scenes look at the project’s creation, from its conceptualization to its execution, and reflects on the lessons learned along the way.&lt;/p&gt;
-&lt;h4&gt;&lt;strong&gt;Concept and Motivation&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;Using Steamboat Willie as the foundation was a strategic choice. The cartoon’s entry into the public domain allowed for creative freedom, while Walt Disney’s controversial legacy and the Disney Corporation’s history of intellectual property disputes added layers of commentary and parody. The project aimed to reimagine the classic cartoon with modern techniques, blending humor and deeper thematic elements.&lt;/p&gt;
-&lt;h4&gt;&lt;strong&gt;Production Process&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;The production of &lt;em&gt;Steamboat Willie&lt;/em&gt; was a labor-intensive process that involved several stages:&lt;/p&gt;
+</content:encoded></item><item><title>Friend Content Sharing: Connect Your Blog with Others</title><link>https://dndiy.org/posts/friend-content-sharing-guide/</link><guid isPermaLink="true">https://dndiy.org/posts/friend-content-sharing-guide/</guid><description>Learn how to use the new friend content sharing feature to connect your blog with others and create a network of shared content.</description><pubDate>Tue, 25 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Friend Content Sharing&lt;/h1&gt;
+&lt;p&gt;Connect your blog with others and create a network of shared content with our new friend content sharing feature. This guide covers everything you need to know about setting up friend connections, sharing content, and building a mini social network with your static Astro site.&lt;/p&gt;
+&lt;h2&gt;What is Friend Content Sharing?&lt;/h2&gt;
+&lt;p&gt;Friend Content Sharing is a new feature that allows you to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Connect your blog with other blogs running the same platform&lt;/li&gt;
+&lt;li&gt;Share your content with others&lt;/li&gt;
+&lt;li&gt;Display content from your friends&apos; blogs within your site&lt;/li&gt;
+&lt;li&gt;Create a distributed social network of content without a central server&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Think of it as a decentralized feed reader built directly into your blog. When you log in as the site admin, you can see content from blogs you&apos;ve connected with, while regular visitors still see just your content.&lt;/p&gt;
+&lt;h2&gt;Accessing Friend Content Features&lt;/h2&gt;
+&lt;p&gt;All friend content features are available in the &lt;code&gt;/friends&lt;/code&gt; section of your site. This page is restricted to site administrators only, so you&apos;ll need to log in to access it.&lt;/p&gt;
+&lt;h3&gt;Authentication&lt;/h3&gt;
+&lt;p&gt;To access the Friends page:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Initial (failed) Attempts&lt;/strong&gt;:&lt;br /&gt;
-Early versions of the project involved straightforward edits of the original cartoon. However, this approach proved time-consuming and unsustainable. To streamline the process, the project was divided into smaller, episodic segments, which could be released incrementally on social media and later stitched together.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Rotoscoping and Colorization&lt;/strong&gt;:&lt;br /&gt;
-Rotoscoping—tracing each character frame by frame—and colorization formed the bulk of the work. Retaining the original character lines was essential to preserve the charm of the classic animation.
-&amp;lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube-nocookie.com/embed/TlmBrhCwX_I?si=dH5iKUVLSFurjvSq&amp;amp;controls=0&amp;amp;modestbranding=1&amp;amp;rel=0&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Compositing and Backgrounds&lt;/strong&gt;:&lt;br /&gt;
-New backgrounds were created or modified to fit the 16:9 aspect ratio, as the original 5:4 frames were too small. Some scenes required “outpainting” to fill in extended areas. Stock footage from a recent trip to Alaska was used extensively to create these backgrounds.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;AI Integration&lt;/strong&gt;:&lt;br /&gt;
-The underwater sequences featuring Black Pete utilized AI-generated visuals. These scenes were intentionally surreal and artificial, serving as a meta-commentary on the idea of a “fake” world.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Color Correction and Consistency&lt;/strong&gt;:&lt;br /&gt;
-To unify the disparate visual elements, extreme color grading across the entire project was used to ensure a consistent look and feel despite the varied sources of the footage.
-&amp;lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/3rTQliK1MAU?si=SMEKRiJ_Rlmpq1oT&amp;amp;controls=0&amp;amp;modestbranding=1&amp;amp;rel=0&quot;
-title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Sound Design&lt;/strong&gt;:&lt;br /&gt;
-Sound effects included squeaky toys, radio static, and a parakeet. Whale noises were used for the mermaid, and a boat horn replaced the cow’s original sound. The music was original, created using an MIDI keyboard and LMMS music studio.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Navigate to &lt;code&gt;/friends&lt;/code&gt; in your browser&lt;/li&gt;
+&lt;li&gt;You&apos;ll be presented with a login screen&lt;/li&gt;
+&lt;li&gt;Enter your admin credentials (username and password)&lt;/li&gt;
+&lt;li&gt;Once authenticated, you&apos;ll see the Content Sharing Hub&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&amp;lt;div style=&quot;padding-left: 40px; padding-right: 40px;&quot;&amp;gt;
-&amp;lt;img src=&quot;/posts/The-Melencholy-Adventures-of-Steamboat-Willie/Blender.png&quot; alt=&quot;View of boat in Blender compositing&quot; style=&quot;max-width: 100%; height: auto;&quot;&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h4&gt;&lt;strong&gt;Themes and Narrative&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;At its heart, the video was about life, loss, and acceptance. The steamboat, named &lt;em&gt;Charon&lt;/em&gt; (after the ferryman of the dead in Greek mythology), symbolized life’s journey. The river it traveled represented the passage of time, leading the characters—and, by extension, the audience—toward the inevitable end.&lt;/p&gt;
-&lt;p&gt;Throughout the episodes, the characters grew increasingly detached from one another, reflecting the inevitability of separation and mortality. The emotional arc of the story was intended to evoke a sense of melancholy and introspection, contrasting sharply with the lighthearted expectations of the original cartoon.&lt;/p&gt;
-&lt;h4&gt;&lt;strong&gt;Challenges and Reflections&lt;/strong&gt;&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: If you&apos;re already logged in, you&apos;ll be taken directly to the Content Sharing Hub.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;The Content Sharing Hub&lt;/h2&gt;
+&lt;p&gt;The Content Sharing Hub is divided into three main sections:&lt;/p&gt;
+&lt;h3&gt;1. Share Your Content&lt;/h3&gt;
+&lt;p&gt;This section allows you to create a content package that you can share with others. Options include:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Final Shots&lt;/strong&gt;:   The concluding scenes proved particularly challenging. Initially, they lacked an engauging story and required extensive reworking, eventually being condensed for the final cut.
-&amp;lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/jGCAgHO-oCQ?si=4rYzPYcDph1ztXze&amp;amp;controls=0&amp;amp;modestbranding=1&amp;amp;rel=0&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Sustainability&lt;/strong&gt;: The sheer volume of labor involved in producing each episode made it clear that creating content of this scale solo was unsustainable.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Audience Reception&lt;/strong&gt;: While the project achieved moderate success (with an estimated 3,000 views across platforms - not bad, not viral), many viewers failed to pick up on the deeper themes and details embedded in the work. It highlighted the gap between creator intent and audience interpretation - something I see often.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Blog Posts&lt;/strong&gt;: Include your published blog posts&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Timeline Events&lt;/strong&gt;: Include your timeline data (if applicable)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Site Configuration&lt;/strong&gt;: Share your site settings (use with caution)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Media Assets&lt;/strong&gt;: Include images and other media files&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4&gt;&lt;strong&gt;Technical Details&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;For those interested in the technical aspects of the project, here’s a breakdown of the tools and locations used:&lt;/p&gt;
+&lt;p&gt;To share your content:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Select the content types you want to include&lt;/li&gt;
+&lt;li&gt;Click &quot;Create &amp;amp; Download Package&quot;&lt;/li&gt;
+&lt;li&gt;Share the downloaded JSON file with others&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;2. Import Content&lt;/h3&gt;
+&lt;p&gt;This section allows you to import content from other blogs. To import content:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Click on the upload area to select a package file&lt;/li&gt;
+&lt;li&gt;Once uploaded, select which content types to import&lt;/li&gt;
+&lt;li&gt;Click &quot;Import Content&quot; to add the content to your site&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Best Practice&lt;/strong&gt;: When importing content, the system will automatically try to create a friend connection to the source blog, making future content sharing easier.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;3. Connected Friends&lt;/h3&gt;
+&lt;p&gt;This is where you manage your friend connections. From here, you can:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Filming Locations&lt;/strong&gt;: Portland, Oregon, and Kenai Fjords, Alaska.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Equipment&lt;/strong&gt;: Zoom H4N audio recorder, Panasonic GH6 camera with a Zeiss Flektogon 35/2.4&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Software&lt;/strong&gt;: DaVinci Resolve (editing), Blender 3D (3D modeling), ComfyUI (AI generation), Audacity (audio editing).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Music&lt;/strong&gt;: Arturia KeyLab digital keyboard and LMMS music studio.&lt;/li&gt;
+&lt;li&gt;Add new friends by providing their site details&lt;/li&gt;
+&lt;li&gt;View existing connections&lt;/li&gt;
+&lt;li&gt;Sync content from specific friends&lt;/li&gt;
+&lt;li&gt;Remove friend connections&lt;/li&gt;
+&lt;li&gt;Configure content integration settings&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h4&gt;
-&lt;p&gt;Looking back, I’m appreciative of the lessons learned. It was a project born out of curiosity, and a desire to create something meaningful. It is a reminder of why we should create—not for the views or the likes, but for the joy of bringing something into being that didn’t exist—but needs to exist. Despite its flaws, it has a place in the world.&lt;/p&gt;
-&lt;p&gt;The essence of &lt;em&gt;The Melancholy adventures of Steamboat Willie&lt;/em&gt; - a fleeting, imperfect, exploration of life, art, and memory.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;“Remember me. I was.”&lt;/em&gt;&lt;/p&gt;
-</content:encoded></item><item><title>New Website Starts Today.</title><link>https://dndiy.org/posts/new/</link><guid isPermaLink="true">https://dndiy.org/posts/new/</guid><description>A new website and a central location for my content.</description><pubDate>Wed, 05 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Hello!&lt;/h1&gt;
-&lt;p&gt;With the general hellscape of the internet, social media, and the world at large, I figured it was wise to teach myself html coding, make a time machine, travel to 1996 and bang out a sweet website in my mother&apos;s basement. The purpose is to create a central repository for my content, and own my data. There will be more features, updates, and posts to come.&lt;/p&gt;
-&lt;h2&gt;Who is this Weirdo? What is this Place?&lt;/h2&gt;
-&lt;p&gt;Don&apos;t worry this is a safe space! I will never ask for your home address and social security number.
-Gregory Aster is a filmmaker, animator, and storyteller with a penchant for the bizarre, the experimental, and the deeply nostalgic. He spent 23 years as a mechanic - 10 as a certified technician and manager, then 13 as a business owner. Having retired from the trade, he now devotes all his time to creative media.&lt;/p&gt;
-&lt;p&gt;His creative work blends cyberpunk, cosmic horror, and absurdist humor - drawing inspiration from old-school sci-fi, westerns, and the strange corners of pop culture. From dystopian fast-food conspiracies to interdimensional smugglers, his projects thrive on mystery, aesthetic weirdness, and an undercurrent of melancholy.&lt;/p&gt;
-&lt;p&gt;Greg has more than a decade of experience in local TV production, contract videography, and a lifetime of hands-on problem-solving. He is fluent in Blender3d, Davinci Resolve, can code a bit, works with ComfyUI, and experiments with cutting-edge video tools. When he&apos;s not crafting surreal narratives, he&apos;s either running around drinking too much coffee, beating on a machine with a hammer, or considering the deep philosophical and moral quandaries of science fiction, romance novels, and historical literature.&lt;/p&gt;
-&lt;h2&gt;Current and Upcoming Projects&lt;/h2&gt;
-&lt;p&gt;I’m actively working on several projects, including:&lt;/p&gt;
+&lt;h2&gt;Adding New Friends&lt;/h2&gt;
+&lt;p&gt;To add a new friend connection:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;In the &quot;Add New Friend&quot; section, provide:
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Mega Meal&lt;/strong&gt; - A dystopian cyberpunk cosmic horror series exploring themes of food, mystery, nostalgia, and loss.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;This Damn Website&lt;/strong&gt; - Whew! What a headache!&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Housework and Furniture Building&lt;/strong&gt; - Life and duty calls.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Friend Name&lt;/strong&gt;: The name of the blog or its author&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Site URL&lt;/strong&gt;: The complete URL to the friend&apos;s blog&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Bio&lt;/strong&gt; (optional): A short description&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Avatar URL&lt;/strong&gt; (optional): Link to a profile image&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;Future Website Plans&lt;/h2&gt;
+&lt;/li&gt;
+&lt;li&gt;Click &quot;Add Friend&quot;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Once added, the system will automatically attempt to sync content from the friend&apos;s site. You&apos;ll see a loading indicator during this process.&lt;/p&gt;
+&lt;h3&gt;Manual vs. Automatic Connections&lt;/h3&gt;
+&lt;p&gt;There are two ways to create friend connections:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Manual&lt;/strong&gt;: Add a friend by entering their details as described above&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automatic&lt;/strong&gt;: When you import a content package, the system can automatically create a connection to the source blog&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Managing Friend Content&lt;/h2&gt;
+&lt;h3&gt;Syncing Content&lt;/h3&gt;
+&lt;p&gt;Content from your friends isn&apos;t updated automatically. You need to manually sync to see their latest posts:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Alternate Universe Theme&lt;/strong&gt; - This website is to include an alternate universe theme tied to a cosmic horror entity named Merkin (&lt;em&gt;In Progress&lt;/em&gt;). You may notice the absent dark/light mode switches that transport you to a parallel version of this space - a nod to my fascination with alternate realities and strange timelines.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Newsletter Sign-Up&lt;/strong&gt; - Sign up for my upcoming newsletter &lt;em&gt;that does not exist yet&lt;/em&gt; to stay updated on new projects, behind-the-scenes content - there is nothing exclusive about this - but if you want to stay in the know you now know you don&apos;t have that option.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Blog Philosophy&lt;/strong&gt; - Expect a mix of content here - project updates, reflections on creative life, inspiration behind stories, and occasional commentary on art and media. I would like to focus on community and listen to feedaback. so, I’d love to hear your thoughts on my work! Feel free to reach out with, ideas, or suggestions. This space is as much about community as it is about creativity. Speaking of community - if you want me to share and distribute your creative projects here - talk to me!&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;In the works&lt;/strong&gt;  A newsletter section, more articles, art, a contact page, a resume, consolidated content. If you have any recommendations on website direction, or spot any issues with this space, let me know!&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;Click the sync button on an individual friend card to update just that friend&apos;s content&lt;/li&gt;
+&lt;li&gt;Use the &quot;Sync All Friends&quot; button to update content from all connected friends at once&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;This website is where all of that comes together - a home for projects, ideas, and whatever else comes next. Stay tuned for more updates and sneak peeks as these projects evolve. If you want to collaborate, reach out! I never have enough time - but I can always make time for more - it’s a weird interdimensional nexus I exist in.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;...and thanks for being awesome!
-Greg&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;./New/uwantsumart.gif&quot; alt=&quot;uwantsumart.gif&quot; /&gt;&lt;/p&gt;
-</content:encoded></item><item><title>How Does AI Affect Creative Expression and the Value of Art?</title><link>https://dndiy.org/posts/navigating-the-ai-age-of-art/</link><guid isPermaLink="true">https://dndiy.org/posts/navigating-the-ai-age-of-art/</guid><description>Exploring the Divide: Art, Isolation, and the Digital Future</description><pubDate>Tue, 20 Feb 1996 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Navigating the AI Age of Art&lt;/h1&gt;
-&lt;p&gt;There has been a shift in culture recently, and now AI is everywhere. We are talking about it constantly. It seems everywhere I turn, people are polarized and fired up about it. But truthfully, none of this matters. With new things, there is alaways turmoil. AI is no different - people are upset. People talk, torches and pitchforks are raised, fingers point, and accusations fly abound. I find all this really unfortunate and hope the turmoil dies down soon - but my heels are dug in, and I&apos;m ready for the long haul either way. This seems to be exaggerated by a generational divide, and this ia also nothing new. This argument is old - painters and cameras, horses and cars, practical effects and computer graphics. And whether for or against - we all use AI every day, constantly. We are swimming in AI - and at the same time, AI isn’t really what the hype says it is.&lt;/p&gt;
-&lt;p&gt;The swimming in AI I refer to is our phones, map navigation, texting, media feeds, TV, ads, and more. There is no escape. We are drowning - and to survive in this sea of talking robots, you must understand how to use AI to be empowered and navigate the changing currents, and to understand this - you must understand that AI isn’t really AI. It’s just another tool.&lt;/p&gt;
-&lt;h2&gt;Let’s Deal with the Preconceptions&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Q. Is AI actually Artificial Intelligence?&lt;/strong&gt;&lt;br /&gt;
-&lt;strong&gt;No.&lt;/strong&gt; AI cannot think. If AI could think, then it would be real “AI.” What people generally call “AI” is just a branding term for statistical models called “neural networks” (which is another branding term in itself). These models can get extremely complex - so much so that it’s difficult to differentiate between AI-generated content and human-created work. Despite this, any “AI” generated work you see on the internet has a human behind it - because AI is not autonomus - it cannot think - anything it does is guided by human hands.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q. Is AI art theft?&lt;/strong&gt;&lt;br /&gt;
-&lt;strong&gt;No, not inherently.&lt;/strong&gt; AI can’t steal any more than a paintbrush or a camera can. However, AI art, with its complex tools and abilities to mimic, can be used to steal and deceive. Just like any tool, it is possible be used for good and bad. The stories of theft make great headlines, so fear and anger have been misdirected at the machines rather than the people abusing them. The ones using AI to mimic and deceive are the problem - not the average user, and certainly not the technology itself.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q. Will AI take my job?&lt;/strong&gt;
-Yes! If it hasn’t already taken your job, it probably will - or at least impact it severely. To understand this, we only need to look at history - I use the Industrial Revolution for analogy. Many people worked in factories then - these people became unemployed when a machine took their jobs.&lt;/p&gt;
-&lt;p&gt;So, what can we do about the robots taking our jobs? Luddites tried to do something - famously, they destroyed the factory machines during the Industrial Revolution. They became symbolic of technological resistance and eventually got enshrined in language as someone incompetent with technology.&lt;/p&gt;
-&lt;p&gt;With machines being able to produce art cheaply - and in some cases better and faster than the working artist - what do we do? The answer to this question is nothing new: control the machines that produce better and faster. Be on top of the wave rather than crushed underneath it.&lt;/p&gt;
-&lt;h2&gt;How Does AI Affect Creative Expression and the Value of Art?&lt;/h2&gt;
-&lt;p&gt;How do we stand out in this vast ocean of content? How can we keep up with the speed of its prodcution? How do we reconcile the seemingly pointless nature of creative expression? What is our value in a world where machines can generate art at the push of a button? The answer is art never had any value. It&apos;s all products, scarcity, and marketing.&lt;/p&gt;
-&lt;p&gt;If you’re asking these questions in the first place, you are probably thinking more about capitalism and less about art. When you create something truly meaningful, it shouldn&apos;t be about the product or the scarcity of it - it should be about the expression and intent of what you are doing. You should be making something because you want to, because it is beautiful, because it deserves to exist. The medium it was made with should not matter. If you&apos;re produce because you want to commodify something, you are a producer. If you’re worried or upset that you can’t sell something, or that someone might devalue something that has no intrinsic scarcity - a thing that can be produced infinitely without effort - you can&apos;t really put a price tag on it. To desire to stop this flow, or to inflate its worth is a lie. People who produce only to sell let internalized capitalism govern their work, and they are slaves to a system that ironically treats them like a commodity themselves.&lt;/p&gt;
-&lt;p&gt;Think of the food replicator in Star Trek - did chefs cry and lament because they lost their jobs? In that utopian future, they didn’t. Cooking became a choice rather than a necessity. The real problem we face isn’t AI or automation - it’s capitalism. We’re thinking about art as a commodity, and we can’t commodify something that has no scarcity. The unfortunate side effect of this is that artists go hungry in a system that values only what is scarce, and digital media can be replicated infinitely.&lt;/p&gt;
-&lt;p&gt;With the advent of AI in art, scarcity can be less of a thing. You no longer have to be beautiful, you no longer have to cry and suffer for something - you can just, at the flick of a switch, make anything you want. We should really be making art not because we need more content in this world, but because we like art. Having no value attached to it is actually a boon. It allows someone to create without restriction. In the end, only individuals who rely on selling themselves or need other people for validation are the ones in danger of losing their power and prestige. If you determine that there’s something in this world that is missing for you - something that you want - whether it is a finished product or simply enjoying the act of creation - then make that thing. That is independence and power. The medium doesn’t matter. The medium is just a means, a tool. Tools will always change - but creation is timeless. True creators don’t get lost in the arms race - they simply make.&lt;/p&gt;
-&lt;p&gt;AI can’t replace real creators because they define what creation is. The only thing AI does is challenge the tradition of production. The gulf between creators and producers is changing. If an artist chooses to use AI as a tool, it doesn’t make them any less of an artist. It simply means they’re using a different brush on their canvas.&lt;/p&gt;
-&lt;p&gt;True art should be free.&lt;/p&gt;
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-&lt;p&gt;AI is not a threat to the artist, but it is a threat to art as a product.
-Perhapse we should stop, and consider reframing the conversation - its not about art - its about how we attach value to things, and ultimately people. Our values shouldn&apos;t be about our ability to produce. Somewhere in all this mess, our identies all became linked to our labor.
-Maybe without value attached - art can be free and accessible to people without means. If we restrict or cut out people who enjoy these things, you risk putting yourself on the wrong side of history. Look to the future - whether that future is liberating or dystopian depends entirely on who is moving forward. So, ride the wave, understand it. If you don’t like the medium - don’t judge someone who does. And if you want less AI - put down that phone, stop typing on a computer, don’t use a map. Instead, look around - get lost outside, talk to someone real, paint, dance, enjoy a sunset, and if you’re an artist, consider asking yourself questions - questions about why you do what you do, what your value really is, your personal expression, and what freedom to make whatever you want without restriction really means.&lt;/p&gt;
+&lt;h3&gt;Content Integration&lt;/h3&gt;
+&lt;p&gt;By default, friend content appears in your main feed when you&apos;re logged in. You can control this with the &quot;Enable Friend Content in Main Feed&quot; option.&lt;/p&gt;
+&lt;p&gt;When enabled:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Friend content appears at the top of your homepage when you&apos;re logged in&lt;/li&gt;
+&lt;li&gt;Content is clearly labeled with the friend&apos;s name and avatar&lt;/li&gt;
+&lt;li&gt;Regular visitors still only see your content&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Viewing Friend Content&lt;/h3&gt;
+&lt;p&gt;Friend content appears in two places:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Homepage Feed&lt;/strong&gt;: A selection of recent friend posts appear at the top of your homepage when logged in&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Individual Posts&lt;/strong&gt;: You can view the full content of individual friend posts&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;When viewing friend content, you&apos;ll see:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Attribution to the original author&lt;/li&gt;
+&lt;li&gt;The date it was published&lt;/li&gt;
+&lt;li&gt;A link to view the original post on the friend&apos;s site&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Technical Details&lt;/h2&gt;
+&lt;p&gt;For developers and advanced users, here are some technical details about how the system works:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Friend data is stored in your browser&apos;s localStorage&lt;/li&gt;
+&lt;li&gt;Content is cached to minimize unnecessary network requests&lt;/li&gt;
+&lt;li&gt;The system attempts to fetch content in several ways:
+&lt;ol&gt;
+&lt;li&gt;First tries a JSON feed at &lt;code&gt;/api/posts.json&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Falls back to parsing sitemap.xml&lt;/li&gt;
+&lt;li&gt;Can extract content from HTML if necessary&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;Friend content is rendered client-side using Svelte components&lt;/li&gt;
+&lt;li&gt;Authentication uses a simple username/password system stored in localStorage&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;p&gt;For the best experience with friend content sharing:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Request permission&lt;/strong&gt; before adding someone&apos;s blog as a friend&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Keep your content updated&lt;/strong&gt; by regularly syncing with friends&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Be selective&lt;/strong&gt; about which friends you add to avoid content overload&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Provide complete information&lt;/strong&gt; when adding friends for better organization&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Check compatibility&lt;/strong&gt; - this feature works best when both sites use the same platform&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Troubleshooting&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Q: Why can&apos;t I see friend content on my homepage?&lt;/strong&gt;
+A: Make sure you&apos;re logged in and have &quot;Enable Friend Content in Main Feed&quot; checked in the Friends page.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q: Why isn&apos;t content syncing from a friend&apos;s site?&lt;/strong&gt;
+A: The friend&apos;s site may not expose content in a way our system can access. Ask them to use the Content Package feature to share content directly.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q: Can visitors see my friends list?&lt;/strong&gt;
+A: No, the friends list and friend content are only visible to authenticated administrators.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;We hope you enjoy connecting with other blogs through our new Friend Content Sharing feature! If you have any questions or suggestions, please reach out to us through the contact page.&lt;/p&gt;
+</content:encoded></item><item><title>Introducing Friend Content Sharing</title><link>https://dndiy.org/posts/feature-announcement/</link><guid isPermaLink="true">https://dndiy.org/posts/feature-announcement/</guid><description>Connect your blog with friends and build a mini social network with our new content sharing feature.</description><pubDate>Mon, 24 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Introducing Friend Content Sharing&lt;/h1&gt;
+&lt;p&gt;I&apos;m excited to announce a brand new feature for our blog platform: &lt;strong&gt;Friend Content Sharing&lt;/strong&gt;! This feature transforms your static blog into a hub for connecting with other content creators and building a mini social network.&lt;/p&gt;
+&lt;h2&gt;The Power of Connection&lt;/h2&gt;
+&lt;p&gt;As content creators, we often exist in isolation. We publish our thoughts, stories, and insights, but the connections between our content and other creators remain loose at best. Friend Content Sharing is designed to bridge that gap.&lt;/p&gt;
+&lt;p&gt;With this new feature, you can:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🔗 &lt;strong&gt;Connect your blog&lt;/strong&gt; with other blogs running the same platform&lt;/li&gt;
+&lt;li&gt;🔄 &lt;strong&gt;Share your content&lt;/strong&gt; directly with other site owners&lt;/li&gt;
+&lt;li&gt;📚 &lt;strong&gt;Display content&lt;/strong&gt; from your friends&apos; blogs in your own feed&lt;/li&gt;
+&lt;li&gt;🌐 &lt;strong&gt;Build a network&lt;/strong&gt; of connected blogs without a central server&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How It Works&lt;/h2&gt;
+&lt;p&gt;When you log in as the site administrator, you&apos;ll see a new &quot;Friends&quot; section in the site navigation. This is your hub for managing content connections with other blogs.&lt;/p&gt;
+&lt;p&gt;From there, you can:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Add friends&lt;/strong&gt; by entering their blog URL and details&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Export your content&lt;/strong&gt; as a package to share with others&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Import content&lt;/strong&gt; from packages shared by your friends&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Control how friend content&lt;/strong&gt; appears on your site&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The best part? Your regular visitors still see just your content, while you (as the admin) get to enjoy a rich feed that includes content from all your connected friends.&lt;/p&gt;
+&lt;h2&gt;A Decentralized Approach&lt;/h2&gt;
+&lt;p&gt;Unlike traditional social networks that store everything on centralized servers, Friend Content Sharing works directly between blogs. There&apos;s no middleman, no algorithm deciding what you see, and no data mining.&lt;/p&gt;
+&lt;p&gt;This decentralized approach means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;You own your content&lt;/strong&gt; - it stays on your site&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;You control your connections&lt;/strong&gt; - add or remove friends anytime&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;You decide what to share&lt;/strong&gt; - choose exactly what content gets shared&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;You maintain privacy&lt;/strong&gt; - regular visitors only see what you create&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Getting Started&lt;/h2&gt;
+&lt;p&gt;Ready to try it out? Visit the &lt;a href=&quot;/friends&quot;&gt;Friends page&lt;/a&gt; when logged in as an administrator to get started. Or check out our detailed &lt;a href=&quot;/posts/friend-content-sharing&quot;&gt;Friend Content Sharing Guide&lt;/a&gt; for a full walkthrough of the features.&lt;/p&gt;
+&lt;p&gt;If you&apos;re a developer interested in the technical details, don&apos;t miss our &lt;a href=&quot;/posts/developers-guide-to-friend-content-sharing&quot;&gt;Developer&apos;s Guide to Friend Content Sharing&lt;/a&gt; for a look behind the scenes.&lt;/p&gt;
+&lt;h2&gt;Join the Network&lt;/h2&gt;
+&lt;p&gt;The Friend Content Sharing feature gets more valuable as more blogs join the network. If you know other blog owners using our platform, encourage them to enable the feature too!&lt;/p&gt;
+&lt;p&gt;I&apos;m excited to see how this feature evolves and how our community of content creators connects through it. If you have any questions or feedback, please share them in the comments below.&lt;/p&gt;
+&lt;p&gt;Happy connecting!&lt;/p&gt;
 </content:encoded></item></channel></rss>
