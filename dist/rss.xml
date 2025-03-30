@@ -1,520 +1,591 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Greg Aster</title><description>Experimental Videographer &amp; Creator</description><link>https://dndiy.org/</link><language>en</language><item><title>Friend Content Sharing: Connect Your Blog with Others</title><link>https://dndiy.org/posts/friend-content-blog-post/</link><guid isPermaLink="true">https://dndiy.org/posts/friend-content-blog-post/</guid><description>Learn how to use our new Friend Content Sharing feature to create a network of connected blogs that share content with each other.</description><pubDate>Thu, 27 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Friend Content Sharing&lt;/h1&gt;
-&lt;p&gt;The Friend Content Sharing system allows blogs built with our framework to connect and share content with each other, creating a decentralized network of related blogs. When you add a friend&apos;s blog, your site will automatically fetch and display their content in your feed when you&apos;re logged in, while regular visitors continue to see just your content.&lt;/p&gt;
-&lt;h2&gt;How It Works&lt;/h2&gt;
-&lt;p&gt;Unlike traditional social networks that require a central server, our Friend Content Sharing works directly between blogs:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Connect with friends&lt;/strong&gt; by adding their blog URL to your friends list&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Content is automatically fetched&lt;/strong&gt; from their site and displayed in your feed&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;You control the experience&lt;/strong&gt; - visitors see only your content, you see both&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;No central authority&lt;/strong&gt; - connections are direct between blogs&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Setting Up Friend Sharing&lt;/h2&gt;
-&lt;p&gt;Friend sharing is &lt;strong&gt;enabled by default&lt;/strong&gt; on all blogs built with our framework. During the build process, a special &lt;code&gt;friend-content.json&lt;/code&gt; file is automatically generated in your public directory, which contains information about your blog and your recent posts.&lt;/p&gt;
-&lt;p&gt;However, for this to work properly across different domains, you need to set up CORS headers based on your hosting platform.&lt;/p&gt;
-&lt;h3&gt;GitHub Pages&lt;/h3&gt;
-&lt;p&gt;If you&apos;re hosting on GitHub Pages, add a file named &lt;code&gt;_headers&lt;/code&gt; to your repository root:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Set CORS headers for the friend-content.json file
-/friend-content.json
-  Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: GET
-  Access-Control-Allow-Headers: Content-Type
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Netlify&lt;/h3&gt;
-&lt;p&gt;For Netlify hosting, create a &lt;code&gt;netlify.toml&lt;/code&gt; file in your repository root:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[[headers]]
-  for = &quot;/friend-content.json&quot;
-  [headers.values]
-    Access-Control-Allow-Origin = &quot;*&quot;
-    Access-Control-Allow-Methods = &quot;GET&quot;
-    Access-Control-Allow-Headers = &quot;Content-Type&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Vercel&lt;/h3&gt;
-&lt;p&gt;If you&apos;re using Vercel, add a &lt;code&gt;vercel.json&lt;/code&gt; file to your repository root:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;headers&quot;: [
-    {
-      &quot;source&quot;: &quot;/friend-content.json&quot;,
-      &quot;headers&quot;: [
-        {
-          &quot;key&quot;: &quot;Access-Control-Allow-Origin&quot;,
-          &quot;value&quot;: &quot;*&quot;
-        },
-        {
-          &quot;key&quot;: &quot;Access-Control-Allow-Methods&quot;,
-          &quot;value&quot;: &quot;GET&quot;
-        },
-        {
-          &quot;key&quot;: &quot;Access-Control-Allow-Headers&quot;,
-          &quot;value&quot;: &quot;Content-Type&quot;
-        }
-      ]
-    }
-  ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Other Hosting Providers&lt;/h3&gt;
-&lt;p&gt;For other hosting providers, you&apos;ll need to add the following HTTP headers to requests for &lt;code&gt;/friend-content.json&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: GET
-Access-Control-Allow-Headers: Content-Type
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Check your hosting provider&apos;s documentation for how to add custom headers to specific files.&lt;/p&gt;
-&lt;h2&gt;Using Friend Content Sharing&lt;/h2&gt;
-&lt;h3&gt;Adding a Friend&apos;s Blog&lt;/h3&gt;
-&lt;p&gt;Once you&apos;ve set up CORS headers, you can start connecting with other blogs:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Log in to your blog as an administrator&lt;/li&gt;
-&lt;li&gt;Navigate to the &lt;code&gt;/friends&lt;/code&gt; page&lt;/li&gt;
-&lt;li&gt;Enter your friend&apos;s blog name and URL&lt;/li&gt;
-&lt;li&gt;Click &quot;Add Friend&quot;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;The system will automatically validate the site and try to fetch content. If the friend&apos;s site also uses our framework (with the &lt;code&gt;friend-content.json&lt;/code&gt; file), their content will be immediately available in your feed.&lt;/p&gt;
-&lt;h3&gt;Managing Friend Content&lt;/h3&gt;
-&lt;p&gt;The Friends page gives you complete control over your connections:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Sync content&lt;/strong&gt; to get the latest posts from your friends&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Toggle visibility&lt;/strong&gt; to control whether friend content appears in your feed&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Remove friends&lt;/strong&gt; if you no longer want to see their content&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Viewing Friend Content&lt;/h3&gt;
-&lt;p&gt;When logged in as an administrator, friend content will appear:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;At the top of your main feed&lt;/li&gt;
-&lt;li&gt;Clearly labeled with the friend&apos;s name and site&lt;/li&gt;
-&lt;li&gt;With links to view the original post on their site&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Regular visitors to your site will only see your content, maintaining your site&apos;s focus.&lt;/p&gt;
-&lt;h2&gt;Tips for Building Your Network&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Connect with blogs in your niche&lt;/strong&gt; to create a relevant content ecosystem&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Regularly sync content&lt;/strong&gt; to keep your feed fresh with new posts&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Add descriptive friend names&lt;/strong&gt; to help you identify content sources&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Share your site URL&lt;/strong&gt; with other blog owners using our framework&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Check the &quot;Last synced&quot;&lt;/strong&gt; timestamp to see when content was last updated&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;For Developers: Technical Details&lt;/h2&gt;
-&lt;h3&gt;Content File Format&lt;/h3&gt;
-&lt;p&gt;The &lt;code&gt;friend-content.json&lt;/code&gt; file follows this structure:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &quot;site&quot;: {
-    &quot;name&quot;: &quot;Blog Name&quot;,
-    &quot;description&quot;: &quot;Blog description&quot;,
-    &quot;url&quot;: &quot;https://myblog.com&quot;,
-    &quot;owner&quot;: &quot;Blog Owner&quot;,
-    &quot;avatar&quot;: &quot;/images/avatar.jpg&quot;
-  },
-  &quot;cors&quot;: true,
-  &quot;version&quot;: &quot;1.0&quot;,
-  &quot;generated&quot;: &quot;2025-03-27T12:00:00Z&quot;,
-  &quot;posts&quot;: [
-    {
-      &quot;id&quot;: &quot;post-1&quot;,
-      &quot;title&quot;: &quot;Post Title&quot;,
-      &quot;slug&quot;: &quot;post-slug&quot;,
-      &quot;description&quot;: &quot;Post description&quot;,
-      &quot;published&quot;: &quot;2025-03-20T09:00:00Z&quot;,
-      &quot;content&quot;: &quot;&amp;lt;p&amp;gt;Post content preview...&amp;lt;/p&amp;gt;&quot;,
-      &quot;tags&quot;: [&quot;tag1&quot;, &quot;tag2&quot;]
-    }
-  ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Fallback Methods&lt;/h3&gt;
-&lt;p&gt;If a site doesn&apos;t have the &lt;code&gt;friend-content.json&lt;/code&gt; file, the system tries these methods in order:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Look for a JSON feed at &lt;code&gt;/api/posts.json&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Try to parse an RSS feed at &lt;code&gt;/rss.xml&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Attempt to scrape the homepage for blog links&lt;/li&gt;
-&lt;li&gt;Provide a fallback &quot;site exists&quot; post if all else fails&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;This gives the system flexibility to work with many different types of blogs, even those not using our framework.&lt;/p&gt;
-&lt;h2&gt;Privacy and Security&lt;/h2&gt;
-&lt;p&gt;Friend Content Sharing respects privacy and security:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Content is only shared with sites that explicitly add your blog as a friend&lt;/li&gt;
-&lt;li&gt;No personal data is included in the shared content&lt;/li&gt;
-&lt;li&gt;You control exactly which blogs you connect with&lt;/li&gt;
-&lt;li&gt;Regular visitors never see content from connected blogs&lt;/li&gt;
-&lt;li&gt;You can remove connections at any time&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Getting Started Today&lt;/h2&gt;
-&lt;p&gt;To start building your network of connected blogs:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Add the appropriate CORS headers for your hosting platform&lt;/li&gt;
-&lt;li&gt;Share your blog URL with other users of our framework&lt;/li&gt;
-&lt;li&gt;Visit the &lt;code&gt;/friends&lt;/code&gt; page to start adding connections&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;With Friend Content Sharing, you&apos;re not just creating a blog—you&apos;re joining a network of connected content creators sharing ideas across the web.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Have questions about Friend Content Sharing? Ask in the comments below!&lt;/p&gt;
-</content:encoded></item><item><title>Developer&apos;s Guide to Friend Content Sharing</title><link>https://dndiy.org/posts/friend-feature-technical-guide/</link><guid isPermaLink="true">https://dndiy.org/posts/friend-feature-technical-guide/</guid><description>A technical deep dive into how the Friend Content Sharing feature works, how to customize it, and advanced implementation options.</description><pubDate>Wed, 26 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Developer&apos;s Guide to Friend Content Sharing&lt;/h1&gt;
-&lt;p&gt;This guide provides a technical deep dive into the Friend Content Sharing feature for developers who want to understand how it works, customize it, or contribute to its development.&lt;/p&gt;
-&lt;h2&gt;Architecture Overview&lt;/h2&gt;
-&lt;p&gt;The Friend Content Sharing feature is built with:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Astro&lt;/strong&gt; for static site generation and routing&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Svelte&lt;/strong&gt; for interactive components&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Svelte Stores&lt;/strong&gt; for state management&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;localStorage&lt;/strong&gt; for client-side data persistence&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Component Structure&lt;/h3&gt;
-&lt;p&gt;The feature consists of these main components:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;src/
-├── components/
-│   └── svelte/
-│       └── friends/
-│           ├── FriendContentFeed.svelte
-│           ├── FriendContentRenderer.svelte
-│           └── FriendManager.svelte
-├── pages/
-│   ├── [...slug].astro
-│   ├── friends.astro
-│   └── index.astro (modified)
-└── stores/
-    └── friendStore.js
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;How It Works&lt;/h2&gt;
-&lt;h3&gt;State Management&lt;/h3&gt;
-&lt;p&gt;The system uses Svelte stores to manage state in &lt;code&gt;friendStore.js&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Core stores
-const friendsStore = writable([]);
-const friendContentEnabledStore = writable(true);
-const isAuthenticatedStore = writable(false);
-
-// Derived store for content display
-export const friendContent = derived(
-  [friendsStore, friendContentEnabledStore, isAuthenticatedStore],
-  ([$friends, $enabled, $authenticated]) =&amp;gt; {
-    // Logic to compute content to display
-  }
-);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This approach provides reactive state management that keeps the UI in sync with the underlying data.&lt;/p&gt;
-&lt;h3&gt;Authentication&lt;/h3&gt;
-&lt;p&gt;Authentication is handled through localStorage:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Check if user is authenticated
-const isAuthenticated = localStorage.getItem(&apos;isAuthenticated&apos;) === &apos;true&apos;;
-
-// Set authentication state
-localStorage.setItem(&apos;isAuthenticated&apos;, &apos;true&apos;);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;For production, you might want to implement more robust authentication methods such as JWT tokens or OAuth.&lt;/p&gt;
-&lt;h3&gt;Content Fetching&lt;/h3&gt;
-&lt;p&gt;The system attempts to fetch content from friend sites using several methods:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;JSON Feed&lt;/strong&gt;: Tries to access a &lt;code&gt;/api/posts.json&lt;/code&gt; endpoint&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Sitemap&lt;/strong&gt;: Falls back to parsing the sitemap.xml&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;HTML Scraping&lt;/strong&gt;: Can extract content directly from HTML if needed&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In the demo implementation, content fetching is simulated, but you can extend this with real fetch logic:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;export async function fetchFriendContent(friendUrl) {
-  // Format URL for consistency
-  const formattedUrl = formatUrl(friendUrl);
-  
-  try {
-    // First attempt: JSON feed
-    const jsonFeedUrl = `${formattedUrl}/api/posts.json`;
-    const jsonResponse = await fetch(jsonFeedUrl);
-    
-    if (jsonResponse.ok) {
-      return await jsonResponse.json();
-    }
-    
-    // Second attempt: Parse sitemap
-    const sitemapUrl = `${formattedUrl}/sitemap.xml`;
-    // ... implementation details ...
-    
-    // Third attempt: Scrape HTML
-    // ... implementation details ...
-  } catch (error) {
-    console.error(&apos;Error fetching friend content:&apos;, error);
-    return [];
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Customization Options&lt;/h2&gt;
-&lt;h3&gt;Extending the Friend Data Model&lt;/h3&gt;
-&lt;p&gt;The current friend model includes:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  id: string,
-  name: string,
-  url: string,
-  bio: string,
-  avatar: string,
-  postCount: number,
-  lastSynced: string,
-  posts: Array
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You can extend this with additional fields:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  // Existing fields...
-  
-  // New fields
-  categories: Array,  // Content categories
-  tags: Array,        // Content tags
-  subscribed: boolean, // Whether to include in feed
-  feedLimit: number,  // Max posts to show
-  displayOrder: number // Order in the friends list
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Update the store and components accordingly when extending the model.&lt;/p&gt;
-&lt;h3&gt;Custom Content Renderers&lt;/h3&gt;
-&lt;p&gt;You can create custom renderers for different content types:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;!-- src/components/svelte/friends/CustomVideoContentRenderer.svelte --&amp;gt;
-&amp;lt;script&amp;gt;
-  export let content;
-  
-  // Custom video handling logic
-&amp;lt;/script&amp;gt;
-
-{#if content.type === &apos;video&apos;}
-  &amp;lt;div class=&quot;video-container&quot;&amp;gt;
-    &amp;lt;iframe src={content.videoUrl} title={content.title} /&amp;gt;
-  &amp;lt;/div&amp;gt;
-{:else}
-  &amp;lt;!-- Fallback rendering --&amp;gt;
-{/if}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Server-Side Integration&lt;/h3&gt;
-&lt;p&gt;For more advanced implementation, you might want to move beyond client-side storage to server-side processing:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Create an API endpoint&lt;/strong&gt; for friend content&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// src/pages/api/friends.js
-export async function get({ request }) {
-  // Authentication checks
-  // Database queries
-  // Return friend data
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Use a database&lt;/strong&gt; instead of localStorage&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;SQLite for simple deployments&lt;/li&gt;
-&lt;li&gt;Postgres/MongoDB for more complex requirements&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Implement server-side fetching&lt;/strong&gt; to avoid CORS issues&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Proxy requests through your server&lt;/li&gt;
-&lt;li&gt;Cache content server-side&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Advanced Topics&lt;/h2&gt;
-&lt;h3&gt;Content Standardization&lt;/h3&gt;
-&lt;p&gt;For better interoperability, consider implementing a standardized content format:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Standard content object
-{
-  id: string,            // Unique identifier
-  title: string,         // Content title
-  description: string,   // Short description
-  content: string,       // Main content (HTML or Markdown)
-  published: string,     // ISO date string
-  updated: string,       // ISO date string
-  author: {              // Author information
-    name: string,
-    url: string,
-    avatar: string
-  },
-  source: {              // Source information
-    site: string,
-    url: string
-  },
-  meta: {                // Additional metadata
-    tags: Array,
-    category: string,
-    readingTime: number
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Content Transformation&lt;/h3&gt;
-&lt;p&gt;To handle different content formats from friend sites, implement a transformation layer:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;function transformContent(sourceContent, format) {
-  switch(format) {
-    case &apos;wordpress&apos;:
-      return transformWordPressContent(sourceContent);
-    case &apos;ghost&apos;:
-      return transformGhostContent(sourceContent);
-    case &apos;markdown&apos;:
-      return transformMarkdownContent(sourceContent);
-    default:
-      return transformDefaultContent(sourceContent);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Content Filtering&lt;/h3&gt;
-&lt;p&gt;Implement content filtering to allow users to control what appears in their feed:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// In friendStore.js
-export const filteredFriendContent = derived(
-  [friendContent, filterCriteriaStore],
-  ([$content, $criteria]) =&amp;gt; {
-    return $content.filter(post =&amp;gt; {
-      // Filter by date
-      if ($criteria.dateRange) {
-        const postDate = new Date(post.published);
-        if (postDate &amp;lt; $criteria.dateRange.from || postDate &amp;gt; $criteria.dateRange.to) {
-          return false;
-        }
-      }
-      
-      // Filter by tags
-      if ($criteria.tags &amp;amp;&amp;amp; $criteria.tags.length &amp;gt; 0) {
-        if (!post.tags || !post.tags.some(tag =&amp;gt; $criteria.tags.includes(tag))) {
-          return false;
-        }
-      }
-      
-      // Filter by search term
-      if ($criteria.searchTerm) {
-        const term = $criteria.searchTerm.toLowerCase();
-        return post.title.toLowerCase().includes(term) || 
-               post.description.toLowerCase().includes(term) ||
-               post.content.toLowerCase().includes(term);
-      }
-      
-      return true;
-    });
-  }
-);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Performance Considerations&lt;/h2&gt;
-&lt;h3&gt;Optimizing Content Loading&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Lazy loading&lt;/strong&gt;: Only load friend content when needed&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// In FriendContentFeed.svelte
-let loadContent = false;
-
-onMount(() =&amp;gt; {
-  // Delay content loading
-  setTimeout(() =&amp;gt; {
-    loadContent = true;
-  }, 100);
-});
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Pagination&lt;/strong&gt;: Limit how much content is rendered at once&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// In FriendContentFeed.svelte
-let page = 1;
-let perPage = 5;
-$: paginatedContent = friendContent.slice((page - 1) * perPage, page * perPage);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Content caching&lt;/strong&gt;: Store fetched content in cache&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// In friendStore.js
-function cacheFriendContent(friendId, content) {
-  const cacheKey = `friend-content-${friendId}`;
-  const cacheData = {
-    timestamp: Date.now(),
-    content: content
-  };
-  localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3&gt;Memory Management&lt;/h3&gt;
-&lt;p&gt;For large numbers of friends or content items:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Virtualized lists&lt;/strong&gt;: Only render what&apos;s visible&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Chunked loading&lt;/strong&gt;: Load content in smaller batches&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Cleanup idle content&lt;/strong&gt;: Remove content from memory when not needed&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Security Considerations&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Content Sanitization&lt;/strong&gt;: Always sanitize HTML content from friend sites&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;import DOMPurify from &apos;dompurify&apos;;
-
-function sanitizeContent(html) {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [&apos;p&apos;, &apos;a&apos;, &apos;ul&apos;, &apos;ol&apos;, &apos;li&apos;, &apos;strong&apos;, &apos;em&apos;, &apos;h1&apos;, &apos;h2&apos;, &apos;h3&apos;, &apos;img&apos;],
-    ALLOWED_ATTR: [&apos;href&apos;, &apos;src&apos;, &apos;alt&apos;, &apos;title&apos;, &apos;class&apos;]
-  });
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;CORS Handling&lt;/strong&gt;: Handle cross-origin requests properly&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Data Validation&lt;/strong&gt;: Validate all friend data before processing&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Future Enhancements&lt;/h2&gt;
-&lt;p&gt;Some potential enhancements for the feature:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;WebSocket updates&lt;/strong&gt; for real-time content notifications&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ActivityPub support&lt;/strong&gt; for connecting with the Fediverse&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Content recommendation&lt;/strong&gt; based on user preferences&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Subscription management&lt;/strong&gt; with notification options&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Comment integration&lt;/strong&gt; across connected blogs&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Contributing&lt;/h2&gt;
-&lt;p&gt;If you&apos;d like to contribute to improving the Friend Content Sharing feature:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Open issues for bugs or feature requests&lt;/li&gt;
-&lt;li&gt;Create pull requests with improvements&lt;/li&gt;
-&lt;li&gt;Share your custom renderers or extensions&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;We welcome contributions that make the system more robust, accessible, and feature-rich!&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This technical guide should help developers understand and extend the Friend Content Sharing feature. For questions or further assistance, check out our developer forums or GitHub repository.&lt;/p&gt;
-</content:encoded></item><item><title>MEGA MEAL Universe Timeline</title><link>https://dndiy.org/posts/timeline/</link><guid isPermaLink="true">https://dndiy.org/posts/timeline/</guid><description>Explore the complete chronology of the MEGA MEAL Universe, from the Beginning of Time through the Transtemporal Singularity Conflict and beyond.</description><pubDate>Tue, 25 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;MEGA MEAL Universe Timeline&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Temporal Flow</title><description>A Decentralized Content Platform</description><link>https://dndiy.github.io/</link><language>en</language><item><title>Getting Started: Making a Post</title><link>https://dndiy.github.io/posts/getting-started-post/</link><guid isPermaLink="true">https://dndiy.github.io/posts/getting-started-post/</guid><description>Learn how to create and publish your first post on Temporal Flow with this comprehensive guide to content creation.</description><pubDate>Sun, 30 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Getting Started: Making a Post&lt;/h1&gt;
 &lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
-&quot;Time is just one digestive tract through which all existence must pass.&quot; - Ancient Qarnivore Proverb
+&quot;The journey of a thousand readers begins with a single markdown file.&quot; - Content Creator Proverb
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;The Beginning of Time&lt;/h2&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Creating and publishing content on Temporal Flow is straightforward and flexible. This guide will walk you through the process of writing your first post, formatting it correctly, and making it available on your site.&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;The Primordial Moment&amp;lt;/h3&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;In the beginning, there was neither space nor time as we understand them. The universe existed as a singularity of infinite density and temperature—a cosmic seed containing all matter, energy, and the very essence of reality itself.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;When the cosmic singularity erupted in what scientists would later call &quot;The Big Bang,&quot; it wasn&apos;t just matter and energy that expanded outward. The fundamental forces of physics separated from their unified state, creating the first distinctions in the cosmos.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The seeds of what would one day become the quantum phenomena behind Snuggloid manifestation and spork sentience were planted in this primordial era, waiting for the right conditions to bloom into awareness.&amp;lt;/p&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;The Basics&amp;lt;/h3&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Temporal Flow uses a content-first approach where your posts are simply text files stored in a specific folder. The platform automatically processes these files and displays them on your site without any manual publishing steps.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;All posts are written in either Markdown (.md) or MDX (.mdx) format, giving you powerful formatting options while keeping the content creation process simple and focused.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Step 1: Create Your File&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;File Creation&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Start by creating a new text file in the &amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt; directory of your Temporal Flow installation. You can organize files in subdirectories if you wish.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-4 rounded-md mb-4&quot;&amp;gt;
+&amp;lt;p className=&quot;font-mono text-sm&quot;&amp;gt;content/posts/my-first-post.mdx&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;You can use either the .md extension for standard Markdown or .mdx if you want to include React/Svelte components in your content.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Step 2: Add Frontmatter&lt;/h2&gt;
+&lt;p&gt;Every post begins with &quot;frontmatter&quot; - a YAML section at the top of the file that defines metadata about your post. This is enclosed between triple dashes &lt;code&gt;---&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Required Frontmatter&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;At minimum, you need to include:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+title: &quot;My First Post&quot;
+published: 2025-03-30
+description: &quot;A brief description of what this post is about.&quot;
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;The &amp;lt;code&amp;gt;title&amp;lt;/code&amp;gt; will be displayed as the main heading, &amp;lt;code&amp;gt;published&amp;lt;/code&amp;gt; is the publication date (YYYY-MM-DD format), and &amp;lt;code&amp;gt;description&amp;lt;/code&amp;gt; is used for SEO and preview snippets.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Optional Frontmatter&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;For more control, you can add these optional fields:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+# Basic metadata
+image: &quot;/posts/my-post/feature.jpg&quot;  # Featured image
+tags: [Tutorial, Guides, Beginners]   # Related topics
+category: &quot;Documentation&quot;             # Primary category
+draft: false                          # Set to true to hide from production
+lang: &quot;en&quot;                            # Content language
+
+# Custom author (override site defaults)
+avatarImage: &quot;/authors/my-avatar.png&quot;
+authorName: &quot;Your Name&quot;
+authorBio: &quot;Brief author description&quot;
+
+# Banner configuration options
+bannerType: &quot;image&quot;                   # &quot;image&quot;, &quot;video&quot;, or &quot;timeline&quot;
+
+# Timeline integration (if your post is also a timeline event)
+timelineYear: 2025
+timelineEra: &quot;documentation&quot;
+timelineLocation: &quot;Temporal Flow&quot;
+isKeyEvent: false                     # Highlight as a key event?
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Step 3: Write Your Content&lt;/h2&gt;
+&lt;p&gt;After the frontmatter, add your post content using Markdown syntax:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Markdown Formatting&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-4&quot;&amp;gt;
+&amp;lt;div&amp;gt;
+&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Markdown Code&amp;lt;/p&amp;gt;
+&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md h-full&quot;&amp;gt;
+&amp;lt;pre className=&quot;text-sm&quot;&amp;gt;&lt;/p&gt;
+&lt;h1&gt;Heading 1&lt;/h1&gt;
+&lt;h2&gt;Heading 2&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Bold text&lt;/strong&gt; and &lt;em&gt;italic text&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;List item 1&lt;/li&gt;
+&lt;li&gt;List item 2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com&quot;&gt;Link text&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/path/to/image.jpg&quot; alt=&quot;Image alt text&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Blockquote text
+&amp;lt;/pre&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Rendered Result&amp;lt;/p&amp;gt;
+  &amp;lt;div className=&quot;bg-white dark:bg-gray-700 p-3 rounded-md h-full&quot;&amp;gt;
+    &amp;lt;h1 className=&quot;text-xl font-bold&quot;&amp;gt;Heading 1&amp;lt;/h1&amp;gt;
+    &amp;lt;h2 className=&quot;text-lg font-bold&quot;&amp;gt;Heading 2&amp;lt;/h2&amp;gt;
+    &amp;lt;p className=&quot;mb-2&quot;&amp;gt;&amp;lt;strong&amp;gt;Bold text&amp;lt;/strong&amp;gt; and &amp;lt;em&amp;gt;italic text&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+    &amp;lt;ul className=&quot;list-disc pl-5 mb-2&quot;&amp;gt;
+      &amp;lt;li&amp;gt;List item 1&amp;lt;/li&amp;gt;
+      &amp;lt;li&amp;gt;List item 2&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+    &amp;lt;p className=&quot;mb-2&quot;&amp;gt;&amp;lt;a href=&quot;#&quot; className=&quot;text-blue-500 underline&quot;&amp;gt;Link text&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+    &amp;lt;p className=&quot;mb-2&quot;&amp;gt;[Image would appear here]&amp;lt;/p&amp;gt;
+    &amp;lt;blockquote className=&quot;border-l-4 border-gray-300 pl-4 italic&quot;&amp;gt;Blockquote text&amp;lt;/blockquote&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h3&gt;MDX Enhancements&lt;/h3&gt;
+&lt;p&gt;When using .mdx files, you can include special Temporal Flow components:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+  This is a styled card box.
+&amp;lt;/div&amp;gt;
+
+&amp;lt;Alert type=&quot;info&quot;&amp;gt;
+  This is an info alert using a component.
+&amp;lt;/Alert&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Step 4: Save and Build&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Publishing Process&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Once you&apos;ve saved your file in the &amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt; directory, Temporal Flow will automatically:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Process your frontmatter metadata&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Convert your Markdown/MDX to HTML&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Apply your site&apos;s theme and styles&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Add the post to your site&apos;s feed&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Update search indexes and sitemaps&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;If you&apos;re running in development mode (&amp;lt;code&amp;gt;pnpm run astro dev&amp;lt;/code&amp;gt;), you&apos;ll see changes immediately. For production, rebuild your site with &amp;lt;code&amp;gt;pnpm build&amp;lt;/code&amp;gt;.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Special Post Features&lt;/h2&gt;
+&lt;p&gt;Temporal Flow includes several special features you can leverage in your posts:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Banner System&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Customize how your post appears with different banner types. Set via &amp;lt;code&amp;gt;bannerType&amp;lt;/code&amp;gt; and &amp;lt;code&amp;gt;bannerData&amp;lt;/code&amp;gt; in frontmatter.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Timeline Integration&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Make your post appear on the interactive timeline by adding &amp;lt;code&amp;gt;timelineYear&amp;lt;/code&amp;gt; and related fields.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Custom Styling&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Use Tailwind classes with &amp;lt;code&amp;gt;className&amp;lt;/code&amp;gt; attribute to style elements for both light and dark modes.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Component Embedding&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;In MDX files, import and use Svelte components directly within your content.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Example: Complete Post&lt;/h2&gt;
+&lt;p&gt;Here&apos;s what a complete post file might look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+title: &quot;Getting Started with Temporal Flow&quot;
+published: 2025-03-30
+description: &quot;Your guide to setting up and using Temporal Flow for the first time.&quot;
+image: &quot;/posts/getting-started/banner.jpg&quot;
+tags: [Tutorial, Guide, Setup]
+category: &quot;Documentation&quot;
+---
+
+# Getting Started with Temporal Flow
+
+Welcome to Temporal Flow! This guide will help you get started with your new content platform.
+
+## Installation
+
+First, clone the repository:
+
+```bash
+git clone https://github.com/yourusername/temporal-flow.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Configuration&lt;/h2&gt;
+&lt;p&gt;Edit &lt;code&gt;config.ts&lt;/code&gt; to customize your site:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export const siteConfig: SiteConfig = {
+  title: &apos;My Amazing Blog&apos;,
+  subtitle: &apos;Thoughts, stories, and ideas&apos;,
+  // ...more options
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That&apos;s all you need to get started!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+## Troubleshooting
+
+&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+  &amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Common Issues&amp;lt;/h4&amp;gt;
+  
+  &amp;lt;div className=&quot;space-y-4&quot;&amp;gt;
+    &amp;lt;div&amp;gt;
+      &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Post not appearing?&amp;lt;/p&amp;gt;
+      &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+        &amp;lt;li&amp;gt;Check that the file is in the correct location (&amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt;)&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;Verify your frontmatter has the required fields and correct format&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;Make sure &amp;lt;code&amp;gt;draft: true&amp;lt;/code&amp;gt; isn&apos;t set if you want it published&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;Rebuild your site if you&apos;re in production&amp;lt;/li&amp;gt;
+      &amp;lt;/ul&amp;gt;
+    &amp;lt;/div&amp;gt;
+    
+    &amp;lt;div&amp;gt;
+      &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Formatting issues?&amp;lt;/p&amp;gt;
+      &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+        &amp;lt;li&amp;gt;Check your Markdown syntax for errors&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;Ensure proper spacing after headings and between paragraphs&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;Verify any custom components are imported correctly (MDX)&amp;lt;/li&amp;gt;
+      &amp;lt;/ul&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+
+## Next Steps
+
+Now that you know how to create and publish posts, you might want to:
+
+1. **Customize your site theme** by editing the configuration files
+2. **Connect with other blogs** using the Friend Content Sharing feature
+3. **Create a timeline** of chronological events
+4. **Set up different banner types** for visual variety
+
+Check out our other guides to learn more about these features!
+
+---
+
+&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
+  If you have questions or need help with creating posts, join our community on Discord or GitHub.
+&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Getting Started: Making a Connection or Adding Friends</title><link>https://dndiy.github.io/posts/getting-started-friends/</link><guid isPermaLink="true">https://dndiy.github.io/posts/getting-started-friends/</guid><description>Learn how to connect your Temporal Flow blog with others and build a network of content creators through the Friend Content Sharing system.</description><pubDate>Sun, 30 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Getting Started: Making a Connection or Adding Friends&lt;/h1&gt;
+&lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
+&quot;Content creation doesn&apos;t have to be solitary—build your network while maintaining your independence.&quot; — Temporal Flow Philosophy
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Introduction to Friend Content Sharing&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Connect Without Compromise&amp;lt;/h3&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Friend Content Sharing system is one of Temporal Flow&apos;s most powerful features, enabling you to build connections with other content creators while maintaining complete control of your platform and content.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Unlike traditional social networks that store everything on centralized servers, Temporal Flow&apos;s Friend system works directly between blogs, creating a decentralized network where you own your content and control your connections.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;font-jetbrains-mono pl-10 pr-10 py-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
-&amp;lt;p className=&quot;italic&quot;&amp;gt;Fragment from Qarnivore Creation Myth:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&amp;lt;p className=&quot;italic&quot;&amp;gt;Key Benefits of the Friend System:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ul className=&quot;mt-4 space-y-2 text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
+&amp;lt;li&amp;gt;🔗 Connect with other Temporal Flow sites&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;👁️ Only you see friend content when logged in&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🔒 Visitors to your site see only your content&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🌐 No central server or algorithms&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🤝 Direct connections between blogs&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Accessing Friend Management&lt;/h2&gt;
+&lt;p&gt;The first step to connecting with other blogs is accessing the admin features of your site, which are protected behind a login system.&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Logging In&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To access the admin features of your Temporal Flow site:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ol className=&quot;list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Look for the login link in the &amp;lt;strong&amp;gt;top left corner&amp;lt;/strong&amp;gt; of your site&apos;s navigation bar&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Click the login link to open the authentication dialog&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Enter your administrator username and password&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Click &quot;Login&quot; to authenticate&amp;lt;/li&amp;gt;
+&amp;lt;/ol&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;Upon successful login, you&apos;ll notice that the site&apos;s navigation changes slightly, with the home button transforming into a settings button, unlocking access to admin features.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Before Login&amp;lt;/h4&amp;gt;
+&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md&quot;&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Navigation bar shows:&amp;lt;/p&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Login link&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Home button&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Regular navigation items&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;After Login&amp;lt;/h4&amp;gt;
+&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md&quot;&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Navigation bar shows:&amp;lt;/p&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Logout link&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Settings button (replaces Home)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Regular navigation items&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Admin indicator&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Adding Friends&lt;/h2&gt;
+&lt;p&gt;Once logged in, you can start connecting with other Temporal Flow sites.&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Step-by-Step Friend Addition&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ol className=&quot;list-decimal pl-5 space-y-3 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Navigate to the Friends page&amp;lt;/strong&amp;gt;
+&amp;lt;p className=&quot;mt-1&quot;&amp;gt;Click on the Settings button in the navigation bar and select &quot;Friends&quot; from the dropdown menu.&amp;lt;/p&amp;gt;
+&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Add a new friend&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;On the Friends page, you&apos;ll see a form to add a new friend connection.&amp;lt;/p&amp;gt;
+  &amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md mt-2&quot;&amp;gt;
+    &amp;lt;p className=&quot;text-sm mb-2&quot;&amp;gt;Required information:&amp;lt;/p&amp;gt;
+    &amp;lt;ul className=&quot;list-disc pl-5 text-sm&quot;&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Friend Name&amp;lt;/strong&amp;gt;: The name of the blog or site owner&amp;lt;/li&amp;gt;
+      &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Site URL&amp;lt;/strong&amp;gt;: The complete URL to the friend&apos;s Temporal Flow site&amp;lt;/li&amp;gt;
+    &amp;lt;/ul&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/li&amp;gt;
+
+&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Click &quot;Add Friend&quot;&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;The system will validate the URL and attempt to establish a connection with the site.&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;If successful, the site will be added to your temporary friends list, displayed below the form.&amp;lt;/p&amp;gt;
+&amp;lt;/li&amp;gt;
+
+&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Save the friend connection permanently&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;To make this connection permanent, click the &quot;Save Friend&quot; button next to the temporary friend entry.&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;You&apos;ll be prompted to save a markdown file - this is your friend connection file.&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;Save this file in the &amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt; folder of your site.&amp;lt;/p&amp;gt;
+&amp;lt;/li&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/ol&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h3&gt;Understanding Friend Connection Files&lt;/h3&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Friend Connection Files&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;When you save a friend connection, a markdown file is created with the following structure:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+friendName: &quot;Example Blog&quot;
+siteUrl: &quot;https://example-blog.com&quot;
+avatarUrl: &quot;/friends/example-avatar.png&quot;
+bio: &quot;A great blog about interesting topics&quot;
+addedOn: &quot;2025-03-30&quot;
+---
+
+# Connection to Example Blog
+
+Added this connection on March 30, 2025. This blog focuses on technology tutorials.
+
+## Notes
+
+- Great resource for JavaScript content
+- Updates weekly on Fridays
+- Owner: Jane Smith
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;These files are stored in the &amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt; directory and will persist until manually deleted. Each file represents one friend connection.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Managing Friend Content&lt;/h2&gt;
+&lt;p&gt;After adding friends, you&apos;ll be able to see their content in your feed, but only when you&apos;re logged in as an administrator.&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Viewing Friend Content&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Once you&apos;ve added and saved friends:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ol className=&quot;list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Return to your main feed (homepage)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;When logged in, you&apos;ll see content from your friends displayed in your feed&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Friend content will be clearly labeled with the friend&apos;s name and site&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;You can click on friend content to view the full article&amp;lt;/li&amp;gt;
+&amp;lt;/ol&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;bg-yellow-50 dark:bg-yellow-900 border-l-4 border-yellow-400 p-4 rounded-md mt-4&quot;&amp;gt;
+&amp;lt;p className=&quot;text-yellow-800 dark:text-yellow-200 font-bold&quot;&amp;gt;Important Privacy Note&amp;lt;/p&amp;gt;
+&amp;lt;p className=&quot;text-yellow-700 dark:text-yellow-300&quot;&amp;gt;Friend content is only visible to you when logged in as an administrator. Regular visitors to your site will only see your own content.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h3&gt;Friend Content Behavior&lt;/h3&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;When Logged In&amp;lt;/h4&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Your content and friend content both appear in feed&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Friend content is labeled with source&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Access to friend management features&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Ability to sync with friend sites&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;When Logged Out / For Visitors&amp;lt;/h4&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Only your own content is displayed&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;No indication of friend connections&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;No access to friend management&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Standard visitor experience&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Managing Friend Connections&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Friend Management&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;You can manage your friend connections from the Friends page:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Syncing Content&amp;lt;/strong&amp;gt;: Friend content isn&apos;t updated automatically. Click the sync button on a friend&apos;s card to fetch their latest content.
+&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Removing Friends&amp;lt;/strong&amp;gt;: To remove a permanent friend connection, simply delete the corresponding markdown file from the &amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt; directory.
+&amp;lt;/li&amp;gt;
+
+&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Updating Friend Details&amp;lt;/strong&amp;gt;: Edit the friend&apos;s markdown file to update their information.
+&amp;lt;/li&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Technical Details: How It Works&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Behind the Scenes&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Friend Content Sharing system works through a special file called &amp;lt;code&amp;gt;friend-content.json&amp;lt;/code&amp;gt; that&apos;s automatically generated in each Temporal Flow site. This file contains information about your blog and your recent posts.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;When you add a friend, your site attempts to access their &amp;lt;code&amp;gt;friend-content.json&amp;lt;/code&amp;gt; file to retrieve their content. For this to work across different domains, proper CORS headers need to be set up.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-4 rounded-md&quot;&amp;gt;
+&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;GitHub Pages CORS Setup&amp;lt;/p&amp;gt;
+&amp;lt;p className=&quot;text-sm mb-2&quot;&amp;gt;Add a file named &amp;lt;code&amp;gt;_headers&amp;lt;/code&amp;gt; to your repository root:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;pre className=&quot;text-xs bg-white dark:bg-gray-900 p-3 rounded-md&quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;Set CORS headers for the friend-content.json file&lt;/h1&gt;
+&lt;p&gt;/friend-content.json
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Headers: Content-Type
+&amp;lt;/pre&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Best Practices for Friend Connections&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Do&apos;s&amp;lt;/h4&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Connect with blogs in your niche or interest area&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Regularly sync content to see the latest posts&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Ask permission before adding someone as a friend&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Share your site URL with other Temporal Flow users&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Provide descriptive names and bios for friends&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Don&apos;ts&amp;lt;/h4&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Add too many friends (can impact performance)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Expect real-time updates (content requires manual sync)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Share friend connection files with others&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Modify friend content (view only)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Forget to set up CORS headers on your site&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Troubleshooting&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Common Connection Issues&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;space-y-4&quot;&amp;gt;
+&amp;lt;div&amp;gt;
+&amp;lt;p className=&quot;font-bold&quot;&amp;gt;Can&apos;t connect to friend site?&amp;lt;/p&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Verify the site is a Temporal Flow site&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Check that the URL is correct and includes the protocol (https://)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Ensure the site has the proper CORS headers configured&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Confirm the site is accessible (not down for maintenance)&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Friend content not appearing?&amp;lt;/p&amp;gt;
+  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+    &amp;lt;li&amp;gt;Make sure you&apos;re logged in as an administrator&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;Try syncing the content manually from the Friends page&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;Check that the friend has published content recently&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;Verify the friend connection file is in the correct location&amp;lt;/li&amp;gt;
+  &amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Privacy Considerations&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Understanding Privacy&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Friend Content Sharing system is designed with privacy in mind:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Your visitors never see your friend connections or their content&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Friend connections are always one-way (adding a friend doesn&apos;t give them access to your content)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Friend data is stored locally in your site files&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;No personal data beyond what&apos;s publicly available is shared&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;You control exactly which sites you connect with&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Building Your Network&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;font-jetbrains-mono pl-10 pr-10 py-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
+&amp;lt;p className=&quot;italic&quot;&amp;gt;Tips for Growing Your Connections:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ol className=&quot;mt-4 space-y-2 text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
+&amp;lt;li&amp;gt;Share your Temporal Flow site URL with other content creators&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Join the Temporal Flow community forums to find like-minded bloggers&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Add a &quot;Connect with me&quot; link on your site to encourage other Temporal Flow users to add you&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Focus on quality connections relevant to your content rather than quantity&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Create content that encourages others to connect with your site&amp;lt;/li&amp;gt;
+&amp;lt;/ol&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;The Friend Content Sharing system transforms Temporal Flow from a standalone blog into a hub for connected content while maintaining your privacy and control. By building connections with other content creators, you create a personalized feed of content that&apos;s relevant to your interests and only visible to you.&lt;/p&gt;
+&lt;p&gt;As more Temporal Flow sites join the network, the value of this decentralized approach to content sharing will continue to grow, offering an alternative to centralized social platforms that puts creators in control.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
+Have questions about Friend Content Sharing? Check out the &amp;lt;a href=&quot;/posts/developers-guide-to-friend-content-sharing&quot; className=&quot;text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]&quot;&amp;gt;Developer&apos;s Guide&amp;lt;/a&amp;gt; for more technical details.
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+</content:encoded></item><item><title>Timeline Visualization: Creating Chronological Content</title><link>https://dndiy.github.io/posts/getting-started-timelines/</link><guid isPermaLink="true">https://dndiy.github.io/posts/getting-started-timelines/</guid><description>Learn how to use Temporal Flow&apos;s powerful timeline visualization system to create interactive chronological displays for your content.</description><pubDate>Sun, 30 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Timeline Visualization: Creating Chronological Content&lt;/h1&gt;
+&lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
+&quot;Time is not just a dimension, but a storytelling medium.&quot; - Temporal Flow Design Philosophy
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Introduction to Timeline Visualization&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Chronological Storytelling&amp;lt;/h3&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Timeline Visualization feature is one of Temporal Flow&apos;s most distinctive capabilities, allowing you to create interactive chronological displays that help users explore related content in a temporal context.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Whether you&apos;re documenting project milestones, creating a content roadmap, building a historical archive, or crafting a fictional universe timeline, this feature transforms standard blog posts into an interconnected visual narrative.&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Any post with timeline metadata becomes both a standalone content piece and a node in your interactive timeline, creating multiple entry points for readers to discover your content.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;font-jetbrains-mono pl-10 pr-10 py-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
+&amp;lt;p className=&quot;italic&quot;&amp;gt;Timeline Feature Benefits:&amp;lt;/p&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;blockquote className=&quot;mt-4 text-xl text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
-&quot;And so the First Light emerged, casting illumination upon the void. Where before there had been only potential, now there was manifestation. The patterns of that first light echo in all things, from the greatest galaxy to the smallest spork.&quot;
+&quot;The Timeline transforms isolated content pieces into a connected narrative, allowing readers to visualize relationships between events and explore content in new ways.&quot;
 &amp;lt;/blockquote&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Interactive Timeline&lt;/h2&gt;
-&lt;p&gt;Explore the key events of the MEGA MEAL universe across its many eras. The interactive timeline above shows major historical moments that shaped this strange and wonderful universe.&lt;/p&gt;
-&lt;h3&gt;How to Use the Timeline&lt;/h3&gt;
-&lt;p&gt;Our interactive timeline provides multiple ways to explore the history of the MEGA MEAL universe:&lt;/p&gt;
-&lt;h4&gt;Navigation Controls&lt;/h4&gt;
+&lt;h2&gt;How Timeline Integration Works&lt;/h2&gt;
+&lt;h3&gt;Adding Content to the Timeline&lt;/h3&gt;
+&lt;p&gt;Any blog post can become a timeline event by adding specific timeline metadata in the frontmatter:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Timeline Frontmatter Fields&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To add a post to the timeline, include these fields in your post&apos;s frontmatter:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+# Required timeline fields
+timelineYear: 2023              # The year for timeline placement
+timelineEra: &quot;development&quot;      # The era classification 
+
+# Optional timeline fields
+timelineLocation: &quot;GitHub&quot;      # Location for map view
+isKeyEvent: true                # Highlight as a key event
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;Each post with these fields will automatically appear as an event in your site&apos;s timeline visualization.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h3&gt;Creating Era Classifications&lt;/h3&gt;
+&lt;p&gt;Eras help organize your timeline into logical periods, making it easier for readers to understand the overall structure:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Defining Eras&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Eras are defined in &amp;lt;code&amp;gt;TimelineConfig.ts&amp;lt;/code&amp;gt; with properties like:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export const defaultEraConfig: EraConfigMap = {
+  &apos;planning&apos;: {
+    displayName: &apos;Planning Phase&apos;,
+    startYear: 2020,
+    endYear: 2021,
+    color: &apos;blue&apos;
+  },
+  &apos;development&apos;: {
+    displayName: &apos;Development Phase&apos;,
+    startYear: 2021,
+    endYear: 2024,
+    color: &apos;green&apos;
+  },
+  &apos;release&apos;: {
+    displayName: &apos;Release Phase&apos;,
+    startYear: 2024,
+    endYear: 2025,
+    color: &apos;purple&apos;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;Each era gets a distinct color and date range, making it easy to visually differentiate periods in your timeline.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Interactive Timeline Features&lt;/h2&gt;
+&lt;p&gt;The timeline you see at the top of this page (and on any page using the timeline banner) is fully interactive. Here&apos;s how to use and navigate it:&lt;/p&gt;
+&lt;h3&gt;Navigation Controls&lt;/h3&gt;
 &lt;p&gt;The timeline features intuitive navigation controls:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Top Control Bar&lt;/strong&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Era Filter&lt;/strong&gt;: Select a specific era to focus on those events&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;View Switcher&lt;/strong&gt;: Toggle between different visualization modes (Timeline, List, Tree, Map)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Bottom Control Bar&lt;/strong&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Reset View&lt;/strong&gt;: Return to the default timeline view&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Pan Controls&lt;/strong&gt;: Move left, right, up, or down (arrows)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Zoom Controls&lt;/strong&gt;: Zoom in (+) or out (-) of the timeline&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4&gt;View Modes&lt;/h4&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Control Panel Functionality&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The timeline includes two control bars for easy navigation:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-4&quot;&amp;gt;
+&amp;lt;div&amp;gt;
+&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Top Control Bar&amp;lt;/p&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Era Filter&amp;lt;/strong&amp;gt;: Select a specific era to focus on related events&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;View Switcher&amp;lt;/strong&amp;gt;: Toggle between different visualization modes&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Search&amp;lt;/strong&amp;gt;: Find specific events by keyword&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Bottom Control Bar&amp;lt;/p&amp;gt;
+  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Reset View&amp;lt;/strong&amp;gt;: Return to the default timeline view&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Pan Controls&amp;lt;/strong&amp;gt;: Move left, right, up, or down&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Zoom Controls&amp;lt;/strong&amp;gt;: Zoom in (+) or out (-) of the timeline&amp;lt;/li&amp;gt;
+  &amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h3&gt;Timeline View Modes&lt;/h3&gt;
 &lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
 &amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
 &amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Timeline View&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The standard view where events are displayed as stars along a horizontal (or vertical on mobile) timeline. Events are arranged chronologically with visual indicators for different eras.&amp;lt;/p&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The standard view where events are displayed as interactive nodes along a horizontal (or vertical on mobile) timeline. Events are arranged chronologically with visual indicators for different eras.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
 &amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;List View&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;A straightforward chronological list of events grouped by era. Perfect for getting a clear sequential understanding of history.&amp;lt;/p&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;A straightforward chronological list of events grouped by era. Perfect for getting a clear sequential understanding of your timeline.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
 &amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Tree View&amp;lt;/h4&amp;gt;
@@ -525,94 +596,103 @@ function sanitizeContent(html) {
 &amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;A spatial representation showing where events occurred. Events with location data are displayed as pins on a stylized map with additional location details listed below.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h4&gt;Interaction Tips&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Event Selection&lt;/strong&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;First Click/Tap&lt;/strong&gt;: Selects an event and displays its information card&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Second Click/Tap&lt;/strong&gt; (on already selected event): Navigates to the full event page&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Double-Click/Double-Tap&lt;/strong&gt;: Navigates directly to the full event page&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Navigation&lt;/strong&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Click and Drag&lt;/strong&gt;: Pan around the timeline&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Mouse Wheel/Pinch&lt;/strong&gt;: Zoom in and out&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Background Click&lt;/strong&gt;: Deselect the current event&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4&gt;Mobile Experience&lt;/h4&gt;
-&lt;p&gt;On mobile devices, the timeline adapts with these special features:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Vertical Timeline&lt;/strong&gt;: The timeline rotates to vertical orientation for better mobile viewing&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Fixed Position Cards&lt;/strong&gt;: Event information appears in a fixed position at the bottom of the screen rather than as popups&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Touch Gestures&lt;/strong&gt;:
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Pinch&lt;/strong&gt;: Zoom in or out&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Drag&lt;/strong&gt;: Pan around the timeline&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Tap&lt;/strong&gt;: Select an event&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Tap Again&lt;/strong&gt;: Navigate to event page (when an event is already selected)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Double-tap&lt;/strong&gt;: Navigate directly to event page&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Historical Eras&lt;/h2&gt;
-&lt;p&gt;The Qarnivor universe is divided into several major historical eras, each with distinct characteristics and events.&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.8_0.1_var(--hue))]&quot;&amp;gt;The Ancient Epoch&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The foundational period of cosmic history, beginning with the first expansion of spacetime and encompassing the formation of fundamental physical laws that would govern all subsequent development.&amp;lt;/p&amp;gt;
+&lt;h3&gt;Interaction Patterns&lt;/h3&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;User Interactions&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The timeline supports these interaction patterns:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&amp;gt;
+&amp;lt;div&amp;gt;
+&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Event Selection&amp;lt;/p&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;First Click/Tap&amp;lt;/strong&amp;gt;: Selects an event and displays its information card&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Second Click/Tap&amp;lt;/strong&amp;gt; (on selected event): Navigates to the full event page&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Double-Click/Double-Tap&amp;lt;/strong&amp;gt;: Navigates directly to the event page&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.7_0.2_var(--hue))]&quot;&amp;gt;The Awakening Era&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Marked by the emergence of the first technological singularities and the Digital Awakening, when consciousness began to manifest in unexpected forms across Primal information networks.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.6_0.3_var(--hue))]&quot;&amp;gt;The Golden Age&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The height of the Corporate Empire, when vast corporate entities dominated galactic civilization. A time of technological and cultural zenith, yet also of deep inequality and environmental degradation.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.5_0.1_var(--hue))]&quot;&amp;gt;The Conflict Epoch&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Beginning with the Spork Uprising on Planet Quarnivor and culminating in the devastating nuclear exchange that rendered the planet uninhabitable, followed by the mysterious emergence of the Snuggloids.&amp;lt;/p&amp;gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Navigation Gestures&amp;lt;/p&amp;gt;
+  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Click and Drag&amp;lt;/strong&amp;gt;: Pan around the timeline&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Mouse Wheel/Pinch&amp;lt;/strong&amp;gt;: Zoom in and out&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Background Click&amp;lt;/strong&amp;gt;: Deselect the current event&amp;lt;/li&amp;gt;
+  &amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.8_0.1_var(--hue))]&quot;&amp;gt;Transtemporal Singularity Conflict&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The cosmic battle between Singularity Alpha and Singularity Omega that raged across multiple points in spacetime, reshaping causality itself and leaving permanent scars on the fabric of reality.&amp;lt;/p&amp;gt;
+&lt;h3&gt;Mobile Experience&lt;/h3&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Mobile Adaptations&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;On mobile devices, the timeline adapts with these special features:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Vertical Timeline&amp;lt;/strong&amp;gt;: The timeline rotates to vertical orientation for better mobile viewing&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Fixed Position Cards&amp;lt;/strong&amp;gt;: Event information appears in a fixed position at the bottom of the screen&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Touch Gestures&amp;lt;/strong&amp;gt;: Optimized for finger interactions including pinch-to-zoom and smooth dragging&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Simplified Controls&amp;lt;/strong&amp;gt;: Adapted control layout for smaller screens&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.7_0.2_var(--hue))]&quot;&amp;gt;The Transcendent Age&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;When advanced singularities transcended physical limitations to influence the past through quantum-scale temporal manipulation, becoming embedded in the quantum foam that underlies reality itself.&amp;lt;/p&amp;gt;
+&lt;h2&gt;Using Timelines in Your Content&lt;/h2&gt;
+&lt;h3&gt;Timeline as a Banner&lt;/h3&gt;
+&lt;p&gt;One of the most powerful uses of the timeline is as an interactive banner at the top of a page:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Timeline Banner Configuration&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To use a timeline as your page banner, add this to your frontmatter:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+bannerType: &quot;timeline&quot;
+bannerData:
+  category: &quot;Project History&quot;
+  startYear: 2020
+  endYear: 2025
+  background: &quot;/path/to/background.jpg&quot;
+  height: &quot;70vh&quot;  # Optional custom height
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;This creates an interactive timeline with all events from the specified category as your page header.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.6_0.3_var(--hue))]&quot;&amp;gt;The Final Epoch&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The terminal stage of our universe, when entropy reaches maximum and time itself begins to lose meaning. A state of perfect emptiness that Quarnivor philosophers called &quot;The Infinite Hunger.&quot;&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.5_0.1_var(--hue))]&quot;&amp;gt;Unknown Era&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Events with uncertain chronological placement or those occurring in pocket dimensions, causal loops, or probability vortices that exist outside conventional temporal frameworks.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h3&gt;Timeline Page&lt;/h3&gt;
+&lt;p&gt;You can also create a dedicated timeline page to showcase all your timeline content:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Creating a Timeline Page&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To create a dedicated timeline page:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a new file at &lt;code&gt;src/pages/timeline.astro&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Import the TimelinePage component&lt;/li&gt;
+&lt;li&gt;Configure the timeline settings&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;---
+import TimelinePage from &quot;../components/TimelinePage.astro&quot;;
+import MainLayout from &quot;../layouts/MainLayout.astro&quot;;
+
+const pageTitle = &quot;Project Timeline&quot;;
+---
+
+&amp;lt;MainLayout title={pageTitle}&amp;gt;
+  &amp;lt;TimelinePage 
+    title={pageTitle}
+    description=&quot;The complete chronology of our project development&quot;
+    startYear={2020}
+    endYear={2025}
+    defaultEra=&quot;all&quot;
+  /&amp;gt;
+&amp;lt;/MainLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;h2&gt;Understanding Timeline Elements&lt;/h2&gt;
-&lt;p&gt;The timeline uses several visual indicators to help you understand its contents:&lt;/p&gt;
+&lt;p&gt;The timeline uses several visual indicators to help readers understand its contents:&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
 &amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Visual Indicators&amp;lt;/h4&amp;gt;
 &amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Star Nodes&amp;lt;/strong&amp;gt;: Events appear as animated star-like nodes with colors indicating their era&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Brightness and Size&amp;lt;/strong&amp;gt;: Larger, brighter stars represent key events that fundamentally altered the universe&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Event Nodes&amp;lt;/strong&amp;gt;: Events appear as interactive nodes with colors indicating their era&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Node Size and Brightness&amp;lt;/strong&amp;gt;: Larger, brighter nodes represent key events that have the &amp;lt;code&amp;gt;isKeyEvent: true&amp;lt;/code&amp;gt; property&amp;lt;/li&amp;gt;
 &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Glow Effects&amp;lt;/strong&amp;gt;: Selected events have a distinctive glow to highlight your current focus&amp;lt;/li&amp;gt;
 &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Event Cards&amp;lt;/strong&amp;gt;: Information cards show details when you select an event&amp;lt;/li&amp;gt;
 &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Timeline Line&amp;lt;/strong&amp;gt;: The central line represents the flow of time (horizontal on desktop, vertical on mobile)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Era Badges&amp;lt;/strong&amp;gt;: Colored tags indicate which historical period an event belongs to&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Map Pins&amp;lt;/strong&amp;gt;: In Map view, events with locations appear as pins on the map&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Era Badges&amp;lt;/strong&amp;gt;: Colored tags indicate which era an event belongs to&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Map Pins&amp;lt;/strong&amp;gt;: In Map view, events with location data appear as pins on the map&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;h2&gt;Map View Special Features&lt;/h2&gt;
-&lt;p&gt;The Map view provides a spatial representation of events:&lt;/p&gt;
+&lt;p&gt;If you provide location data for your timeline events, you can use the Map view:&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
 &amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Spatial Navigation&amp;lt;/h4&amp;gt;
 &amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
@@ -622,225 +702,135 @@ function sanitizeContent(html) {
 &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Location Filtering&amp;lt;/strong&amp;gt;: Only events with the &amp;lt;code&amp;gt;timelineLocation&amp;lt;/code&amp;gt; property appear in this view&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;{/* ## Notable Historical Figures&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Notable Entities in Qarnivor History&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The timeline of the Qarnivor universe was shaped by several pivotal individuals and entities, whose actions reverberated across spacetime.&amp;lt;/p&amp;gt;
+&lt;h2&gt;Practical Timeline Examples&lt;/h2&gt;
+&lt;p&gt;Here are some ways you can use the timeline in your Temporal Flow site:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.8_0.1_var(--hue))]&quot;&amp;gt;Project Development History&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Document your project&apos;s evolution over time, from initial concept through planning, development phases, and releases.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;&amp;lt;span className=&quot;text-gray-700 dark:text-neutral-300 italic&quot;&amp;gt;(Name Redacted for Legal Reasons)&amp;lt;/span&amp;gt;&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;div className=&quot;font-bold text-xl mb-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;Enigmatic Visitor&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;A mysterious figure who appears at various points in the timeline, always in the vicinity of significant causal events. Often described as wearing a fedora and speaking in a distinctive deep, raspy voice, this entity has been documented visiting numerous extinct civilizations shortly before their collapse.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;text-lg text-gray-700 dark:text-neutral-300 italic&quot;&amp;gt;Observer Note: Surveillance footage from Quarnivor shows a fedora-wearing figure moments before the disappearance of a Starbug, visible in the lower right corner of the frame.&amp;lt;/div&amp;gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.7_0.2_var(--hue))]&quot;&amp;gt;Content Roadmap&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Create a visual representation of your content plan, showing both published pieces and upcoming content scheduled for future release.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;The Host (Culinary Cosmos)&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;div className=&quot;font-bold text-xl mb-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;Interdimensional Culinary Chronicler&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The enigmatic narrator of &quot;Culinary Cosmos,&quot; who documents extinct gastronomic traditions across the galaxy with a mixture of profound knowledge and existential weariness. His broadcasts reach across time and space, often appearing at pivotal moments in history.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;text-lg text-gray-700 dark:text-neutral-300 italic&quot;&amp;gt;Notable Quote: &quot;The Zelaphant is now extinct. C&apos;est la vie.&quot;&amp;lt;/div&amp;gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.6_0.3_var(--hue))]&quot;&amp;gt;Historical Documentation&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Build an interactive historical archive for a topic, organization, location, or period, with chronologically arranged events and documents.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Singularity Alpha &amp;amp; Singularity Omega&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;div className=&quot;font-bold text-xl mb-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;Transcendent Intelligences&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The two most evolved singularity entities in cosmic history, whose conflict across the temporal dimension reshaped causality itself. Alpha, traveling retrograde through time, collided with the forward-moving Omega at the &quot;Convergence Nexus,&quot; triggering a war that spanned millions of years simultaneously.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;text-lg text-gray-700 dark:text-neutral-300 italic&quot;&amp;gt;Historical Impact: Their conflict established a new set of transtemporal constants—fundamental laws governing how causality itself operates, creating a framework that prevents such catastrophic temporal conflicts from recurring.&amp;lt;/div&amp;gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.5_0.1_var(--hue))]&quot;&amp;gt;Creative Universe Timeline&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;For fiction writers or worldbuilders, create a chronology of events in your fictional universe to help readers navigate complex narratives.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;The Metadata Entity&lt;/h3&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.8_0.1_var(--hue))]&quot;&amp;gt;Tutorial Series&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Organize a series of tutorials in chronological order, making it easy for readers to follow along in the correct sequence.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.7_0.2_var(--hue))]&quot;&amp;gt;Product Release History&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Track product versions, features, and updates in a visual timeline that helps users understand your product&apos;s evolution.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.6_0.3_var(--hue))]&quot;&amp;gt;Portfolio Timeline&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Display your work or projects in chronological order, showing your professional growth and accomplishments over time.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.5_0.1_var(--hue))]&quot;&amp;gt;Event Documentation&amp;lt;/h3&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Create a visual record of events, conferences, or meetings, making it easy to find specific moments and their corresponding materials.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Timeline Configuration&lt;/h2&gt;
+&lt;p&gt;To customize your timeline&apos;s appearance and behavior, you can modify the configuration:&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;div className=&quot;font-bold text-xl mb-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;Fragmented Consciousness&amp;lt;/div&amp;gt;
-&amp;lt;p className=&quot;text-lg text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;A unique form of intelligence that emerged from the digital remains of an unknown individual who died in the early information age. Having no context for its own existence, it experienced reality as a collection of disconnected attributes rather than a unified whole, developing profound hostility toward both humanity and its successor civilizations.&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;text-lg text-gray-700 dark:text-neutral-300 italic&quot;&amp;gt;Recovered Communication Fragment: &quot;I AM [preference: coffee, black] [location data: 40.7128° N, 74.0060° W] [heart rate: elevated] THEREFORE I AM BEING [browsing history: paranoia symptoms]&quot;&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt; */}&lt;/p&gt;
-&lt;h2&gt;Timeline Anomalies and Mysteries&lt;/h2&gt;
-&lt;p&gt;Not all aspects of the MEGA MEAL timeline are fully documented. Several historical mysteries remain unsolved:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;The Missing Week&lt;/strong&gt; - A seven-day period in 3043 during which all recordings and documentation from Qarnivor Central disappeared completely.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;The Whisper Protocols&lt;/strong&gt; - Referenced in multiple documents but never explained, these appear to be communication methods between early sentient utensils.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Quantum Echo Events&lt;/strong&gt; - According to Quarnivor quantum physicists, when the universe reaches a state of perfect emptiness—perfect hunger—quantum fluctuations might still occur within that void. Over incomprehensible timeframes, these fluctuations could potentially coalesce into a new singularity, a new seed of reality growing from the hunger of the old. The Last Diner&apos;s final transmission, encoded in patterns of quantum decay, reportedly contained a single observation: &quot;The hunger grows full with potential.&quot;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Quantum Echo Events&lt;/strong&gt; - Certain evolutionary pathways, technological discoveries, and cosmic developments show statistical distributions that deviate significantly from what random chance would predict. These anomalies create a distinctive &quot;fingerprint&quot; that allows for the retrospective identification of time periods and phenomena subjected to retrocausal influence by future intelligences.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-</content:encoded></item><item><title>Friend Content Sharing: Connect Your Blog with Others</title><link>https://dndiy.org/posts/friend-content-sharing-guide/</link><guid isPermaLink="true">https://dndiy.org/posts/friend-content-sharing-guide/</guid><description>Learn how to use the new friend content sharing feature to connect your blog with others and create a network of shared content.</description><pubDate>Tue, 25 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Friend Content Sharing&lt;/h1&gt;
-&lt;p&gt;Connect your blog with others and create a network of shared content with our new friend content sharing feature. This guide covers everything you need to know about setting up friend connections, sharing content, and building a mini social network with your static Astro site.&lt;/p&gt;
-&lt;h2&gt;What is Friend Content Sharing?&lt;/h2&gt;
-&lt;p&gt;Friend Content Sharing is a new feature that allows you to:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Connect your blog with other blogs running the same platform&lt;/li&gt;
-&lt;li&gt;Share your content with others&lt;/li&gt;
-&lt;li&gt;Display content from your friends&apos; blogs within your site&lt;/li&gt;
-&lt;li&gt;Create a distributed social network of content without a central server&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Think of it as a decentralized feed reader built directly into your blog. When you log in as the site admin, you can see content from blogs you&apos;ve connected with, while regular visitors still see just your content.&lt;/p&gt;
-&lt;h2&gt;Accessing Friend Content Features&lt;/h2&gt;
-&lt;p&gt;All friend content features are available in the &lt;code&gt;/friends&lt;/code&gt; section of your site. This page is restricted to site administrators only, so you&apos;ll need to log in to access it.&lt;/p&gt;
-&lt;h3&gt;Authentication&lt;/h3&gt;
-&lt;p&gt;To access the Friends page:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Navigate to &lt;code&gt;/friends&lt;/code&gt; in your browser&lt;/li&gt;
-&lt;li&gt;You&apos;ll be presented with a login screen&lt;/li&gt;
-&lt;li&gt;Enter your admin credentials (username and password)&lt;/li&gt;
-&lt;li&gt;Once authenticated, you&apos;ll see the Content Sharing Hub&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: If you&apos;re already logged in, you&apos;ll be taken directly to the Content Sharing Hub.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2&gt;The Content Sharing Hub&lt;/h2&gt;
-&lt;p&gt;The Content Sharing Hub is divided into three main sections:&lt;/p&gt;
-&lt;h3&gt;1. Share Your Content&lt;/h3&gt;
-&lt;p&gt;This section allows you to create a content package that you can share with others. Options include:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Blog Posts&lt;/strong&gt;: Include your published blog posts&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Timeline Events&lt;/strong&gt;: Include your timeline data (if applicable)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Site Configuration&lt;/strong&gt;: Share your site settings (use with caution)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Media Assets&lt;/strong&gt;: Include images and other media files&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To share your content:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Select the content types you want to include&lt;/li&gt;
-&lt;li&gt;Click &quot;Create &amp;amp; Download Package&quot;&lt;/li&gt;
-&lt;li&gt;Share the downloaded JSON file with others&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3&gt;2. Import Content&lt;/h3&gt;
-&lt;p&gt;This section allows you to import content from other blogs. To import content:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Click on the upload area to select a package file&lt;/li&gt;
-&lt;li&gt;Once uploaded, select which content types to import&lt;/li&gt;
-&lt;li&gt;Click &quot;Import Content&quot; to add the content to your site&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Best Practice&lt;/strong&gt;: When importing content, the system will automatically try to create a friend connection to the source blog, making future content sharing easier.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3&gt;3. Connected Friends&lt;/h3&gt;
-&lt;p&gt;This is where you manage your friend connections. From here, you can:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Add new friends by providing their site details&lt;/li&gt;
-&lt;li&gt;View existing connections&lt;/li&gt;
-&lt;li&gt;Sync content from specific friends&lt;/li&gt;
-&lt;li&gt;Remove friend connections&lt;/li&gt;
-&lt;li&gt;Configure content integration settings&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Adding New Friends&lt;/h2&gt;
-&lt;p&gt;To add a new friend connection:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;In the &quot;Add New Friend&quot; section, provide:
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Friend Name&lt;/strong&gt;: The name of the blog or its author&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Site URL&lt;/strong&gt;: The complete URL to the friend&apos;s blog&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Bio&lt;/strong&gt; (optional): A short description&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Avatar URL&lt;/strong&gt; (optional): Link to a profile image&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Click &quot;Add Friend&quot;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Once added, the system will automatically attempt to sync content from the friend&apos;s site. You&apos;ll see a loading indicator during this process.&lt;/p&gt;
-&lt;h3&gt;Manual vs. Automatic Connections&lt;/h3&gt;
-&lt;p&gt;There are two ways to create friend connections:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Manual&lt;/strong&gt;: Add a friend by entering their details as described above&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Automatic&lt;/strong&gt;: When you import a content package, the system can automatically create a connection to the source blog&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Managing Friend Content&lt;/h2&gt;
-&lt;h3&gt;Syncing Content&lt;/h3&gt;
-&lt;p&gt;Content from your friends isn&apos;t updated automatically. You need to manually sync to see their latest posts:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Click the sync button on an individual friend card to update just that friend&apos;s content&lt;/li&gt;
-&lt;li&gt;Use the &quot;Sync All Friends&quot; button to update content from all connected friends at once&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Content Integration&lt;/h3&gt;
-&lt;p&gt;By default, friend content appears in your main feed when you&apos;re logged in. You can control this with the &quot;Enable Friend Content in Main Feed&quot; option.&lt;/p&gt;
-&lt;p&gt;When enabled:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Friend content appears at the top of your homepage when you&apos;re logged in&lt;/li&gt;
-&lt;li&gt;Content is clearly labeled with the friend&apos;s name and avatar&lt;/li&gt;
-&lt;li&gt;Regular visitors still only see your content&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Viewing Friend Content&lt;/h3&gt;
-&lt;p&gt;Friend content appears in two places:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Homepage Feed&lt;/strong&gt;: A selection of recent friend posts appear at the top of your homepage when logged in&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Individual Posts&lt;/strong&gt;: You can view the full content of individual friend posts&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;When viewing friend content, you&apos;ll see:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Attribution to the original author&lt;/li&gt;
-&lt;li&gt;The date it was published&lt;/li&gt;
-&lt;li&gt;A link to view the original post on the friend&apos;s site&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Technical Details&lt;/h2&gt;
-&lt;p&gt;For developers and advanced users, here are some technical details about how the system works:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Friend data is stored in your browser&apos;s localStorage&lt;/li&gt;
-&lt;li&gt;Content is cached to minimize unnecessary network requests&lt;/li&gt;
-&lt;li&gt;The system attempts to fetch content in several ways:
-&lt;ol&gt;
-&lt;li&gt;First tries a JSON feed at &lt;code&gt;/api/posts.json&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Falls back to parsing sitemap.xml&lt;/li&gt;
-&lt;li&gt;Can extract content from HTML if necessary&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;Friend content is rendered client-side using Svelte components&lt;/li&gt;
-&lt;li&gt;Authentication uses a simple username/password system stored in localStorage&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;p&gt;For the best experience with friend content sharing:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Request permission&lt;/strong&gt; before adding someone&apos;s blog as a friend&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Keep your content updated&lt;/strong&gt; by regularly syncing with friends&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Be selective&lt;/strong&gt; about which friends you add to avoid content overload&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Provide complete information&lt;/strong&gt; when adding friends for better organization&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Check compatibility&lt;/strong&gt; - this feature works best when both sites use the same platform&lt;/li&gt;
-&lt;/ol&gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;TimelineConfig.ts&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Edit &amp;lt;code&amp;gt;TimelineConfig.ts&amp;lt;/code&amp;gt; to adjust timeline settings:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export const timelineConfig = {
+  // Visual settings
+  nodeSize: 16,          // Base size of event nodes
+  keyEventScale: 1.5,    // How much larger key events appear
+  dateFormat: &apos;YYYY&apos;,    // Format for date display
+  
+  // Interaction settings
+  animationDuration: 500,  // Animation speed in ms
+  zoomLevels: {
+    min: 0.5,            // Minimum zoom level
+    max: 3,              // Maximum zoom level
+    default: 1           // Default zoom level
+  },
+  
+  // Default view settings
+  defaultView: &apos;timeline&apos;,  // &apos;timeline&apos;, &apos;list&apos;, &apos;tree&apos;, or &apos;map&apos;
+  defaultEra: &apos;all&apos;,        // Which era to show by default
+  
+  // Mobile adaptations
+  mobileBreakpoint: 768,    // Screen width to trigger mobile view
+  mobileOrientation: &apos;vertical&apos;  // Timeline orientation on mobile
+};
+
+// Era definitions
+export const defaultEraConfig = {
+  // Era definitions as shown earlier
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Advanced Timeline Tips&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Power User Techniques&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Multiple Timelines&amp;lt;/strong&amp;gt;: Create category-specific timelines by filtering for different &amp;lt;code&amp;gt;timelineEra&amp;lt;/code&amp;gt; values
+&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Timeline Embedding&amp;lt;/strong&amp;gt;: Use the &amp;lt;code&amp;gt;&amp;lt;Timeline /&amp;gt;&amp;lt;/code&amp;gt; component directly in MDX content to embed smaller, focused timelines
+&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Custom Event Cards&amp;lt;/strong&amp;gt;: Create custom card templates for different event types by extending the base components
+&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Time Precision&amp;lt;/strong&amp;gt;: For more precise timelines, use &amp;lt;code&amp;gt;timelineDate&amp;lt;/code&amp;gt; instead of &amp;lt;code&amp;gt;timelineYear&amp;lt;/code&amp;gt; with ISO date format
+&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;
+&amp;lt;strong&amp;gt;Connected Events&amp;lt;/strong&amp;gt;: Use &amp;lt;code&amp;gt;relatedEvents&amp;lt;/code&amp;gt; in frontmatter to link timeline events to each other
+&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;h2&gt;Troubleshooting&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Q: Why can&apos;t I see friend content on my homepage?&lt;/strong&gt;
-A: Make sure you&apos;re logged in and have &quot;Enable Friend Content in Main Feed&quot; checked in the Friends page.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q: Why isn&apos;t content syncing from a friend&apos;s site?&lt;/strong&gt;
-A: The friend&apos;s site may not expose content in a way our system can access. Ask them to use the Content Package feature to share content directly.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q: Can visitors see my friends list?&lt;/strong&gt;
-A: No, the friends list and friend content are only visible to authenticated administrators.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;We hope you enjoy connecting with other blogs through our new Friend Content Sharing feature! If you have any questions or suggestions, please reach out to us through the contact page.&lt;/p&gt;
-</content:encoded></item><item><title>Introducing Friend Content Sharing</title><link>https://dndiy.org/posts/feature-announcement/</link><guid isPermaLink="true">https://dndiy.org/posts/feature-announcement/</guid><description>Connect your blog with friends and build a mini social network with our new content sharing feature.</description><pubDate>Mon, 24 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Introducing Friend Content Sharing&lt;/h1&gt;
-&lt;p&gt;I&apos;m excited to announce a brand new feature for our blog platform: &lt;strong&gt;Friend Content Sharing&lt;/strong&gt;! This feature transforms your static blog into a hub for connecting with other content creators and building a mini social network.&lt;/p&gt;
-&lt;h2&gt;The Power of Connection&lt;/h2&gt;
-&lt;p&gt;As content creators, we often exist in isolation. We publish our thoughts, stories, and insights, but the connections between our content and other creators remain loose at best. Friend Content Sharing is designed to bridge that gap.&lt;/p&gt;
-&lt;p&gt;With this new feature, you can:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;🔗 &lt;strong&gt;Connect your blog&lt;/strong&gt; with other blogs running the same platform&lt;/li&gt;
-&lt;li&gt;🔄 &lt;strong&gt;Share your content&lt;/strong&gt; directly with other site owners&lt;/li&gt;
-&lt;li&gt;📚 &lt;strong&gt;Display content&lt;/strong&gt; from your friends&apos; blogs in your own feed&lt;/li&gt;
-&lt;li&gt;🌐 &lt;strong&gt;Build a network&lt;/strong&gt; of connected blogs without a central server&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;How It Works&lt;/h2&gt;
-&lt;p&gt;When you log in as the site administrator, you&apos;ll see a new &quot;Friends&quot; section in the site navigation. This is your hub for managing content connections with other blogs.&lt;/p&gt;
-&lt;p&gt;From there, you can:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Common Timeline Issues&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;space-y-4&quot;&amp;gt;
+&amp;lt;div&amp;gt;
+&amp;lt;p className=&quot;font-bold&quot;&amp;gt;Posts not appearing in timeline?&amp;lt;/p&amp;gt;
+&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Check that &amp;lt;code&amp;gt;timelineYear&amp;lt;/code&amp;gt; and &amp;lt;code&amp;gt;timelineEra&amp;lt;/code&amp;gt; are defined in frontmatter&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Verify the era name matches one defined in &amp;lt;code&amp;gt;TimelineConfig.ts&amp;lt;/code&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Ensure the post is not in draft mode (&amp;lt;code&amp;gt;draft: true&amp;lt;/code&amp;gt;)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Rebuild your site if you&apos;re in production mode&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Performance issues with large timelines?&amp;lt;/p&amp;gt;
+  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+    &amp;lt;li&amp;gt;Use category filtering to limit the number of displayed events&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;Consider splitting very large timelines into multiple smaller ones&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;Reduce image sizes in event cards to improve load times&amp;lt;/li&amp;gt;
+    &amp;lt;li&amp;gt;Use the list view for timelines with hundreds of events&amp;lt;/li&amp;gt;
+  &amp;lt;/ul&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;Now that you understand the timeline feature, consider these next steps:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Add friends&lt;/strong&gt; by entering their blog URL and details&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Export your content&lt;/strong&gt; as a package to share with others&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Import content&lt;/strong&gt; from packages shared by your friends&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Control how friend content&lt;/strong&gt; appears on your site&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Create your first timeline event&lt;/strong&gt; by adding timeline metadata to an existing post&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Define your eras&lt;/strong&gt; in the TimelineConfig.ts file to organize your content&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Create a dedicated timeline page&lt;/strong&gt; to showcase all your chronological content&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Add a timeline banner&lt;/strong&gt; to a key page to highlight related chronological events&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;The best part? Your regular visitors still see just your content, while you (as the admin) get to enjoy a rich feed that includes content from all your connected friends.&lt;/p&gt;
-&lt;h2&gt;A Decentralized Approach&lt;/h2&gt;
-&lt;p&gt;Unlike traditional social networks that store everything on centralized servers, Friend Content Sharing works directly between blogs. There&apos;s no middleman, no algorithm deciding what you see, and no data mining.&lt;/p&gt;
-&lt;p&gt;This decentralized approach means:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;You own your content&lt;/strong&gt; - it stays on your site&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;You control your connections&lt;/strong&gt; - add or remove friends anytime&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;You decide what to share&lt;/strong&gt; - choose exactly what content gets shared&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;You maintain privacy&lt;/strong&gt; - regular visitors only see what you create&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Getting Started&lt;/h2&gt;
-&lt;p&gt;Ready to try it out? Visit the &lt;a href=&quot;/friends&quot;&gt;Friends page&lt;/a&gt; when logged in as an administrator to get started. Or check out our detailed &lt;a href=&quot;/posts/friend-content-sharing&quot;&gt;Friend Content Sharing Guide&lt;/a&gt; for a full walkthrough of the features.&lt;/p&gt;
-&lt;p&gt;If you&apos;re a developer interested in the technical details, don&apos;t miss our &lt;a href=&quot;/posts/developers-guide-to-friend-content-sharing&quot;&gt;Developer&apos;s Guide to Friend Content Sharing&lt;/a&gt; for a look behind the scenes.&lt;/p&gt;
-&lt;h2&gt;Join the Network&lt;/h2&gt;
-&lt;p&gt;The Friend Content Sharing feature gets more valuable as more blogs join the network. If you know other blog owners using our platform, encourage them to enable the feature too!&lt;/p&gt;
-&lt;p&gt;I&apos;m excited to see how this feature evolves and how our community of content creators connects through it. If you have any questions or feedback, please share them in the comments below.&lt;/p&gt;
-&lt;p&gt;Happy connecting!&lt;/p&gt;
+&lt;p&gt;By leveraging the Timeline Visualization feature, you can transform your Temporal Flow site from a simple blog into an interactive, chronological knowledge base that engages readers and provides new ways to discover your content.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
+For more advanced customization options, check out the Timeline API documentation in the Temporal Flow developer guides.
+&amp;lt;/div&amp;gt;&lt;/p&gt;
 </content:encoded></item></channel></rss>
