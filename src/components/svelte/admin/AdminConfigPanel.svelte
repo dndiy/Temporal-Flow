@@ -1,11 +1,12 @@
 <script>
-    import { onMount, createEventDispatcher } from 'svelte';
-    import GeneralConfigTab from './config-tabs/GeneralConfigTab.svelte';
-    import NavigationConfigTab from './config-tabs/NavigationConfigTab.svelte';
-    import ProfileConfigTab from './config-tabs/ProfileConfigTab.svelte';
-    import AppearanceConfigTab from './config-tabs/AppearanceConfigTab.svelte';
-    import TimelineConfigTab from './config-tabs/TimelineConfigTab.svelte';
-    import AdvancedConfigTab from './config-tabs/AdvancedConfigTab.svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
+  import GeneralConfigTab from './config-tabs/GeneralConfigTab.svelte';
+  import NavigationConfigTab from './config-tabs/NavigationConfigTab.svelte';
+  import ProfileConfigTab from './config-tabs/ProfileConfigTab.svelte';
+  import AppearanceConfigTab from './config-tabs/AppearanceConfigTab.svelte';
+  import TimelineConfigTab from './config-tabs/TimelineConfigTab.svelte';
+  import AdvancedConfigTab from './config-tabs/AdvancedConfigTab.svelte';
+  import ConfigExporter from './ConfigExporter.svelte';
     
     // Props for configuration objects
     export let siteConfig;
@@ -17,6 +18,16 @@
     // State management
     let activeTab = 'general';
     let saveStatus = { saving: false, success: false, error: null };
+    let hasChanges = false;
+
+    // Original config values for comparison
+    let originalConfigValues = {
+      siteConfig: null,
+      navBarConfig: null,
+      profileConfig: null,
+      licenseConfig: null,
+      timelineConfig: null
+    };
     
     // Event dispatcher for notifying parent components
     const dispatch = createEventDispatcher();
@@ -36,25 +47,39 @@
       activeTab = tabId;
     }
     
+// State for config exporter
+let showConfigExporter = false;
+    
     // Function to handle saving all configuration
     async function saveAllConfiguration() {
       try {
         saveStatus.saving = true;
         saveStatus.error = null;
         
-        // In a real implementation, you would send the configuration to a backend
-        // For now, we'll just simulate saving with a delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Store in localStorage for demonstration
+        // Store in localStorage for demonstration/temporary savings
         localStorage.setItem('siteConfig', JSON.stringify(siteConfig));
         localStorage.setItem('navBarConfig', JSON.stringify(navBarConfig));
         localStorage.setItem('profileConfig', JSON.stringify(profileConfig));
         localStorage.setItem('licenseConfig', JSON.stringify(licenseConfig));
         localStorage.setItem('timelineConfig', JSON.stringify(timelineConfig));
         
+        // Update original values to reflect saved state
+        originalConfigValues = {
+          siteConfig: JSON.stringify(siteConfig),
+          navBarConfig: JSON.stringify(navBarConfig),
+          profileConfig: JSON.stringify(profileConfig),
+          licenseConfig: JSON.stringify(licenseConfig),
+          timelineConfig: JSON.stringify(timelineConfig)
+        };
+        
+        // Reset hasChanges flag
+        hasChanges = false;
+        
         // Show success message
         saveStatus.success = true;
+        
+        // Show the config exporter for permanent saving
+        showConfigExporter = true;
         
         // Notify parent component
         dispatch('saved', { 
@@ -105,6 +130,15 @@
         if (savedTimelineConfig) {
           timelineConfig = { ...timelineConfig, ...JSON.parse(savedTimelineConfig) };
         }
+        
+        // Store original values for change detection
+        originalConfigValues = {
+          siteConfig: JSON.stringify(siteConfig),
+          navBarConfig: JSON.stringify(navBarConfig),
+          profileConfig: JSON.stringify(profileConfig),
+          licenseConfig: JSON.stringify(licenseConfig),
+          timelineConfig: JSON.stringify(timelineConfig)
+        };
       } catch (error) {
         console.error('Error loading saved configuration:', error);
       }
@@ -173,16 +207,32 @@
         <!-- Tab Panels -->
         <div class="tab-panels">
           {#if activeTab === 'general'}
-            <GeneralConfigTab bind:siteConfig bind:licenseConfig />
-          {:else if activeTab === 'navigation'}
-            <NavigationConfigTab bind:navBarConfig />
-          {:else if activeTab === 'profile'}
-            <ProfileConfigTab bind:profileConfig />
-          {:else if activeTab === 'appearance'}
-            <AppearanceConfigTab bind:siteConfig />
-          {:else if activeTab === 'timeline'}
-            <TimelineConfigTab bind:timelineConfig />
-          {:else if activeTab === 'advanced'}
+          <GeneralConfigTab 
+            bind:siteConfig 
+            bind:licenseConfig 
+            on:change={() => hasChanges = true} 
+          />
+        {:else if activeTab === 'navigation'}
+          <NavigationConfigTab 
+            bind:navBarConfig 
+            on:change={() => hasChanges = true} 
+          />
+        {:else if activeTab === 'profile'}
+          <ProfileConfigTab 
+            bind:profileConfig 
+            on:change={() => hasChanges = true} 
+          />
+        {:else if activeTab === 'appearance'}
+          <AppearanceConfigTab 
+            bind:siteConfig 
+            on:change={() => hasChanges = true} 
+          />
+        {:else if activeTab === 'timeline'}
+          <TimelineConfigTab 
+            bind:timelineConfig 
+            on:change={() => hasChanges = true} 
+          />
+        {:else if activeTab === 'advanced'}
             <AdvancedConfigTab 
               {siteConfig} 
               {navBarConfig} 
@@ -190,13 +240,16 @@
               {licenseConfig}
               {timelineConfig}
               on:update={(e) => {
-                // Handle updates from the advanced editor
-                const { configType, newValue } = e.detail;
+              // Handle updates from the advanced editor
+              const { configType, newValue } = e.detail;
                 if (configType === 'siteConfig') siteConfig = newValue;
                 else if (configType === 'navBarConfig') navBarConfig = newValue;
                 else if (configType === 'profileConfig') profileConfig = newValue;
                 else if (configType === 'licenseConfig') licenseConfig = newValue;
                 else if (configType === 'timelineConfig') timelineConfig = newValue;
+                
+                // Mark that changes have been made
+                hasChanges = true;
               }}
             />
           {/if}
@@ -233,20 +286,32 @@
             </div>
             
             <button 
-              on:click={saveAllConfiguration}
-              disabled={saveStatus.saving}
-              class="py-2 px-6 bg-[var(--primary)] hover:opacity-90 text-white font-medium rounded-md transition-opacity flex items-center disabled:opacity-60"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-              </svg>
-              {saveStatus.saving ? 'Saving...' : 'Save Changes'}
-            </button>
+            on:click={saveAllConfiguration}
+            disabled={saveStatus.saving || !hasChanges}
+            class="py-2 px-6 bg-[var(--primary)] hover:opacity-90 text-white font-medium rounded-md transition-opacity flex items-center disabled:opacity-60"
+            title={!hasChanges ? "No changes to save" : "Save your changes"}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            {saveStatus.saving ? 'Saving...' : hasChanges ? 'Save Changes' : 'No Changes'}
+          </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Config Exporter Dialog -->
+  <ConfigExporter
+    bind:show={showConfigExporter}
+    {siteConfig}
+    {navBarConfig}
+    {profileConfig}
+    {licenseConfig}
+    {timelineConfig}
+    on:close={() => showConfigExporter = false}
+  />
   
   <style>
     /* Add any component-specific styles here */

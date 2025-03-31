@@ -89,6 +89,35 @@
     $: sortedEras = Object.entries(timelineConfig.eraConfig)
       .sort(([, a], [, b]) => a.startYear - b.startYear)
       .map(([key, config]) => ({ key, ...config }));
+      
+      // Check for changes in any config to enable/disable the save button
+      $: {
+      if (originalConfigValues.siteConfig && originalConfigValues.navBarConfig &&
+          originalConfigValues.profileConfig && originalConfigValues.licenseConfig &&
+          originalConfigValues.timelineConfig) {
+            
+        try {
+          const currentValues = {
+            siteConfig: JSON.stringify(siteConfig),
+            navBarConfig: JSON.stringify(navBarConfig),
+            profileConfig: JSON.stringify(profileConfig),
+            licenseConfig: JSON.stringify(licenseConfig),
+            timelineConfig: JSON.stringify(timelineConfig)
+          };
+          
+          hasChanges = 
+            currentValues.siteConfig !== originalConfigValues.siteConfig ||
+            currentValues.navBarConfig !== originalConfigValues.navBarConfig ||
+            currentValues.profileConfig !== originalConfigValues.profileConfig ||
+            currentValues.licenseConfig !== originalConfigValues.licenseConfig ||
+            currentValues.timelineConfig !== originalConfigValues.timelineConfig;
+        } catch (error) {
+          console.error("Error checking for changes:", error);
+          // If there's an error comparing, assume changes were made
+          hasChanges = true;
+        }
+      }
+    }
   </script>
   
   <div class="timeline-config-tab">

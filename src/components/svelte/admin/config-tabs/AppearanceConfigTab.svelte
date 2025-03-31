@@ -1,5 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
+  import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts';
+
   
   // Props
   export let siteConfig;
@@ -99,6 +101,88 @@
     <p class="text-neutral-600 dark:text-neutral-400 mb-4">
       Configure visual aspects of your site, including theme colors and icons.
     </p>
+  </div>
+
+  <!-- Default LIGHT_DARK_AUTO Theme Settings -->
+  <div class="bg-neutral-50 dark:bg-neutral-800/50 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700 mb-8">
+    <h3 class="text-lg font-medium text-black/80 dark:text-white/80 mb-3">Default Theme Mode</h3>
+    
+    <div class="space-y-4">
+      <p class="text-sm text-neutral-600 dark:text-neutral-400">
+        Choose the default theme mode for new visitors. Users can still change this preference through the theme switcher.
+      </p>
+      
+      <div class="flex flex-col space-y-2">
+        <label class="inline-flex items-center">
+          <input 
+            type="radio" 
+            name="defaultTheme" 
+            value={LIGHT_MODE} 
+            checked={siteConfig.defaultTheme === LIGHT_MODE} 
+            on:change={() => {
+              siteConfig.defaultTheme = LIGHT_MODE;
+              dispatch('change', siteConfig);
+            }}
+            class="h-4 w-4 text-[var(--primary)] border-neutral-300 dark:border-neutral-600 focus:ring-[var(--primary)]" 
+          />
+          <span class="ml-2 flex items-center text-neutral-700 dark:text-neutral-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Light Mode
+          </span>
+        </label>
+        
+        <label class="inline-flex items-center">
+          <input 
+            type="radio" 
+            name="defaultTheme" 
+            value={DARK_MODE} 
+            checked={siteConfig.defaultTheme === DARK_MODE}
+            on:change={() => {
+              siteConfig.defaultTheme = DARK_MODE;
+              dispatch('change', siteConfig);
+            }}
+            class="h-4 w-4 text-[var(--primary)] border-neutral-300 dark:border-neutral-600 focus:ring-[var(--primary)]" 
+          />
+          <span class="ml-2 flex items-center text-neutral-700 dark:text-neutral-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            Dark Mode
+          </span>
+        </label>
+        
+        <label class="inline-flex items-center">
+          <input 
+            type="radio" 
+            name="defaultTheme" 
+            value={AUTO_MODE} 
+            checked={siteConfig.defaultTheme === AUTO_MODE}
+            on:change={() => {
+              siteConfig.defaultTheme = AUTO_MODE;
+              dispatch('change', siteConfig);
+            }}
+            class="h-4 w-4 text-[var(--primary)] border-neutral-300 dark:border-neutral-600 focus:ring-[var(--primary)]" 
+          />
+          <span class="ml-2 flex items-center text-neutral-700 dark:text-neutral-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 8c-1.654 0-3 1.346-3 3v0c0 1.654 1.346 3 3 3h0c1.654 0 3-1.346 3-3v0c0-1.654-1.346-3-3-3z"></path>
+            </svg>
+            System/Auto Mode
+          </span>
+        </label>
+      </div>
+    </div>
   </div>
   
   <!-- Theme Color Settings -->
