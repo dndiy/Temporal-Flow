@@ -5,53 +5,20 @@ import type { ImageMetadata } from 'astro'
 // These paths should match your actual banner image locations
 import banner1 from 'src/assets/banner/0001.png'
 import banner2 from 'src/assets/banner/0002.png'
-import banner3 from 'src/assets/banner/0003.png'
-import banner4 from 'src/assets/banner/0004.png'
-import banner5 from 'src/assets/banner/0005.png'
+import banner3 from 'src/assets/banner/0014.png'
+import banner4 from 'src/assets/banner/0021.png'
+import banner5 from 'src/assets/banner/0028.png'
 import banner6 from 'src/assets/banner/0035.png'
 import banner7 from 'src/assets/banner/0042.png'
 import banner8 from 'src/assets/banner/0049.png'
 
-// Types for Timeline banner data
-export interface TimelineBannerData {
-  title: string
-  category: string
-  startYear: number
-  endYear: number
-  height: string
-  compact: boolean
-  background: string
-}
-
-// Types for Video banner data
-export interface VideoBannerData {
-  videoId: string
-  platform: 'youtube' | 'vimeo'
-  autoplay?: boolean
-  muted?: boolean
-  controls?: boolean
-  loop?: boolean
-}
-
 // Define the banner configuration type
 export interface BannerConfig {
-  // Banner type: 'image', 'video', or 'timeline'
-  type: 'image' | 'video' | 'timeline'
-  
-  // Banner mode: 'single' or 'sequence' (for image banners)
-  mode: 'single' | 'sequence'
-  
-  // List of banner images for animation or selection
-  images: ImageMetadata[] | string[]
+  // List of banner images for animation
+  bannerList: ImageMetadata[]
   
   // Default banner for static usage
-  defaultBanner: ImageMetadata | string
-  
-  // Timeline data (used when type is 'timeline')
-  timelineData: TimelineBannerData
-  
-  // Video data (used when type is 'video')
-  videoData: VideoBannerData
+  defaultBanner: ImageMetadata
   
   // Animation settings
   animation: {
@@ -96,14 +63,8 @@ export interface BannerConfig {
  * Controls which images are used for the animated banner
  */
 export const bannerConfig: BannerConfig = {
-  // Banner type - can be 'image', 'video', or 'timeline'
-  type: 'image',
-  
-  // Banner mode - 'single' or 'sequence'
-  mode: 'sequence',
-  
   // List of all banner images for animation
-  images: [
+  bannerList: [
     banner1,
     banner2,
     banner3,
@@ -116,27 +77,6 @@ export const bannerConfig: BannerConfig = {
   
   // Default banner image (used for static banner or as first animation frame)
   defaultBanner: banner1,
-  
-  // Timeline data configuration
-  timelineData: {
-    title: 'Timeline Banner',
-    category: 'default',
-    startYear: 1900,
-    endYear: 2025,
-    height: '70vh',
-    compact: false,
-    background: '/public/posts/timeline/universe.png'
-  },
-  
-  // Video data configuration
-  videoData: {
-    videoId: '',
-    platform: 'youtube',
-    autoplay: false,
-    muted: true,
-    controls: true,
-    loop: false
-  },
   
   // Animation settings
   animation: {
@@ -218,20 +158,4 @@ export function getBannerAnimationSettings(): {
     transitionDuration: bannerConfig.animation.transitionDuration,
     direction: bannerConfig.animation.direction
   };
-}
-
-/**
- * Get appropriate banner component based on banner type
- * @returns String with banner component name
- */
-export function getBannerComponentType(): string {
-  switch (bannerConfig.type) {
-    case 'video':
-      return 'VideoBanner';
-    case 'timeline':
-      return 'TimelineBanner';
-    case 'image':
-    default:
-      return bannerConfig.mode === 'sequence' ? 'SequenceBanner' : 'ImageBanner';
-  }
 }
