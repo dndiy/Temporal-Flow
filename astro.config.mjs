@@ -23,8 +23,8 @@ import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://github.com/dndiy/Temporal-Flow',
-  base: '/',
+  site: 'https://dndiy.org',
+  base: '/Temporal-Flow/',
   trailingSlash: "always",
   integrations: [tailwind(
       {
