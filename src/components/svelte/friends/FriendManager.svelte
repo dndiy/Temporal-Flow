@@ -27,10 +27,33 @@
   let statusType = 'info';
   let isLoading = false;
   
-  // Image error handler
-  function handleImageError(event) {
-    event.target.src = '/assets/avatar/avatar.png';
-  }
+  // Check if an image exists
+  async function checkImageExists(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+      });
+    }
+    
+    // Image error handler with retry logic
+    function handleImageError(event) {
+      const originalSrc = event.target.src;
+      console.log(`Avatar image failed to load: ${originalSrc}`);
+      
+      // Try to load the default avatar
+      event.target.src = DEFAULT_AVATAR;
+      
+      // If even the default avatar fails, use a data URI for a simple avatar placeholder
+      event.target.onerror = () => {
+        console.error(`Even default avatar failed to load: ${DEFAULT_AVATAR}`);
+        // Simple colored circle as fallback
+        event.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23d1d5db'/%3E%3C/svg%3E";
+        // Remove any further error handlers to prevent loops
+        event.target.onerror = null;
+      };
+    }
   
   // Initialize permanent friends from props
   onMount(() => {

@@ -79,7 +79,7 @@
               <div class="flex items-center mb-2">
                 <div class="w-6 h-6 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden mr-2 flex-shrink-0">
                   <img 
-                    src="${post.friendAvatar || '/api/placeholder/24/24'}" 
+                    src="${post.friendAvatar || '/assets/avatar/avatar.png'}" 
                     alt="${post.friendName || 'Friend'}'s avatar"
                     class="w-full h-full object-cover"
                     onerror="this.src='/assets/avatar/avatar.png'"
