@@ -8,9 +8,9 @@ import banner2 from 'src/assets/banner/0002.png'
 import banner3 from 'src/assets/banner/0003.png'
 import banner4 from 'src/assets/banner/0004.png'
 import banner5 from 'src/assets/banner/0005.png'
-import banner6 from 'src/assets/banner/0035.png'
-import banner7 from 'src/assets/banner/0042.png'
-import banner8 from 'src/assets/banner/0049.png'
+import banner6 from 'src/assets/banner/0006.png'
+import banner7 from 'src/assets/banner/0007.png'
+//import banner8 from 'src/assets/banner/0004.png' continue as long as you want
 
 // Define the banner configuration type
 export interface BannerConfig {
@@ -72,7 +72,7 @@ export const bannerConfig: BannerConfig = {
     banner5,
     banner6,
     banner7,
-    banner8
+    //banner8 continue as long as you want
   ],
   
   // Default banner image (used for static banner or as first animation frame)

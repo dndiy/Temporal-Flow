@@ -130,7 +130,7 @@
                   src="${entry.data.friendAvatar}" 
                   alt="${entry.data.friendName || 'Friend'}'s avatar"
                   class="w-full h-full object-cover"
-                  onerror="this.src='/placeholder.png'"
+                  onerror="this.src='generic/avatar.png'"
                 />
               ` : ''}
             </div>

@@ -82,7 +82,7 @@
                     src="${post.friendAvatar || '/api/placeholder/24/24'}" 
                     alt="${post.friendName || 'Friend'}'s avatar"
                     class="w-full h-full object-cover"
-                    onerror="this.src='/posts/generic/imagenotfound1.png'"
+                    onerror="this.src='/assets/avatar/avatar.png'"
                   />
                 </div>
                 <span class="text-xs text-neutral-500 dark:text-neutral-400">

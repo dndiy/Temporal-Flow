@@ -29,7 +29,7 @@
   
   // Image error handler
   function handleImageError(event) {
-    event.target.src = '/posts/generic/imagenotfound1.png';
+    event.target.src = '/assets/avatar/avatar.png';
   }
   
   // Initialize permanent friends from props
@@ -412,7 +412,7 @@
           <div class="friend-card flex items-start p-4 border border-neutral-200 dark:border-neutral-700 bg-green-50 dark:bg-green-900/10 rounded-lg">
             <div class="w-12 h-12 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden mr-4 flex-shrink-0">
               <img 
-                src={friend.data.avatar || '/posts/generic/imagenotfound1.png'} 
+                src={friend.data.avatar || '/assets/avatar/avatar.png'} 
                 alt={`${friend.data.name}'s avatar`}
                 class="w-full h-full object-cover"
                 on:error={handleImageError}
@@ -461,7 +461,7 @@
           <div class="friend-card flex items-start p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg hover:border-[var(--primary)] transition-colors" data-friend-id={friend.id}>
             <div class="w-12 h-12 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden mr-4 flex-shrink-0">
               <img 
-                src={friend.avatar || '/posts/generic/imagenotfound1.png'} 
+                src={friend.avatar || '/assets/avatar/avatar.png'} 
                 alt={`${friend.name}'s avatar`}
                 class="w-full h-full object-cover"
                 on:error={handleImageError}
