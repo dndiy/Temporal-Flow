@@ -9,7 +9,7 @@ import banner3 from 'src/assets/banner/0003.png'
 import banner4 from 'src/assets/banner/0004.png'
 import banner5 from 'src/assets/banner/0005.png'
 import banner6 from 'src/assets/banner/0006.png'
-import banner7 from 'src/assets/banner/0007.png'
+//import banner7 from 'src/assets/banner/0007.png' continue as long as you want
 //import banner8 from 'src/assets/banner/0004.png' continue as long as you want
 
 // Define the banner configuration type
@@ -71,7 +71,7 @@ export const bannerConfig: BannerConfig = {
     banner4,
     banner5,
     banner6,
-    banner7,
+    //banner7, add more banners here
     //banner8 continue as long as you want
   ],
   

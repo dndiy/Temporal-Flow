@@ -43,7 +43,7 @@ import type {
       dropdown: [
         {
           name: "Timeline Example",
-          url: "/posts/timeline/"
+          url: "/posts/getting-started-timelines/"
         },
         {
           name: "Project One",
@@ -59,7 +59,7 @@ import type {
         },
         {
           name: "External Project",
-          url: "https://example.com/project",
+          url: "https://temporalflow.org",
           external: true
         }
       ]
