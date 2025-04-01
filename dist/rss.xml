@@ -1,836 +1,217 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Temporal Flow</title><description>A Decentralized Content Platform</description><link>https://temporalflow.org/</link><language>en</language><item><title>Getting Started: Making a Connection or Adding Friends</title><link>https://temporalflow.org/posts/getting-started-friends/</link><guid isPermaLink="true">https://temporalflow.org/posts/getting-started-friends/</guid><description>Learn how to connect your Temporal Flow blog with others and build a network of content creators through the Friend Content Sharing system.</description><pubDate>Sun, 30 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Getting Started: Making a Connection or Adding Friends&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Temporal Flow</title><description>A Decentralized Content Platform</description><link>https://temporalflow.org/</link><language>en</language><item><title>Welcome to Temporal Flow! | Getting Started</title><link>https://temporalflow.org/posts/getting-started/</link><guid isPermaLink="true">https://temporalflow.org/posts/getting-started/</guid><description>Welcome to Temporal Flow - your guide to getting started with this powerful decentralized content sharing platform.</description><pubDate>Mon, 31 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Getting Started with Temporal Flow&lt;/h1&gt;
 &lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
-&quot;Content creation doesn&apos;t have to be solitary—build your network while maintaining your independence.&quot; — Temporal Flow Philosophy
+&quot;Your journey into decentralized content creation and sharing begins here.&quot; — Temporal Flow
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Introduction to Friend Content Sharing&lt;/h2&gt;
+&lt;h2&gt;Welcome to Temporal Flow&lt;/h2&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Connect Without Compromise&amp;lt;/h3&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Friend Content Sharing system is one of Temporal Flow&apos;s most powerful features, enabling you to build connections with other content creators while maintaining complete control of your platform and content.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Unlike traditional social networks that store everything on centralized servers, Temporal Flow&apos;s Friend system works directly between blogs, creating a decentralized network where you own your content and control your connections.&amp;lt;/p&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Introduction&amp;lt;/h3&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;
+Temporal Flow is a modern, decentralized content sharing platform built with Astro, Tailwind CSS, and Svelte that puts you in complete control of your content. Whether you&apos;re a blogger, developer, creator, or organization, Temporal Flow provides a powerful yet simple way to publish and share your ideas.
+&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;
+Unlike traditional platforms that store everything on centralized servers, Temporal Flow operates directly from your own site, giving you full ownership and control while still enabling connections with other content creators.
+&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;font-jetbrains-mono pl-10 pr-10 py-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
-&amp;lt;p className=&quot;italic&quot;&amp;gt;Key Benefits of the Friend System:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&amp;lt;p className=&quot;italic&quot;&amp;gt;Key Features of Temporal Flow:&amp;lt;/p&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;ul className=&quot;mt-4 space-y-2 text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
-&amp;lt;li&amp;gt;🔗 Connect with other Temporal Flow sites&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;👁️ Only you see friend content when logged in&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;🔒 Visitors to your site see only your content&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;🌐 No central server or algorithms&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;🤝 Direct connections between blogs&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🌐 Static site generation with Astro&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🎨 Beautiful responsive design with Tailwind CSS&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;📝 Simple content creation with Markdown and MDX&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🔗 Decentralized friend content sharing&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;📊 Interactive timeline visualization&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🌙 Built-in dark mode support&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;🚀 Optimized for performance and SEO&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Accessing Friend Management&lt;/h2&gt;
-&lt;p&gt;The first step to connecting with other blogs is accessing the admin features of your site, which are protected behind a login system.&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Logging In&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To access the admin features of your Temporal Flow site:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ol className=&quot;list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Look for the login link in the &amp;lt;strong&amp;gt;top left corner&amp;lt;/strong&amp;gt; of your site&apos;s navigation bar&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Click the login link to open the authentication dialog&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Enter your administrator username and password&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Click &quot;Login&quot; to authenticate&amp;lt;/li&amp;gt;
-&amp;lt;/ol&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;Upon successful login, you&apos;ll notice that the site&apos;s navigation changes slightly, with the home button transforming into a settings button, unlocking access to admin features.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Core Concepts&lt;/h2&gt;
+&lt;p&gt;Before diving into specific features, let&apos;s understand some core concepts that make Temporal Flow unique:&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
 &amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Before Login&amp;lt;/h4&amp;gt;
-&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md&quot;&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Navigation bar shows:&amp;lt;/p&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Login link&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Home button&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Regular navigation items&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Content-First Approach&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+Temporal Flow uses a content-first approach where your posts are simple text files stored in specific folders. No databases, no complex CMSes - just plain text files that get transformed into beautifully formatted web content.
+&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;After Login&amp;lt;/h4&amp;gt;
-&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md&quot;&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Navigation bar shows:&amp;lt;/p&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Logout link&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Settings button (replaces Home)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Regular navigation items&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Admin indicator&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Decentralized Connections&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+Connect with other Temporal Flow sites directly, with no central server or algorithm controlling what you see. Friend connections are private to you, and you control exactly what sites you want to follow.
+&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Temporal Context&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+The timeline feature helps readers understand content in chronological context, turning isolated posts into an interconnected narrative that can be explored in multiple ways.
+&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Complete Ownership&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+You host your Temporal Flow site wherever you want (GitHub Pages, Netlify, Vercel, etc.), meaning you completely own and control your content, design, and audience relationship.
+&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Adding Friends&lt;/h2&gt;
-&lt;p&gt;Once logged in, you can start connecting with other Temporal Flow sites.&lt;/p&gt;
+&lt;h2&gt;Essential Guides&lt;/h2&gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-8&quot;&amp;gt;
+&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Detailed Feature Guides&amp;lt;/h3&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;
+We&apos;ve prepared detailed guides to help you get started with the core features of Temporal Flow. Each guide provides step-by-step instructions and best practices.
+&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;space-y-6 mt-6&quot;&amp;gt;
+&amp;lt;div&amp;gt;
+&amp;lt;h4 className=&quot;font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]&quot;&amp;gt;
+&amp;lt;a href=&quot;/posts/getting-started-post&quot; className=&quot;hover:underline&quot;&amp;gt;Getting Started: Making a Post&amp;lt;/a&amp;gt;
+&amp;lt;/h4&amp;gt;
+&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-2&quot;&amp;gt;
+Learn how to create and publish your first post on Temporal Flow, including proper formatting, frontmatter configuration, and advanced content features.
+&amp;lt;/p&amp;gt;
+&amp;lt;div className=&quot;mt-2&quot;&amp;gt;
+&amp;lt;a href=&quot;/posts/getting-started-post&quot; className=&quot;text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))] text-sm font-medium hover:underline&quot;&amp;gt;Read the guide →&amp;lt;/a&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
+  &amp;lt;h4 className=&quot;font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]&quot;&amp;gt;
+    &amp;lt;a href=&quot;/posts/Getting-Started-Friends&quot; className=&quot;hover:underline&quot;&amp;gt;Getting Started: Making Connections&amp;lt;/a&amp;gt;
+  &amp;lt;/h4&amp;gt;
+  &amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-2&quot;&amp;gt;
+    Discover how to connect your Temporal Flow blog with others through the Friend Content Sharing system, building a network while maintaining your independence.
+  &amp;lt;/p&amp;gt;
+  &amp;lt;div className=&quot;mt-2&quot;&amp;gt;
+    &amp;lt;a href=&quot;/posts/Getting-Started-Friends&quot; className=&quot;text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))] text-sm font-medium hover:underline&quot;&amp;gt;Read the guide →&amp;lt;/a&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;div&amp;gt;
+  &amp;lt;h4 className=&quot;font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]&quot;&amp;gt;
+    &amp;lt;a href=&quot;/posts/Getting-Started-Timelines&quot; className=&quot;hover:underline&quot;&amp;gt;Timeline Visualization: Creating Chronological Content&amp;lt;/a&amp;gt;
+  &amp;lt;/h4&amp;gt;
+  &amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-2&quot;&amp;gt;
+    Learn how to use Temporal Flow&apos;s powerful timeline visualization system to create interactive chronological displays for your content.
+  &amp;lt;/p&amp;gt;
+  &amp;lt;div className=&quot;mt-2&quot;&amp;gt;
+    &amp;lt;a href=&quot;/posts/getting-started-timelines&quot; className=&quot;text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))] text-sm font-medium hover:underline&quot;&amp;gt;Read the guide →&amp;lt;/a&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Quick Start&lt;/h2&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Step-by-Step Friend Addition&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;For the Impatient&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Want to dive right in? Here&apos;s a streamlined process to get your Temporal Flow site up and running quickly:&amp;lt;/p&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;ol className=&quot;list-decimal pl-5 space-y-3 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
 &amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Navigate to the Friends page&amp;lt;/strong&amp;gt;
-&amp;lt;p className=&quot;mt-1&quot;&amp;gt;Click on the Settings button in the navigation bar and select &quot;Friends&quot; from the dropdown menu.&amp;lt;/p&amp;gt;
+&amp;lt;strong&amp;gt;Set up your repository&amp;lt;/strong&amp;gt;
+&amp;lt;p className=&quot;mt-1&quot;&amp;gt;Clone the Temporal Flow starter template and install dependencies:&amp;lt;/p&amp;gt;
+&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md mt-2 font-mono text-sm&quot;&amp;gt;
+git clone https://github.com/yourusername/temporal-flow.git&amp;lt;br /&amp;gt;
+cd temporal-flow&amp;lt;br /&amp;gt;
+pnpm install
+&amp;lt;/div&amp;gt;
 &amp;lt;/li&amp;gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;li&amp;gt;
-  &amp;lt;strong&amp;gt;Add a new friend&amp;lt;/strong&amp;gt;
-  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;On the Friends page, you&apos;ll see a form to add a new friend connection.&amp;lt;/p&amp;gt;
-  &amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md mt-2&quot;&amp;gt;
-    &amp;lt;p className=&quot;text-sm mb-2&quot;&amp;gt;Required information:&amp;lt;/p&amp;gt;
-    &amp;lt;ul className=&quot;list-disc pl-5 text-sm&quot;&amp;gt;
-      &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Friend Name&amp;lt;/strong&amp;gt;: The name of the blog or site owner&amp;lt;/li&amp;gt;
-      &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Site URL&amp;lt;/strong&amp;gt;: The complete URL to the friend&apos;s Temporal Flow site&amp;lt;/li&amp;gt;
-    &amp;lt;/ul&amp;gt;
+  &amp;lt;strong&amp;gt;Configure your site&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;Edit &amp;lt;code&amp;gt;src/config.ts&amp;lt;/code&amp;gt; to customize your site name, description, and preferences.&amp;lt;/p&amp;gt;
+&amp;lt;/li&amp;gt;
+
+&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Create your first post&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;Add a markdown file to &amp;lt;code&amp;gt;content/posts/hello-world.mdx&amp;lt;/code&amp;gt; with frontmatter and content.&amp;lt;/p&amp;gt;
+&amp;lt;/li&amp;gt;
+
+&amp;lt;li&amp;gt;
+  &amp;lt;strong&amp;gt;Run the development server&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;Start the local development server to preview your site:&amp;lt;/p&amp;gt;
+  &amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-2 rounded-md mt-2 font-mono text-sm&quot;&amp;gt;
+    pnpm run astro dev
   &amp;lt;/div&amp;gt;
 &amp;lt;/li&amp;gt;
 
 &amp;lt;li&amp;gt;
-  &amp;lt;strong&amp;gt;Click &quot;Add Friend&quot;&amp;lt;/strong&amp;gt;
-  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;The system will validate the URL and attempt to establish a connection with the site.&amp;lt;/p&amp;gt;
-  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;If successful, the site will be added to your temporary friends list, displayed below the form.&amp;lt;/p&amp;gt;
-&amp;lt;/li&amp;gt;
-
-&amp;lt;li&amp;gt;
-  &amp;lt;strong&amp;gt;Save the friend connection permanently&amp;lt;/strong&amp;gt;
-  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;To make this connection permanent, click the &quot;Save Friend&quot; button next to the temporary friend entry.&amp;lt;/p&amp;gt;
-  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;You&apos;ll be prompted to save a markdown file - this is your friend connection file.&amp;lt;/p&amp;gt;
-  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;Save this file in the &amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt; folder of your site.&amp;lt;/p&amp;gt;
+  &amp;lt;strong&amp;gt;Deploy to GitHub Pages&amp;lt;/strong&amp;gt;
+  &amp;lt;p className=&quot;mt-1&quot;&amp;gt;Push your changes to GitHub and enable GitHub Pages for your repository.&amp;lt;/p&amp;gt;
 &amp;lt;/li&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&amp;lt;/ol&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Understanding Friend Connection Files&lt;/h3&gt;
+&lt;h2&gt;Key Configuration Files&lt;/h2&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Friend Connection Files&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;When you save a friend connection, a markdown file is created with the following structure:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-friendName: &quot;Example Blog&quot;
-siteUrl: &quot;https://example-blog.com&quot;
-avatarUrl: &quot;/friends/example-avatar.png&quot;
-bio: &quot;A great blog about interesting topics&quot;
-addedOn: &quot;2025-03-30&quot;
----
-
-# Connection to Example Blog
-
-Added this connection on March 30, 2025. This blog focuses on technology tutorials.
-
-## Notes
-
-- Great resource for JavaScript content
-- Updates weekly on Fridays
-- Owner: Jane Smith
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;These files are stored in the &amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt; directory and will persist until manually deleted. Each file represents one friend connection.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Managing Friend Content&lt;/h2&gt;
-&lt;p&gt;After adding friends, you&apos;ll be able to see their content in your feed, but only when you&apos;re logged in as an administrator.&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Viewing Friend Content&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Once you&apos;ve added and saved friends:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ol className=&quot;list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Return to your main feed (homepage)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;When logged in, you&apos;ll see content from your friends displayed in your feed&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Friend content will be clearly labeled with the friend&apos;s name and site&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;You can click on friend content to view the full article&amp;lt;/li&amp;gt;
-&amp;lt;/ol&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;bg-yellow-50 dark:bg-yellow-900 border-l-4 border-yellow-400 p-4 rounded-md mt-4&quot;&amp;gt;
-&amp;lt;p className=&quot;text-yellow-800 dark:text-yellow-200 font-bold&quot;&amp;gt;Important Privacy Note&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;text-yellow-700 dark:text-yellow-300&quot;&amp;gt;Friend content is only visible to you when logged in as an administrator. Regular visitors to your site will only see your own content.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Friend Content Behavior&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;When Logged In&amp;lt;/h4&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Your content and friend content both appear in feed&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Friend content is labeled with source&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Access to friend management features&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Ability to sync with friend sites&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;When Logged Out / For Visitors&amp;lt;/h4&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Only your own content is displayed&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;No indication of friend connections&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;No access to friend management&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Standard visitor experience&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Managing Friend Connections&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Friend Management&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;You can manage your friend connections from the Friends page:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Syncing Content&amp;lt;/strong&amp;gt;: Friend content isn&apos;t updated automatically. Click the sync button on a friend&apos;s card to fetch their latest content.
-&amp;lt;/li&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;li&amp;gt;
-  &amp;lt;strong&amp;gt;Removing Friends&amp;lt;/strong&amp;gt;: To remove a permanent friend connection, simply delete the corresponding markdown file from the &amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt; directory.
-&amp;lt;/li&amp;gt;
-
-&amp;lt;li&amp;gt;
-  &amp;lt;strong&amp;gt;Updating Friend Details&amp;lt;/strong&amp;gt;: Edit the friend&apos;s markdown file to update their information.
-&amp;lt;/li&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Technical Details: How It Works&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Behind the Scenes&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Friend Content Sharing system works through a special file called &amp;lt;code&amp;gt;friend-content.json&amp;lt;/code&amp;gt; that&apos;s automatically generated in each Temporal Flow site. This file contains information about your blog and your recent posts.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;When you add a friend, your site attempts to access their &amp;lt;code&amp;gt;friend-content.json&amp;lt;/code&amp;gt; file to retrieve their content. For this to work across different domains, proper CORS headers need to be set up.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-4 rounded-md&quot;&amp;gt;
-&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;GitHub Pages CORS Setup&amp;lt;/p&amp;gt;
-&amp;lt;p className=&quot;text-sm mb-2&quot;&amp;gt;Add a file named &amp;lt;code&amp;gt;_headers&amp;lt;/code&amp;gt; to your repository root:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;pre className=&quot;text-xs bg-white dark:bg-gray-900 p-3 rounded-md&quot;&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h1&gt;Set CORS headers for the friend-content.json file&lt;/h1&gt;
-&lt;p&gt;/friend-content.json
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: GET
-Access-Control-Allow-Headers: Content-Type
-&amp;lt;/pre&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Best Practices for Friend Connections&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Do&apos;s&amp;lt;/h4&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Connect with blogs in your niche or interest area&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Regularly sync content to see the latest posts&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Ask permission before adding someone as a friend&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Share your site URL with other Temporal Flow users&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Provide descriptive names and bios for friends&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Don&apos;ts&amp;lt;/h4&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Add too many friends (can impact performance)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Expect real-time updates (content requires manual sync)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Share friend connection files with others&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Modify friend content (view only)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Forget to set up CORS headers on your site&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Troubleshooting&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Common Connection Issues&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Important Files to Know&amp;lt;/h4&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;space-y-4&quot;&amp;gt;
 &amp;lt;div&amp;gt;
-&amp;lt;p className=&quot;font-bold&quot;&amp;gt;Can&apos;t connect to friend site?&amp;lt;/p&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Verify the site is a Temporal Flow site&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Check that the URL is correct and includes the protocol (https://)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Ensure the site has the proper CORS headers configured&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Confirm the site is accessible (not down for maintenance)&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
+&amp;lt;p className=&quot;font-bold&quot;&amp;gt;&amp;lt;code&amp;gt;src/config.ts&amp;lt;/code&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;Main configuration file for your site settings, including site name, description, social links, and navigation options.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
-  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Friend content not appearing?&amp;lt;/p&amp;gt;
-  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-    &amp;lt;li&amp;gt;Make sure you&apos;re logged in as an administrator&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Try syncing the content manually from the Friends page&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Check that the friend has published content recently&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Verify the friend connection file is in the correct location&amp;lt;/li&amp;gt;
-  &amp;lt;/ul&amp;gt;
+  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;&amp;lt;code&amp;gt;tailwind.config.cjs&amp;lt;/code&amp;gt;&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;Customize your site&apos;s color scheme, typography, and other design elements.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;&amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt;&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;Directory where all your blog posts are stored as .md or .mdx files.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;&amp;lt;code&amp;gt;content/friends/&amp;lt;/code&amp;gt;&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;Directory containing your friend connection files for the Friend Content Sharing system.&amp;lt;/p&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;div&amp;gt;
+  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;&amp;lt;code&amp;gt;src/components/&amp;lt;/code&amp;gt;&amp;lt;/p&amp;gt;
+  &amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;Reusable components that make up your site&apos;s interface, built with Svelte and styled with Tailwind CSS.&amp;lt;/p&amp;gt;
 &amp;lt;/div&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Privacy Considerations&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Understanding Privacy&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Friend Content Sharing system is designed with privacy in mind:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Your visitors never see your friend connections or their content&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Friend connections are always one-way (adding a friend doesn&apos;t give them access to your content)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Friend data is stored locally in your site files&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;No personal data beyond what&apos;s publicly available is shared&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;You control exactly which sites you connect with&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Building Your Network&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;font-jetbrains-mono pl-10 pr-10 py-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
-&amp;lt;p className=&quot;italic&quot;&amp;gt;Tips for Growing Your Connections:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ol className=&quot;mt-4 space-y-2 text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
-&amp;lt;li&amp;gt;Share your Temporal Flow site URL with other content creators&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Join the Temporal Flow community forums to find like-minded bloggers&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Add a &quot;Connect with me&quot; link on your site to encourage other Temporal Flow users to add you&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Focus on quality connections relevant to your content rather than quantity&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Create content that encourages others to connect with your site&amp;lt;/li&amp;gt;
+&lt;h2&gt;Recommended Workflow&lt;/h2&gt;
+&lt;p&gt;For the best experience with Temporal Flow, we recommend this workflow:&lt;/p&gt;
+&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
+&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Content Creation&amp;lt;/h4&amp;gt;
+&amp;lt;ol className=&quot;list-decimal pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Write posts in your favorite Markdown editor&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Add appropriate frontmatter for metadata&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Save to content/posts/ directory&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Preview with &apos;pnpm run astro dev&apos;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Commit and push to your repository&amp;lt;/li&amp;gt;
 &amp;lt;/ol&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;The Friend Content Sharing system transforms Temporal Flow from a standalone blog into a hub for connected content while maintaining your privacy and control. By building connections with other content creators, you create a personalized feed of content that&apos;s relevant to your interests and only visible to you.&lt;/p&gt;
-&lt;p&gt;As more Temporal Flow sites join the network, the value of this decentralized approach to content sharing will continue to grow, offering an alternative to centralized social platforms that puts creators in control.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
-Have questions about Friend Content Sharing? Check out the &amp;lt;a href=&quot;/posts/developers-guide-to-friend-content-sharing&quot; className=&quot;text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]&quot;&amp;gt;Developer&apos;s Guide&amp;lt;/a&amp;gt; for more technical details.
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-</content:encoded></item><item><title>Getting Started: Making a Post</title><link>https://temporalflow.org/posts/getting-started-post/</link><guid isPermaLink="true">https://temporalflow.org/posts/getting-started-post/</guid><description>Learn how to create and publish your first post on Temporal Flow with this comprehensive guide to content creation.</description><pubDate>Sun, 30 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Getting Started: Making a Post&lt;/h1&gt;
-&lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
-&quot;The journey of a thousand readers begins with a single markdown file.&quot; - Content Creator Proverb
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Overview&lt;/h2&gt;
-&lt;p&gt;Creating and publishing content on Temporal Flow is straightforward and flexible. This guide will walk you through the process of writing your first post, formatting it correctly, and making it available on your site.&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;The Basics&amp;lt;/h3&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Temporal Flow uses a content-first approach where your posts are simply text files stored in a specific folder. The platform automatically processes these files and displays them on your site without any manual publishing steps.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;All posts are written in either Markdown (.md) or MDX (.mdx) format, giving you powerful formatting options while keeping the content creation process simple and focused.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Step 1: Create Your File&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;File Creation&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Start by creating a new text file in the &amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt; directory of your Temporal Flow installation. You can organize files in subdirectories if you wish.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-4 rounded-md mb-4&quot;&amp;gt;
-&amp;lt;p className=&quot;font-mono text-sm&quot;&amp;gt;content/posts/my-first-post.mdx&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300&quot;&amp;gt;You can use either the .md extension for standard Markdown or .mdx if you want to include React/Svelte components in your content.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Step 2: Add Frontmatter&lt;/h2&gt;
-&lt;p&gt;Every post begins with &quot;frontmatter&quot; - a YAML section at the top of the file that defines metadata about your post. This is enclosed between triple dashes &lt;code&gt;---&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Required Frontmatter&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;At minimum, you need to include:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-title: &quot;My First Post&quot;
-published: 2025-03-30
-description: &quot;A brief description of what this post is about.&quot;
----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;The &amp;lt;code&amp;gt;title&amp;lt;/code&amp;gt; will be displayed as the main heading, &amp;lt;code&amp;gt;published&amp;lt;/code&amp;gt; is the publication date (YYYY-MM-DD format), and &amp;lt;code&amp;gt;description&amp;lt;/code&amp;gt; is used for SEO and preview snippets.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Optional Frontmatter&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;For more control, you can add these optional fields:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-# Basic metadata
-image: &quot;/posts/my-post/feature.jpg&quot;  # Featured image
-tags: [Tutorial, Guides, Beginners]   # Related topics
-category: &quot;Documentation&quot;             # Primary category
-draft: false                          # Set to true to hide from production
-lang: &quot;en&quot;                            # Content language
-
-# Custom author (override site defaults)
-avatarImage: &quot;/authors/my-avatar.png&quot;
-authorName: &quot;Your Name&quot;
-authorBio: &quot;Brief author description&quot;
-
-# Banner configuration options
-bannerType: &quot;image&quot;                   # &quot;image&quot;, &quot;video&quot;, or &quot;timeline&quot;
-
-# Timeline integration (if your post is also a timeline event)
-timelineYear: 2025
-timelineEra: &quot;documentation&quot;
-timelineLocation: &quot;Temporal Flow&quot;
-isKeyEvent: false                     # Highlight as a key event?
----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Step 3: Write Your Content&lt;/h2&gt;
-&lt;p&gt;After the frontmatter, add your post content using Markdown syntax:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Markdown Formatting&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-4&quot;&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Markdown Code&amp;lt;/p&amp;gt;
-&amp;lt;div className=&quot;bg-gray-100 dark:bg-gray-800 p-3 rounded-md h-full&quot;&amp;gt;
-&amp;lt;pre className=&quot;text-sm&quot;&amp;gt;&lt;/p&gt;
-&lt;h1&gt;Heading 1&lt;/h1&gt;
-&lt;h2&gt;Heading 2&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Bold text&lt;/strong&gt; and &lt;em&gt;italic text&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;List item 1&lt;/li&gt;
-&lt;li&gt;List item 2&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;https://example.com&quot;&gt;Link text&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/path/to/image.jpg&quot; alt=&quot;Image alt text&quot; /&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Blockquote text
-&amp;lt;/pre&amp;gt;
+&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
+&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Site Management&amp;lt;/h4&amp;gt;
+&amp;lt;ol className=&quot;list-decimal pl-5 text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;
+&amp;lt;li&amp;gt;Regularly update dependencies&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Back up your content directory&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Review and manage friend connections&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Update your timeline when adding chronological content&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Monitor site performance with built-in analytics&amp;lt;/li&amp;gt;
+&amp;lt;/ol&amp;gt;
 &amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
-  &amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Rendered Result&amp;lt;/p&amp;gt;
-  &amp;lt;div className=&quot;bg-white dark:bg-gray-700 p-3 rounded-md h-full&quot;&amp;gt;
-    &amp;lt;h1 className=&quot;text-xl font-bold&quot;&amp;gt;Heading 1&amp;lt;/h1&amp;gt;
-    &amp;lt;h2 className=&quot;text-lg font-bold&quot;&amp;gt;Heading 2&amp;lt;/h2&amp;gt;
-    &amp;lt;p className=&quot;mb-2&quot;&amp;gt;&amp;lt;strong&amp;gt;Bold text&amp;lt;/strong&amp;gt; and &amp;lt;em&amp;gt;italic text&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
-    &amp;lt;ul className=&quot;list-disc pl-5 mb-2&quot;&amp;gt;
-      &amp;lt;li&amp;gt;List item 1&amp;lt;/li&amp;gt;
-      &amp;lt;li&amp;gt;List item 2&amp;lt;/li&amp;gt;
-    &amp;lt;/ul&amp;gt;
-    &amp;lt;p className=&quot;mb-2&quot;&amp;gt;&amp;lt;a href=&quot;#&quot; className=&quot;text-blue-500 underline&quot;&amp;gt;Link text&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
-    &amp;lt;p className=&quot;mb-2&quot;&amp;gt;[Image would appear here]&amp;lt;/p&amp;gt;
-    &amp;lt;blockquote className=&quot;border-l-4 border-gray-300 pl-4 italic&quot;&amp;gt;Blockquote text&amp;lt;/blockquote&amp;gt;
-  &amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;MDX Enhancements&lt;/h3&gt;
-&lt;p&gt;When using .mdx files, you can include special Temporal Flow components:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-  This is a styled card box.
-&amp;lt;/div&amp;gt;
-
-&amp;lt;Alert type=&quot;info&quot;&amp;gt;
-  This is an info alert using a component.
-&amp;lt;/Alert&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Step 4: Save and Build&lt;/h2&gt;
+&lt;h2&gt;Community and Support&lt;/h2&gt;
 &lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Publishing Process&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Once you&apos;ve saved your file in the &amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt; directory, Temporal Flow will automatically:&amp;lt;/p&amp;gt;&lt;/p&gt;
+&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Getting Help&amp;lt;/h4&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Temporal Flow has a growing community of users and developers who can help you get the most out of the platform:&amp;lt;/p&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Process your frontmatter metadata&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Convert your Markdown/MDX to HTML&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Apply your site&apos;s theme and styles&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Add the post to your site&apos;s feed&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Update search indexes and sitemaps&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;If you&apos;re running in development mode (&amp;lt;code&amp;gt;pnpm run astro dev&amp;lt;/code&amp;gt;), you&apos;ll see changes immediately. For production, rebuild your site with &amp;lt;code&amp;gt;pnpm build&amp;lt;/code&amp;gt;.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Special Post Features&lt;/h2&gt;
-&lt;p&gt;Temporal Flow includes several special features you can leverage in your posts:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Banner System&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Customize how your post appears with different banner types. Set via &amp;lt;code&amp;gt;bannerType&amp;lt;/code&amp;gt; and &amp;lt;code&amp;gt;bannerData&amp;lt;/code&amp;gt; in frontmatter.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Timeline Integration&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Make your post appear on the interactive timeline by adding &amp;lt;code&amp;gt;timelineYear&amp;lt;/code&amp;gt; and related fields.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Custom Styling&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Use Tailwind classes with &amp;lt;code&amp;gt;className&amp;lt;/code&amp;gt; attribute to style elements for both light and dark modes.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Component Embedding&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;In MDX files, import and use Svelte components directly within your content.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Example: Complete Post&lt;/h2&gt;
-&lt;p&gt;Here&apos;s what a complete post file might look like:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-title: &quot;Getting Started with Temporal Flow&quot;
-published: 2025-03-30
-description: &quot;Your guide to setting up and using Temporal Flow for the first time.&quot;
-image: &quot;/posts/getting-started/banner.jpg&quot;
-tags: [Tutorial, Guide, Setup]
-category: &quot;Documentation&quot;
----
-
-# Getting Started with Temporal Flow
-
-Welcome to Temporal Flow! This guide will help you get started with your new content platform.
-
-## Installation
-
-First, clone the repository:
-
-```bash
-git clone https://github.com/yourusername/temporal-flow.git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Configuration&lt;/h2&gt;
-&lt;p&gt;Edit &lt;code&gt;config.ts&lt;/code&gt; to customize your site:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;export const siteConfig: SiteConfig = {
-  title: &apos;My Amazing Blog&apos;,
-  subtitle: &apos;Thoughts, stories, and ideas&apos;,
-  // ...more options
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;That&apos;s all you need to get started!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;
-## Troubleshooting
-
-&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-  &amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Common Issues&amp;lt;/h4&amp;gt;
-  
-  &amp;lt;div className=&quot;space-y-4&quot;&amp;gt;
-    &amp;lt;div&amp;gt;
-      &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Post not appearing?&amp;lt;/p&amp;gt;
-      &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-        &amp;lt;li&amp;gt;Check that the file is in the correct location (&amp;lt;code&amp;gt;content/posts/&amp;lt;/code&amp;gt;)&amp;lt;/li&amp;gt;
-        &amp;lt;li&amp;gt;Verify your frontmatter has the required fields and correct format&amp;lt;/li&amp;gt;
-        &amp;lt;li&amp;gt;Make sure &amp;lt;code&amp;gt;draft: true&amp;lt;/code&amp;gt; isn&apos;t set if you want it published&amp;lt;/li&amp;gt;
-        &amp;lt;li&amp;gt;Rebuild your site if you&apos;re in production&amp;lt;/li&amp;gt;
-      &amp;lt;/ul&amp;gt;
-    &amp;lt;/div&amp;gt;
-    
-    &amp;lt;div&amp;gt;
-      &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Formatting issues?&amp;lt;/p&amp;gt;
-      &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-        &amp;lt;li&amp;gt;Check your Markdown syntax for errors&amp;lt;/li&amp;gt;
-        &amp;lt;li&amp;gt;Ensure proper spacing after headings and between paragraphs&amp;lt;/li&amp;gt;
-        &amp;lt;li&amp;gt;Verify any custom components are imported correctly (MDX)&amp;lt;/li&amp;gt;
-      &amp;lt;/ul&amp;gt;
-    &amp;lt;/div&amp;gt;
-  &amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;
-
-## Next Steps
-
-Now that you know how to create and publish posts, you might want to:
-
-1. **Customize your site theme** by editing the configuration files
-2. **Connect with other blogs** using the Friend Content Sharing feature
-3. **Create a timeline** of chronological events
-4. **Set up different banner types** for visual variety
-
-Check out our other guides to learn more about these features!
-
----
-
-&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
-  If you have questions or need help with creating posts, join our community on Discord or GitHub.
-&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-</content:encoded></item><item><title>Timeline Visualization: Creating Chronological Content</title><link>https://temporalflow.org/posts/getting-started-timelines/</link><guid isPermaLink="true">https://temporalflow.org/posts/getting-started-timelines/</guid><description>Learn how to use Temporal Flow&apos;s powerful timeline visualization system to create interactive chronological displays for your content.</description><pubDate>Sun, 30 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Timeline Visualization: Creating Chronological Content&lt;/h1&gt;
-&lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
-&quot;Time is not just a dimension, but a storytelling medium.&quot; - Temporal Flow Design Philosophy
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Introduction to Timeline Visualization&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Chronological Storytelling&amp;lt;/h3&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The Timeline Visualization feature is one of Temporal Flow&apos;s most distinctive capabilities, allowing you to create interactive chronological displays that help users explore related content in a temporal context.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Whether you&apos;re documenting project milestones, creating a content roadmap, building a historical archive, or crafting a fictional universe timeline, this feature transforms standard blog posts into an interconnected visual narrative.&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Any post with timeline metadata becomes both a standalone content piece and a node in your interactive timeline, creating multiple entry points for readers to discover your content.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;font-jetbrains-mono pl-10 pr-10 py-10 rounded-xl bg-[oklch(0.95_0.025_var(--hue))] dark:bg-[oklch(0.25_0.025_var(--hue))] transition shadow-lg mb-8 overflow-hidden relative&quot;&amp;gt;
-&amp;lt;p className=&quot;italic&quot;&amp;gt;Timeline Feature Benefits:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;blockquote className=&quot;mt-4 text-xl text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]&quot;&amp;gt;
-&quot;The Timeline transforms isolated content pieces into a connected narrative, allowing readers to visualize relationships between events and explore content in new ways.&quot;
-&amp;lt;/blockquote&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;How Timeline Integration Works&lt;/h2&gt;
-&lt;h3&gt;Adding Content to the Timeline&lt;/h3&gt;
-&lt;p&gt;Any blog post can become a timeline event by adding specific timeline metadata in the frontmatter:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Timeline Frontmatter Fields&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To add a post to the timeline, include these fields in your post&apos;s frontmatter:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-# Required timeline fields
-timelineYear: 2023              # The year for timeline placement
-timelineEra: &quot;development&quot;      # The era classification 
-
-# Optional timeline fields
-timelineLocation: &quot;GitHub&quot;      # Location for map view
-isKeyEvent: true                # Highlight as a key event
----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;Each post with these fields will automatically appear as an event in your site&apos;s timeline visualization.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Creating Era Classifications&lt;/h3&gt;
-&lt;p&gt;Eras help organize your timeline into logical periods, making it easier for readers to understand the overall structure:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Defining Eras&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Eras are defined in &amp;lt;code&amp;gt;TimelineConfig.ts&amp;lt;/code&amp;gt; with properties like:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;export const defaultEraConfig: EraConfigMap = {
-  &apos;planning&apos;: {
-    displayName: &apos;Planning Phase&apos;,
-    startYear: 2020,
-    endYear: 2021,
-    color: &apos;blue&apos;
-  },
-  &apos;development&apos;: {
-    displayName: &apos;Development Phase&apos;,
-    startYear: 2021,
-    endYear: 2024,
-    color: &apos;green&apos;
-  },
-  &apos;release&apos;: {
-    displayName: &apos;Release Phase&apos;,
-    startYear: 2024,
-    endYear: 2025,
-    color: &apos;purple&apos;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;Each era gets a distinct color and date range, making it easy to visually differentiate periods in your timeline.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Interactive Timeline Features&lt;/h2&gt;
-&lt;p&gt;The timeline you see at the top of this page (and on any page using the timeline banner) is fully interactive. Here&apos;s how to use and navigate it:&lt;/p&gt;
-&lt;h3&gt;Navigation Controls&lt;/h3&gt;
-&lt;p&gt;The timeline features intuitive navigation controls:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Control Panel Functionality&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The timeline includes two control bars for easy navigation:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-4&quot;&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Top Control Bar&amp;lt;/p&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Era Filter&amp;lt;/strong&amp;gt;: Select a specific era to focus on related events&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;View Switcher&amp;lt;/strong&amp;gt;: Toggle between different visualization modes&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Search&amp;lt;/strong&amp;gt;: Find specific events by keyword&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;GitHub Discussions&amp;lt;/strong&amp;gt;: Ask questions and share ideas in the GitHub repository&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Discord Community&amp;lt;/strong&amp;gt;: Join our Discord server for real-time help and discussions&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Documentation&amp;lt;/strong&amp;gt;: Comprehensive guides and API documentation&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Example Sites&amp;lt;/strong&amp;gt;: Explore other Temporal Flow sites for inspiration&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
-  &amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Bottom Control Bar&amp;lt;/p&amp;gt;
-  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Reset View&amp;lt;/strong&amp;gt;: Return to the default timeline view&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Pan Controls&amp;lt;/strong&amp;gt;: Move left, right, up, or down&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Zoom Controls&amp;lt;/strong&amp;gt;: Zoom in (+) or out (-) of the timeline&amp;lt;/li&amp;gt;
-  &amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Timeline View Modes&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Timeline View&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;The standard view where events are displayed as interactive nodes along a horizontal (or vertical on mobile) timeline. Events are arranged chronologically with visual indicators for different eras.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;List View&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;A straightforward chronological list of events grouped by era. Perfect for getting a clear sequential understanding of your timeline.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Tree View&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;A vertical branch-like visualization that shows the progression of events over time, emphasizing the flow and connections between major moments.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold mb-2&quot;&amp;gt;Map View&amp;lt;/h4&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;A spatial representation showing where events occurred. Events with location data are displayed as pins on a stylized map with additional location details listed below.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Interaction Patterns&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;User Interactions&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;The timeline supports these interaction patterns:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Event Selection&amp;lt;/p&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;First Click/Tap&amp;lt;/strong&amp;gt;: Selects an event and displays its information card&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Second Click/Tap&amp;lt;/strong&amp;gt; (on selected event): Navigates to the full event page&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Double-Click/Double-Tap&amp;lt;/strong&amp;gt;: Navigates directly to the event page&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
-  &amp;lt;p className=&quot;font-bold mb-2&quot;&amp;gt;Navigation Gestures&amp;lt;/p&amp;gt;
-  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Click and Drag&amp;lt;/strong&amp;gt;: Pan around the timeline&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Mouse Wheel/Pinch&amp;lt;/strong&amp;gt;: Zoom in and out&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Background Click&amp;lt;/strong&amp;gt;: Deselect the current event&amp;lt;/li&amp;gt;
-  &amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Mobile Experience&lt;/h3&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Mobile Adaptations&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;On mobile devices, the timeline adapts with these special features:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Vertical Timeline&amp;lt;/strong&amp;gt;: The timeline rotates to vertical orientation for better mobile viewing&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Fixed Position Cards&amp;lt;/strong&amp;gt;: Event information appears in a fixed position at the bottom of the screen&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Touch Gestures&amp;lt;/strong&amp;gt;: Optimized for finger interactions including pinch-to-zoom and smooth dragging&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Simplified Controls&amp;lt;/strong&amp;gt;: Adapted control layout for smaller screens&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Using Timelines in Your Content&lt;/h2&gt;
-&lt;h3&gt;Timeline as a Banner&lt;/h3&gt;
-&lt;p&gt;One of the most powerful uses of the timeline is as an interactive banner at the top of a page:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Timeline Banner Configuration&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To use a timeline as your page banner, add this to your frontmatter:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;---
-bannerType: &quot;timeline&quot;
-bannerData:
-  category: &quot;Project History&quot;
-  startYear: 2020
-  endYear: 2025
-  background: &quot;/path/to/background.jpg&quot;
-  height: &quot;70vh&quot;  # Optional custom height
----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mt-4&quot;&amp;gt;This creates an interactive timeline with all events from the specified category as your page header.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h3&gt;Timeline Page&lt;/h3&gt;
-&lt;p&gt;You can also create a dedicated timeline page to showcase all your timeline content:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Creating a Timeline Page&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;To create a dedicated timeline page:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Create a new file at &lt;code&gt;src/pages/timeline.astro&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Import the TimelinePage component&lt;/li&gt;
-&lt;li&gt;Configure the timeline settings&lt;/li&gt;
-&lt;/ol&gt;
-&lt;pre&gt;&lt;code&gt;---
-import TimelinePage from &quot;../components/TimelinePage.astro&quot;;
-import MainLayout from &quot;../layouts/MainLayout.astro&quot;;
-
-const pageTitle = &quot;Project Timeline&quot;;
----
-
-&amp;lt;MainLayout title={pageTitle}&amp;gt;
-  &amp;lt;TimelinePage 
-    title={pageTitle}
-    description=&quot;The complete chronology of our project development&quot;
-    startYear={2020}
-    endYear={2025}
-    defaultEra=&quot;all&quot;
-  /&amp;gt;
-&amp;lt;/MainLayout&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Understanding Timeline Elements&lt;/h2&gt;
-&lt;p&gt;The timeline uses several visual indicators to help readers understand its contents:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Visual Indicators&amp;lt;/h4&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Event Nodes&amp;lt;/strong&amp;gt;: Events appear as interactive nodes with colors indicating their era&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Node Size and Brightness&amp;lt;/strong&amp;gt;: Larger, brighter nodes represent key events that have the &amp;lt;code&amp;gt;isKeyEvent: true&amp;lt;/code&amp;gt; property&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Glow Effects&amp;lt;/strong&amp;gt;: Selected events have a distinctive glow to highlight your current focus&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Event Cards&amp;lt;/strong&amp;gt;: Information cards show details when you select an event&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Timeline Line&amp;lt;/strong&amp;gt;: The central line represents the flow of time (horizontal on desktop, vertical on mobile)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Era Badges&amp;lt;/strong&amp;gt;: Colored tags indicate which era an event belongs to&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Map Pins&amp;lt;/strong&amp;gt;: In Map view, events with location data appear as pins on the map&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Map View Special Features&lt;/h2&gt;
-&lt;p&gt;If you provide location data for your timeline events, you can use the Map view:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Spatial Navigation&amp;lt;/h4&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Interactive Pins&amp;lt;/strong&amp;gt;: Hovering over pins shows event information&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Legend&amp;lt;/strong&amp;gt;: Explains the color coding system for regular and key events&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Location List&amp;lt;/strong&amp;gt;: All events with locations are listed below the map for easy access&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Location Filtering&amp;lt;/strong&amp;gt;: Only events with the &amp;lt;code&amp;gt;timelineLocation&amp;lt;/code&amp;gt; property appear in this view&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Practical Timeline Examples&lt;/h2&gt;
-&lt;p&gt;Here are some ways you can use the timeline in your Temporal Flow site:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.8_0.1_var(--hue))]&quot;&amp;gt;Project Development History&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Document your project&apos;s evolution over time, from initial concept through planning, development phases, and releases.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.7_0.2_var(--hue))]&quot;&amp;gt;Content Roadmap&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Create a visual representation of your content plan, showing both published pieces and upcoming content scheduled for future release.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.6_0.3_var(--hue))]&quot;&amp;gt;Historical Documentation&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Build an interactive historical archive for a topic, organization, location, or period, with chronologically arranged events and documents.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.5_0.1_var(--hue))]&quot;&amp;gt;Creative Universe Timeline&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;For fiction writers or worldbuilders, create a chronology of events in your fictional universe to help readers navigate complex narratives.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-8&quot;&amp;gt;
-&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.8_0.1_var(--hue))]&quot;&amp;gt;Tutorial Series&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Organize a series of tutorials in chronological order, making it easy for readers to follow along in the correct sequence.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.7_0.2_var(--hue))]&quot;&amp;gt;Product Release History&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Track product versions, features, and updates in a visual timeline that helps users understand your product&apos;s evolution.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.6_0.3_var(--hue))]&quot;&amp;gt;Portfolio Timeline&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Display your work or projects in chronological order, showing your professional growth and accomplishments over time.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-4&quot;&amp;gt;
-&amp;lt;h3 className=&quot;font-bold text-lg mb-2 text-[oklch(0.5_0.1_var(--hue))]&quot;&amp;gt;Event Documentation&amp;lt;/h3&amp;gt;
-&amp;lt;p className=&quot;text-sm text-gray-700 dark:text-neutral-300&quot;&amp;gt;Create a visual record of events, conferences, or meetings, making it easy to find specific moments and their corresponding materials.&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Timeline Configuration&lt;/h2&gt;
-&lt;p&gt;To customize your timeline&apos;s appearance and behavior, you can modify the configuration:&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;TimelineConfig.ts&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;p className=&quot;text-gray-700 dark:text-neutral-300 mb-4&quot;&amp;gt;Edit &amp;lt;code&amp;gt;TimelineConfig.ts&amp;lt;/code&amp;gt; to adjust timeline settings:&amp;lt;/p&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;export const timelineConfig = {
-  // Visual settings
-  nodeSize: 16,          // Base size of event nodes
-  keyEventScale: 1.5,    // How much larger key events appear
-  dateFormat: &apos;YYYY&apos;,    // Format for date display
-  
-  // Interaction settings
-  animationDuration: 500,  // Animation speed in ms
-  zoomLevels: {
-    min: 0.5,            // Minimum zoom level
-    max: 3,              // Maximum zoom level
-    default: 1           // Default zoom level
-  },
-  
-  // Default view settings
-  defaultView: &apos;timeline&apos;,  // &apos;timeline&apos;, &apos;list&apos;, &apos;tree&apos;, or &apos;map&apos;
-  defaultEra: &apos;all&apos;,        // Which era to show by default
-  
-  // Mobile adaptations
-  mobileBreakpoint: 768,    // Screen width to trigger mobile view
-  mobileOrientation: &apos;vertical&apos;  // Timeline orientation on mobile
-};
-
-// Era definitions
-export const defaultEraConfig = {
-  // Era definitions as shown earlier
-};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Advanced Timeline Tips&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Power User Techniques&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;ul className=&quot;list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Multiple Timelines&amp;lt;/strong&amp;gt;: Create category-specific timelines by filtering for different &amp;lt;code&amp;gt;timelineEra&amp;lt;/code&amp;gt; values
-&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Timeline Embedding&amp;lt;/strong&amp;gt;: Use the &amp;lt;code&amp;gt;&amp;lt;Timeline /&amp;gt;&amp;lt;/code&amp;gt; component directly in MDX content to embed smaller, focused timelines
-&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Custom Event Cards&amp;lt;/strong&amp;gt;: Create custom card templates for different event types by extending the base components
-&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Time Precision&amp;lt;/strong&amp;gt;: For more precise timelines, use &amp;lt;code&amp;gt;timelineDate&amp;lt;/code&amp;gt; instead of &amp;lt;code&amp;gt;timelineYear&amp;lt;/code&amp;gt; with ISO date format
-&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;
-&amp;lt;strong&amp;gt;Connected Events&amp;lt;/strong&amp;gt;: Use &amp;lt;code&amp;gt;relatedEvents&amp;lt;/code&amp;gt; in frontmatter to link timeline events to each other
-&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;h2&gt;Troubleshooting&lt;/h2&gt;
-&lt;p&gt;&amp;lt;div className=&quot;card-base p-6 mb-6&quot;&amp;gt;
-&amp;lt;h4 className=&quot;font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400&quot;&amp;gt;Common Timeline Issues&amp;lt;/h4&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div className=&quot;space-y-4&quot;&amp;gt;
-&amp;lt;div&amp;gt;
-&amp;lt;p className=&quot;font-bold&quot;&amp;gt;Posts not appearing in timeline?&amp;lt;/p&amp;gt;
-&amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-&amp;lt;li&amp;gt;Check that &amp;lt;code&amp;gt;timelineYear&amp;lt;/code&amp;gt; and &amp;lt;code&amp;gt;timelineEra&amp;lt;/code&amp;gt; are defined in frontmatter&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Verify the era name matches one defined in &amp;lt;code&amp;gt;TimelineConfig.ts&amp;lt;/code&amp;gt;&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Ensure the post is not in draft mode (&amp;lt;code&amp;gt;draft: true&amp;lt;/code&amp;gt;)&amp;lt;/li&amp;gt;
-&amp;lt;li&amp;gt;Rebuild your site if you&apos;re in production mode&amp;lt;/li&amp;gt;
-&amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;
-  &amp;lt;p className=&quot;font-bold&quot;&amp;gt;Performance issues with large timelines?&amp;lt;/p&amp;gt;
-  &amp;lt;ul className=&quot;list-disc pl-5 text-gray-700 dark:text-neutral-300&quot;&amp;gt;
-    &amp;lt;li&amp;gt;Use category filtering to limit the number of displayed events&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Consider splitting very large timelines into multiple smaller ones&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Reduce image sizes in event cards to improve load times&amp;lt;/li&amp;gt;
-    &amp;lt;li&amp;gt;Use the list view for timelines with hundreds of events&amp;lt;/li&amp;gt;
-  &amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;lt;/div&amp;gt;
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;h2&gt;Next Steps&lt;/h2&gt;
-&lt;p&gt;Now that you understand the timeline feature, consider these next steps:&lt;/p&gt;
+&lt;p&gt;Now that you have an overview of Temporal Flow, here are some suggested next steps:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Create your first timeline event&lt;/strong&gt; by adding timeline metadata to an existing post&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Define your eras&lt;/strong&gt; in the TimelineConfig.ts file to organize your content&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Create a dedicated timeline page&lt;/strong&gt; to showcase all your chronological content&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Add a timeline banner&lt;/strong&gt; to a key page to highlight related chronological events&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Read the detailed guides&lt;/strong&gt; linked above to fully understand each feature&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Set up your development environment&lt;/strong&gt; following the Quick Start guide&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Create your first post&lt;/strong&gt; using the post creation guide&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Customize your site&lt;/strong&gt; by editing the configuration files&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Connect with other Temporal Flow users&lt;/strong&gt; through the Friend Content Sharing system&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;By leveraging the Timeline Visualization feature, you can transform your Temporal Flow site from a simple blog into an interactive, chronological knowledge base that engages readers and provides new ways to discover your content.&lt;/p&gt;
+&lt;p&gt;Welcome to Temporal Flow - we&apos;re excited to see what you create!&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
-For more advanced customization options, check out the Timeline API documentation in the Temporal Flow developer guides.
+This guide was last updated on March 31, 2025. For the latest information, please check the &amp;lt;a href=&quot;/documentation&quot; className=&quot;text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]&quot;&amp;gt;official documentation&amp;lt;/a&amp;gt;.
 &amp;lt;/div&amp;gt;&lt;/p&gt;
 </content:encoded></item></channel></rss>

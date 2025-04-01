@@ -6,8 +6,12 @@
   import AppearanceConfigTab from './config-tabs/AppearanceConfigTab.svelte';
   import TimelineConfigTab from './config-tabs/TimelineConfigTab.svelte';
   import CommunityConfigTab from './config-tabs/CommunityConfigTab.svelte';
+  import AboutConfigTab from './config-tabs/AboutConfigTab.svelte';
+  import SecurityConfigTab from './config-tabs/SecurityConfigTab.svelte'; 
   import AdvancedConfigTab from './config-tabs/AdvancedConfigTab.svelte';
   import ConfigExporter from './ConfigExporter.svelte';
+  import CommunityConfigExporter from './CommunityConfigExporter.svelte';
+  import AboutConfigExporter from './AboutConfigExporter.svelte';
     
   // Props for configuration objects
   export let siteConfig;
@@ -17,6 +21,7 @@
   export let timelineConfig;
   export let avatarConfig;
   export let communityConfig;
+  export let aboutConfig;
   
   // State management
   let activeTab = 'general';
@@ -31,7 +36,8 @@
     licenseConfig: null,
     timelineConfig: null,
     avatarConfig: null,
-    communityConfig: null
+    communityConfig: null,
+    aboutConfig: null
   };
   
   // Event dispatcher for notifying parent components
@@ -45,6 +51,8 @@
     { id: 'appearance', label: 'Appearance', icon: 'mdi:palette-outline' },
     { id: 'timeline', label: 'Timeline', icon: 'mdi:timeline' },
     { id: 'community', label: 'Community', icon: 'mdi:account-group' },
+    { id: 'about', label: 'About', icon: 'mdi:information-outline' },
+    { id: 'security', label: 'Security', icon: 'mdi:shield-outline' },
     { id: 'advanced', label: 'Advanced', icon: 'mdi:code-json' }
   ];
   
@@ -53,8 +61,10 @@
     activeTab = tabId;
   }
   
-  // State for config exporter
+  // State for config exporters
   let showConfigExporter = false;
+  let showCommunityConfigExporter = false;
+  let showAboutConfigExporter = false;
   
   // Function to handle saving all configuration
   async function saveAllConfiguration() {
@@ -70,6 +80,7 @@
       localStorage.setItem('timelineConfig', JSON.stringify(timelineConfig));
       localStorage.setItem('avatarConfig', JSON.stringify(avatarConfig));
       localStorage.setItem('communityConfig', JSON.stringify(communityConfig));
+      localStorage.setItem('aboutConfig', JSON.stringify(aboutConfig));
       
       // Update original values to reflect saved state
       originalConfigValues = {
@@ -79,7 +90,8 @@
         licenseConfig: JSON.stringify(licenseConfig),
         timelineConfig: JSON.stringify(timelineConfig),
         avatarConfig: JSON.stringify(avatarConfig),
-        communityConfig: JSON.stringify(communityConfig)
+        communityConfig: JSON.stringify(communityConfig),
+        aboutConfig: JSON.stringify(aboutConfig)
       };
       
       // Reset hasChanges flag
@@ -88,8 +100,14 @@
       // Show success message
       saveStatus.success = true;
       
-      // Show the config exporter for permanent saving
-      showConfigExporter = true;
+      // Show the appropriate exporter based on active tab
+      if (activeTab === 'community') {
+        showCommunityConfigExporter = true;
+      } else if (activeTab === 'about') {
+        showAboutConfigExporter = true;
+      } else {
+        showConfigExporter = true;
+      }
       
       // Notify parent component
       dispatch('saved', { 
@@ -99,7 +117,8 @@
         licenseConfig,
         timelineConfig,
         avatarConfig,
-        communityConfig
+        communityConfig,
+        aboutConfig
       });
       
       // Reset success message after a delay
@@ -143,6 +162,39 @@
         };
       }
       
+      if (!aboutConfig) {
+        aboutConfig = {
+          team: {
+            enabled: true,
+            title: "Our Team",
+            description: "Meet the people behind the project",
+            layout: "grid",
+            columns: {
+              mobile: 1,
+              tablet: 2,
+              desktop: 3
+            },
+            showEmail: true,
+            showRole: true,
+            avatarShape: "rounded"
+          },
+          content: {
+            enabled: true,
+            defaultTitle: "About The Project",
+            showTableOfContents: true
+          },
+          contact: {
+            enabled: true,
+            title: "Get In Touch",
+            description: "Have questions, ideas, or want to collaborate? We'd love to hear from you!",
+            contactInfo: {
+              email: "Greg@dndiy.org"
+            },
+            displayOrder: ["description", "email"]
+          }
+        };
+      }
+      
       const savedSiteConfig = localStorage.getItem('siteConfig');
       if (savedSiteConfig && savedSiteConfig !== 'undefined') {
         siteConfig = { ...siteConfig, ...JSON.parse(savedSiteConfig) };
@@ -178,6 +230,11 @@
         communityConfig = { ...communityConfig, ...JSON.parse(savedCommunityConfig) };
       }
       
+      const savedAboutConfig = localStorage.getItem('aboutConfig');
+      if (savedAboutConfig && savedAboutConfig !== 'undefined') {
+        aboutConfig = { ...aboutConfig, ...JSON.parse(savedAboutConfig) };
+      }
+      
       // Store original values for change detection
       originalConfigValues = {
         siteConfig: JSON.stringify(siteConfig),
@@ -186,7 +243,8 @@
         licenseConfig: JSON.stringify(licenseConfig),
         timelineConfig: JSON.stringify(timelineConfig),
         avatarConfig: JSON.stringify(avatarConfig),
-        communityConfig: JSON.stringify(communityConfig)
+        communityConfig: JSON.stringify(communityConfig),
+        aboutConfig: JSON.stringify(aboutConfig)
       };
     } catch (error) {
       console.error('Error loading saved configuration:', error);
@@ -197,7 +255,8 @@
   $: {
     if (originalConfigValues.siteConfig && originalConfigValues.navBarConfig &&
         originalConfigValues.profileConfig && originalConfigValues.licenseConfig &&
-        originalConfigValues.timelineConfig && originalConfigValues.communityConfig) {
+        originalConfigValues.timelineConfig && originalConfigValues.communityConfig &&
+        originalConfigValues.aboutConfig) {
           
       try {
         const currentValues = {
@@ -207,7 +266,8 @@
           licenseConfig: JSON.stringify(licenseConfig),
           timelineConfig: JSON.stringify(timelineConfig),
           avatarConfig: JSON.stringify(avatarConfig),
-          communityConfig: JSON.stringify(communityConfig)
+          communityConfig: JSON.stringify(communityConfig),
+          aboutConfig: JSON.stringify(aboutConfig)
         };
         
         hasChanges = 
@@ -217,7 +277,8 @@
           currentValues.licenseConfig !== originalConfigValues.licenseConfig ||
           currentValues.timelineConfig !== originalConfigValues.timelineConfig ||
           currentValues.avatarConfig !== originalConfigValues.avatarConfig ||
-          currentValues.communityConfig !== originalConfigValues.communityConfig;
+          currentValues.communityConfig !== originalConfigValues.communityConfig ||
+          currentValues.aboutConfig !== originalConfigValues.aboutConfig;
       } catch (error) {
         console.error("Error checking for changes:", error);
         // If there's an error comparing, assume changes were made
@@ -279,6 +340,12 @@
                     <circle cx="9" cy="7" r="4"></circle>
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  {:else if tab.icon === 'mdi:information-outline'}
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  {:else if tab.icon === 'mdi:shield-outline'}
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path> 
                   {:else if tab.icon === 'mdi:code-json'}
                     <polyline points="16 18 22 12 16 6"></polyline>
                     <polyline points="8 6 2 12 8 18"></polyline>
@@ -326,6 +393,15 @@
             bind:communityConfig 
             on:change={() => hasChanges = true} 
           />
+        {:else if activeTab === 'about'}
+          <AboutConfigTab 
+            bind:aboutConfig 
+            on:change={() => hasChanges = true} 
+          />
+          {:else if activeTab === 'security'}
+          <SecurityConfigTab
+            on:change={() => hasChanges = true}
+          />
         {:else if activeTab === 'advanced'}
           <AdvancedConfigTab 
             {siteConfig} 
@@ -335,6 +411,7 @@
             {timelineConfig}
             {avatarConfig}
             {communityConfig}
+            {aboutConfig}
             on:update={(e) => {
               // Handle updates from the advanced editor
               const { configType, newValue } = e.detail;
@@ -345,6 +422,7 @@
               else if (configType === 'timelineConfig') timelineConfig = newValue;
               else if (configType === 'avatarConfig') avatarConfig = newValue;
               else if (configType === 'communityConfig') communityConfig = newValue;
+              else if (configType === 'aboutConfig') aboutConfig = newValue;
               
               // Mark that changes have been made
               hasChanges = true;
@@ -400,7 +478,7 @@
   </div>
 </div>
 
-<!-- Config Exporter Dialog -->
+<!-- General Config Exporter Dialog -->
 <ConfigExporter
   bind:show={showConfigExporter}
   {siteConfig}
@@ -410,7 +488,22 @@
   {timelineConfig}
   {avatarConfig}
   {communityConfig}
+  {aboutConfig}
   on:close={() => showConfigExporter = false}
+/>
+
+<!-- Community Config Exporter Dialog -->
+<CommunityConfigExporter
+  bind:show={showCommunityConfigExporter}
+  {communityConfig}
+  on:close={() => showCommunityConfigExporter = false}
+/>
+
+<!-- About Config Exporter Dialog -->
+<AboutConfigExporter
+  bind:show={showAboutConfigExporter}
+  {aboutConfig}
+  on:close={() => showAboutConfigExporter = false}
 />
   
 <style>

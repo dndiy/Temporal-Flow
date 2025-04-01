@@ -1,6 +1,5 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
-import AvatarSaveDialog from './AvatarSaveDialog.svelte';
   
   // Props
   export let profileConfig;
@@ -9,12 +8,9 @@ import AvatarSaveDialog from './AvatarSaveDialog.svelte';
   // Local state
   let editingSocial = null;
   let showSocialEditor = false;
-  let uploadingAvatar = false;
-  let uploadingAvatarSequence = false;
   let isAvatarSequence = false;
   let avatarCount = 0;
   let selectedAvatarIndex = 0;
-  let showConfirmReplaceDialog = false;
   
   // Event dispatcher
   const dispatch = createEventDispatcher();
@@ -107,10 +103,6 @@ import AvatarSaveDialog from './AvatarSaveDialog.svelte';
     }
   }
   
-  // References to file inputs
-  let singleAvatarInput;
-  let sequenceAvatarInput;
-  
   // Avatar Functions
   
   // Initialize from avatarConfig on mount
@@ -147,119 +139,6 @@ import AvatarSaveDialog from './AvatarSaveDialog.svelte';
     }
   });
 
-  // Function to handle avatar upload
-  function handleAvatarUpload() {
-    // Trigger the hidden file input
-    singleAvatarInput.click();
-  }
-  
-  // Process selected avatar file
-  function processSingleAvatarFile(event) {
-    const files = event.target.files;
-    if (!files.length) return;
-    
-    uploadingAvatar = true;
-    
-    // Read the selected file
-    const file = files[0];
-    const reader = new FileReader();
-    
-    reader.onload = function(e) {
-      // Get the image data URL
-      const imageDataUrl = e.target.result;
-      
-      // For localStorage, we'll use the actual data URL for preview
-      // but we'll mark it with a special prefix for the config export
-      const timestamp = new Date().getTime();
-      
-      // Set the profile avatar to the actual data URL for preview
-      profileConfig.avatar = imageDataUrl;
-      
-      // Initialize avatarConfig if it doesn't exist
-      if (!avatarConfig) {
-        avatarConfig = {
-          avatarList: [],
-          homeAvatar: '',
-          animationInterval: 3500
-        };
-      }
-      
-      // Update avatarConfig - we'll use the actual URL for the UI display
-      // but when exporting, the ConfigExporter will use file references
-      avatarConfig.homeAvatar = imageDataUrl;
-      avatarConfig.avatarList = [imageDataUrl];
-      
-      uploadingAvatar = false;
-      isAvatarSequence = false;
-      
-      dispatch('change', profileConfig);
-      dispatch('avatarChange', avatarConfig);
-      
-      // Show the confirmation dialog
-      showConfirmReplaceDialog = true;
-    };
-    
-    reader.readAsDataURL(file);
-  }
-  
-  // Function to handle avatar sequence upload
-  function handleAvatarSequenceUpload() {
-    // Trigger the hidden file input for multiple files
-    sequenceAvatarInput.click();
-  }
-  
-  // Process selected sequence files
-  function processSequenceFiles(event) {
-    const files = event.target.files;
-    if (!files.length) return;
-    
-    uploadingAvatarSequence = true;
-    
-    const fileReaders = [];
-    const sequence = [];
-    
-    // Initialize avatarConfig if it doesn't exist
-    if (!avatarConfig) {
-      avatarConfig = {
-        avatarList: [],
-        homeAvatar: '',
-        animationInterval: 3500
-      };
-    }
-    
-    // Process each file
-    Array.from(files).forEach((file, index) => {
-      const reader = new FileReader();
-      
-      reader.onload = function(e) {
-        sequence.push(e.target.result);
-        
-        // When all files are processed
-        if (sequence.length === files.length) {
-          // Update avatar config
-          avatarConfig.avatarList = sequence;
-          avatarConfig.homeAvatar = sequence[0]; // First image as home avatar
-          
-          // Update profile config
-          profileConfig.avatar = sequence[0];
-          
-          uploadingAvatarSequence = false;
-          avatarCount = sequence.length;
-          isAvatarSequence = true;
-          
-          dispatch('change', profileConfig);
-          dispatch('avatarChange', avatarConfig);
-          
-          // Show the confirmation dialog
-          showConfirmReplaceDialog = true;
-        }
-      };
-      
-      fileReaders.push(reader);
-      reader.readAsDataURL(file);
-    });
-  }
-  
   // Function to update animation interval
   function updateAnimationInterval() {
     dispatch('avatarChange', avatarConfig);
@@ -654,15 +533,4 @@ import AvatarSaveDialog from './AvatarSaveDialog.svelte';
     </div>
   {/if}
   
-  <!-- Confirmation Dialog for saving images -->
-  <AvatarSaveDialog
-    bind:show={showConfirmReplaceDialog}
-    {avatarConfig}
-    isSequence={isAvatarSequence}
-    on:close={() => showConfirmReplaceDialog = false}
-    on:saved={() => {
-      // In a real implementation, this would be where you'd refresh the views
-      // after successfully saving the images to the server
-    }}
-  />
 </div>
