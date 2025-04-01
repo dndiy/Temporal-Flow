@@ -458,6 +458,42 @@
             </div>
           </div>
         </div>
+        
+        <!-- Match Original Layout Helper -->
+        <div class="mt-4 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700">
+          <h4 class="font-medium text-base mb-3">Match Original Layout</h4>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+            This will set the configuration to exactly match the original about.astro layout.
+          </p>
+          <button 
+            class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-md transition-colors text-sm"
+            on:click={() => {
+              // Set configuration to match original about.astro layout
+              aboutConfig.team.enabled = true;
+              aboutConfig.team.title = "Our Team";
+              aboutConfig.team.description = "";
+              aboutConfig.team.layout = "grid";
+              aboutConfig.team.columns = { mobile: 1, tablet: 2, desktop: 3 };
+              aboutConfig.team.showEmail = true;
+              aboutConfig.team.showRole = true;
+              aboutConfig.team.avatarShape = "rounded";
+              
+              aboutConfig.content.enabled = true;
+              aboutConfig.content.defaultTitle = "About The Project";
+              aboutConfig.content.showTableOfContents = true;
+              
+              aboutConfig.contact.enabled = true;
+              aboutConfig.contact.title = "Get In Touch";
+              aboutConfig.contact.description = "Have questions, ideas, or want to collaborate? We'd love to hear from you! Please Email";
+              aboutConfig.contact.contactInfo.email = "Greg@dndiy.org";
+              aboutConfig.contact.displayOrder = ["description", "email"];
+              
+              notifyChanges();
+            }}
+          >
+            Apply Original Layout
+          </button>
+        </div>
       </div>
     {/if}
   </div>
