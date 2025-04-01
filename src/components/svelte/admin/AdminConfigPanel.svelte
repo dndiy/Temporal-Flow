@@ -14,6 +14,7 @@
     export let profileConfig;
     export let licenseConfig;
     export let timelineConfig;
+    export let avatarConfig;
     
     // State management
     let activeTab = 'general';
@@ -26,7 +27,8 @@
       navBarConfig: null,
       profileConfig: null,
       licenseConfig: null,
-      timelineConfig: null
+      timelineConfig: null,
+      avatarConfig: null
     };
     
     // Event dispatcher for notifying parent components
@@ -62,6 +64,7 @@ let showConfigExporter = false;
         localStorage.setItem('profileConfig', JSON.stringify(profileConfig));
         localStorage.setItem('licenseConfig', JSON.stringify(licenseConfig));
         localStorage.setItem('timelineConfig', JSON.stringify(timelineConfig));
+        localStorage.setItem('avatarConfig', JSON.stringify(avatarConfig));
         
         // Update original values to reflect saved state
         originalConfigValues = {
@@ -69,7 +72,8 @@ let showConfigExporter = false;
           navBarConfig: JSON.stringify(navBarConfig),
           profileConfig: JSON.stringify(profileConfig),
           licenseConfig: JSON.stringify(licenseConfig),
-          timelineConfig: JSON.stringify(timelineConfig)
+          timelineConfig: JSON.stringify(timelineConfig),
+          avatarConfig: JSON.stringify(avatarConfig)
         };
         
         // Reset hasChanges flag
@@ -87,7 +91,8 @@ let showConfigExporter = false;
           navBarConfig, 
           profileConfig, 
           licenseConfig,
-          timelineConfig
+          timelineConfig,
+          avatarConfig
         });
         
         // Reset success message after a delay
@@ -106,29 +111,43 @@ let showConfigExporter = false;
     onMount(() => {
       // Check for saved config in localStorage (for demo/persistence)
       try {
+        // Initialize avatarConfig if it's undefined
+        if (!avatarConfig) {
+          avatarConfig = {
+            avatarList: [],
+            homeAvatar: '',
+            animationInterval: 3500
+          };
+        }
+        
         const savedSiteConfig = localStorage.getItem('siteConfig');
-        if (savedSiteConfig) {
+        if (savedSiteConfig && savedSiteConfig !== 'undefined') {
           siteConfig = { ...siteConfig, ...JSON.parse(savedSiteConfig) };
         }
         
         const savedNavConfig = localStorage.getItem('navBarConfig');
-        if (savedNavConfig) {
+        if (savedNavConfig && savedNavConfig !== 'undefined') {
           navBarConfig = { ...navBarConfig, ...JSON.parse(savedNavConfig) };
         }
         
         const savedProfileConfig = localStorage.getItem('profileConfig');
-        if (savedProfileConfig) {
+        if (savedProfileConfig && savedProfileConfig !== 'undefined') {
           profileConfig = { ...profileConfig, ...JSON.parse(savedProfileConfig) };
         }
         
         const savedLicenseConfig = localStorage.getItem('licenseConfig');
-        if (savedLicenseConfig) {
+        if (savedLicenseConfig && savedLicenseConfig !== 'undefined') {
           licenseConfig = { ...licenseConfig, ...JSON.parse(savedLicenseConfig) };
         }
         
         const savedTimelineConfig = localStorage.getItem('timelineConfig');
-        if (savedTimelineConfig) {
+        if (savedTimelineConfig && savedTimelineConfig !== 'undefined') {
           timelineConfig = { ...timelineConfig, ...JSON.parse(savedTimelineConfig) };
+        }
+        
+        const savedAvatarConfig = localStorage.getItem('avatarConfig');
+        if (savedAvatarConfig && savedAvatarConfig !== 'undefined') {
+          avatarConfig = { ...avatarConfig, ...JSON.parse(savedAvatarConfig) };
         }
         
         // Store original values for change detection
@@ -137,7 +156,8 @@ let showConfigExporter = false;
           navBarConfig: JSON.stringify(navBarConfig),
           profileConfig: JSON.stringify(profileConfig),
           licenseConfig: JSON.stringify(licenseConfig),
-          timelineConfig: JSON.stringify(timelineConfig)
+          timelineConfig: JSON.stringify(timelineConfig),
+          avatarConfig: JSON.stringify(avatarConfig)
         };
       } catch (error) {
         console.error('Error loading saved configuration:', error);
@@ -220,7 +240,9 @@ let showConfigExporter = false;
         {:else if activeTab === 'profile'}
           <ProfileConfigTab 
             bind:profileConfig 
-            on:change={() => hasChanges = true} 
+            bind:avatarConfig
+            on:change={() => hasChanges = true}
+            on:avatarChange={() => hasChanges = true}
           />
         {:else if activeTab === 'appearance'}
           <AppearanceConfigTab 
@@ -239,14 +261,16 @@ let showConfigExporter = false;
               {profileConfig} 
               {licenseConfig}
               {timelineConfig}
+              {avatarConfig}
               on:update={(e) => {
-              // Handle updates from the advanced editor
-              const { configType, newValue } = e.detail;
+                // Handle updates from the advanced editor
+                const { configType, newValue } = e.detail;
                 if (configType === 'siteConfig') siteConfig = newValue;
                 else if (configType === 'navBarConfig') navBarConfig = newValue;
                 else if (configType === 'profileConfig') profileConfig = newValue;
                 else if (configType === 'licenseConfig') licenseConfig = newValue;
                 else if (configType === 'timelineConfig') timelineConfig = newValue;
+                else if (configType === 'avatarConfig') avatarConfig = newValue;
                 
                 // Mark that changes have been made
                 hasChanges = true;
@@ -310,6 +334,7 @@ let showConfigExporter = false;
     {profileConfig}
     {licenseConfig}
     {timelineConfig}
+    {avatarConfig}
     on:close={() => showConfigExporter = false}
   />
   

@@ -7,6 +7,7 @@
     export let profileConfig;
     export let licenseConfig;
     export let timelineConfig;
+    export let avatarConfig;
     export let show = false;
     
     // State
@@ -85,10 +86,63 @@
   
   export const timelineConfig = ${JSON.stringify(timelineConfig, null, 2)
         .replace(/"([^"]+)":/g, '$1:')}`;
-  
+        
+      // Generate avatar.config.ts content
+        const avatarConfigContent = `// Import type - use import type syntax to fix verbatimModuleSyntax error
+        import type { ImageMetadata } from 'astro'
+
+        // Import avatar images
+        ${avatarConfig.avatarList.map((path, index) => 
+        `import avatar${index + 1} from '${path}'`
+        ).join('\n')}
+
+        // Define the avatar configuration type
+        export interface AvatarConfig {
+        avatarList: ImageMetadata[]
+        homeAvatar: ImageMetadata
+        animationInterval: number
+        }
+
+        /**
+         * Avatar configuration for the site
+         * Controls which avatars are used for the home page and posts
+         */
+        export const avatarConfig: AvatarConfig = {
+        // List of all available avatars for post pages and rotation
+        avatarList: [
+            ${avatarConfig.avatarList.map((_, index) => `avatar${index + 1}`).join(',\n    ')}
+        ],
+        
+        // Avatar to use on the home page (site owner)
+        homeAvatar: ${avatarConfig.homeAvatar ? 
+            `avatar${avatarConfig.avatarList.findIndex(path => path === avatarConfig.homeAvatar) + 1}` : 
+            'avatar1'},
+        
+        // Animation interval in milliseconds
+        animationInterval: ${Number(avatarConfig.animationInterval) || 3500}
+        };
+
+        /**
+         * Get a consistent avatar index for a given post slug
+         * This ensures the same post always shows the same avatar
+         */
+        export function getAvatarIndexFromSlug(slug: string = '', avatarCount: number): number {
+        if (!slug) return 0 // Default to first avatar if no slug
+        
+        // Simple hash function to get consistent avatar for each slug
+        let hash = 0
+        for (let i = 0; i < slug.length; i++) {
+            hash = ((hash << 5) - hash) + slug.charCodeAt(i)
+            hash = hash & hash // Convert to 32bit integer
+        }
+        
+        // Ensure positive index and map to available avatars
+        return Math.abs(hash) % avatarCount
+        }`;  
       return {
         mainConfigContent,
-        timelineConfigContent
+        timelineConfigContent,
+        avatarConfigContent
       };
     }
     
@@ -98,7 +152,7 @@
         exportStatus.processing = true;
         exportStatus.error = null;
         
-        const { mainConfigContent, timelineConfigContent } = generateConfigFileContent();
+        const { mainConfigContent, timelineConfigContent, avatarConfigContent } = generateConfigFileContent();
         
         // Create and download the selected config files
         if (selectedConfigs.mainConfig) {
@@ -109,7 +163,11 @@
           downloadFile('timelineconfig.ts', timelineConfigContent);
         }
         
-        // For avatar and banner configs, we would need their actual content
+        if (selectedConfigs.avatarConfig) {
+          downloadFile('avatar.config.ts', avatarConfigContent);
+        }
+        
+        // For banner configs, we would need their actual content
         // This is a simplified implementation
         
         exportStatus.success = true;
@@ -180,17 +238,17 @@
               </label>
             </div>
             
-            <div class="flex items-center opacity-50 cursor-not-allowed">
+            <div class="flex items-center">
               <input 
                 type="checkbox" 
                 id="avatar-config" 
-                disabled
+                bind:checked={selectedConfigs.avatarConfig}
                 class="h-4 w-4 text-[var(--primary)] border-neutral-300 dark:border-neutral-600 rounded" 
               />
               <label for="avatar-config" class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300">
                 avatar.config.ts - Avatar configuration
                 <span class="block text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                  (Not yet implemented in the admin panel)
+                  Includes avatar settings, sequence, and animation options
                 </span>
               </label>
             </div>
@@ -251,7 +309,7 @@
               type="button"
               class="px-4 py-2 bg-[var(--primary)] hover:opacity-90 text-white font-medium rounded-md transition-opacity flex items-center disabled:opacity-60"
               on:click={downloadConfigFiles}
-              disabled={exportStatus.processing || (!selectedConfigs.mainConfig && !selectedConfigs.timelineConfig)}
+              disabled={exportStatus.processing || (!selectedConfigs.mainConfig && !selectedConfigs.timelineConfig && !selectedConfigs.avatarConfig)}
             >
               {#if exportStatus.processing}
                 <svg class="animate-spin mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

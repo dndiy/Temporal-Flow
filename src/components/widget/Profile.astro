@@ -43,6 +43,9 @@ const displayBio = customBio || profileConfig.bio;
 
 // Get social links from config
 const config = profileConfig;
+
+// Determine if we have multiple avatars for animation
+const hasMultipleAvatars = useDefaultAvatars && avatarConfig.avatarList.length > 1 && !isHomePage;
 ---
 <div class="card-base p-3">
 <a
@@ -60,20 +63,20 @@ const config = profileConfig;
     <!-- Image container with relative positioning -->
     <div class="relative w-full aspect-square">
       {useDefaultAvatars ? (
-        isHomePage ? (
-          // For home page, show just the home avatar
+        isHomePage || !hasMultipleAvatars ? (
+          // For home page or single avatar, show just one avatar
           <Image
-            src={avatarConfig.homeAvatar}
+            src={isHomePage ? avatarConfig.homeAvatar : avatarToShow}
             alt="Profile Image of the Site Owner"
             width={512} 
             height={512}
             fetchpriority="high"
             loading="eager"
-            class="avatar-image absolute inset-0 w-full h-full object-contain opacity-100"
-            id="avatar-home"
+            class="avatar-image w-full h-full object-contain opacity-100"
+            id="avatar-static"
           />
         ) : (
-          // For posts, show all avatars with the active one visible
+          // For posts with multiple avatars, show all with the active one visible
           avatarConfig.avatarList.map((src, index) => (
             <Image
               src={src}
@@ -134,26 +137,22 @@ const config = profileConfig;
   </div>
 </div>
 
-<script>
-// Import the animation interval from the config
-const ANIMATION_INTERVAL = 7000; // Will be replaced with the value from avatarConfig
-
+<script define:vars={{hasMultipleAvatars, animationInterval: avatarConfig.animationInterval}}>
 document.addEventListener('DOMContentLoaded', () => {
-  // Don't animate on home page (single avatar)
-  const homeAvatar = document.getElementById('avatar-home');
-  if (homeAvatar) return; // Skip animation for home page
+  // Only run animation if there are multiple avatars to animate
+  if (!hasMultipleAvatars) return;
   
   // Don't animate if using custom avatar
   const customAvatar = document.querySelector('.avatar-image:not([id])');
   if (customAvatar) return;
   
-  const avatarImages = document.querySelectorAll('.avatar-image');
-  if (!avatarImages.length) return;
+  const avatarImages = document.querySelectorAll('[id^="avatar-"]');
+  if (!avatarImages || avatarImages.length <= 1) return;
   
   // Get the active avatar index from the first visible avatar
   let currentIndex = Array.from(avatarImages).findIndex(
-    img => (img as HTMLImageElement).style.opacity === '1' || 
-           (img as HTMLImageElement).classList.contains('opacity-100')
+    img => window.getComputedStyle(img).opacity === '1' || 
+           img.classList.contains('opacity-100')
   );
   
   // If no visible avatar found, default to first one
@@ -162,23 +161,40 @@ document.addEventListener('DOMContentLoaded', () => {
   let direction = 1; // 1 = downward, -1 = upward
 
   function animateAvatar() {
+    // Safety check - make sure avatarImages is still valid
+    if (!avatarImages.length) return;
+    
     // Reset all images to opacity 0
     avatarImages.forEach((img) => {
-      (img as HTMLImageElement).style.opacity = '0';
+      img.style.opacity = '0';
     });
 
     // Update currentIndex based on direction
     currentIndex += direction;
 
-    // Reverse direction at boundaries
-    if (currentIndex >= avatarImages.length - 1) direction = -1;
-    if (currentIndex <= 0) direction = 1;
+    // Ensure index stays within bounds
+    if (currentIndex >= avatarImages.length) {
+      currentIndex = avatarImages.length - 1;
+      direction = -1;
+    }
+    if (currentIndex < 0) {
+      currentIndex = 0;
+      direction = 1;
+    }
 
-    // Fade in the current image
-    (avatarImages[currentIndex] as HTMLImageElement).style.opacity = '1';
+    // Ensure we have a valid element at this index
+    if (avatarImages[currentIndex]) {
+      // Fade in the current image
+      avatarImages[currentIndex].style.opacity = '1';
+    }
   }
 
   // Start animation
-  setInterval(animateAvatar, ANIMATION_INTERVAL);
+  const animationTimer = setInterval(animateAvatar, animationInterval || 3500);
+  
+  // Clean up on page navigation
+  document.addEventListener('astro:page-load', () => {
+    clearInterval(animationTimer);
+  });
 });
 </script>
