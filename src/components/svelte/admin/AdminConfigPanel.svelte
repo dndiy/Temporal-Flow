@@ -156,8 +156,48 @@
       
       // Reset hasChanges flag
       hasChanges = false;
+      
+      // Show success notification
+      saveStatus.success = true;
+      saveStatus.error = null;
+      
+      // Reset success message after a delay
+      setTimeout(() => {
+        saveStatus.success = false;
+      }, 3000);
     } else if (error) {
       console.error('GitHub save error:', error);
+      saveStatus.error = `GitHub save error: ${error}`;
+      saveStatus.success = false;
+      
+      // Reset error message after a delay
+      setTimeout(() => {
+        saveStatus.error = null;
+      }, 5000);
+    }
+  }
+  
+  // Handle GitHub deployment events
+  function handleGitHubDeploy(event) {
+    const { success, error } = event.detail;
+    
+    if (success) {
+      saveStatus.success = true;
+      saveStatus.error = null;
+      
+      // Reset success message after a delay
+      setTimeout(() => {
+        saveStatus.success = false;
+      }, 3000);
+    } else if (error) {
+      console.error('GitHub deploy error:', error);
+      saveStatus.error = `GitHub deploy error: ${error}`;
+      saveStatus.success = false;
+      
+      // Reset error message after a delay
+      setTimeout(() => {
+        saveStatus.error = null;
+      }, 5000);
     }
   }
   
@@ -223,6 +263,7 @@
         };
       }
       
+      // Load saved configs from localStorage if they exist
       const savedSiteConfig = localStorage.getItem('siteConfig');
       if (savedSiteConfig && savedSiteConfig !== 'undefined') {
         siteConfig = { ...siteConfig, ...JSON.parse(savedSiteConfig) };
@@ -288,8 +329,8 @@
   $: {
     if (originalConfigValues.siteConfig && originalConfigValues.navBarConfig &&
         originalConfigValues.profileConfig && originalConfigValues.licenseConfig &&
-        originalConfigValues.timelineConfig && originalConfigValues.communityConfig &&
-        originalConfigValues.aboutConfig) {
+        originalConfigValues.timelineConfig && originalConfigValues.avatarConfig &&
+        originalConfigValues.communityConfig && originalConfigValues.aboutConfig) {
           
       try {
         const currentValues = {
@@ -523,6 +564,7 @@
           {originalConfigValues}
           {hasChanges}
           on:configsaved={handleGitHubConfigSaved}
+          on:deploy={handleGitHubDeploy}
         />
       </div>
     </div>

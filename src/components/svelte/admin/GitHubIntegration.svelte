@@ -31,6 +31,18 @@
     export function initialize() {
       // Check GitHub authentication status
       isGitHubAuthenticated = githubService.isAuthenticated();
+      
+      // Set GitHub repository settings if needed
+      if (!githubService.config) {
+        githubService = createGitHubService({
+          // These should match your GitHub repository details
+          owner: 'your-github-username', // Update with your GitHub username
+          repo: 'your-repo-name',        // Update with your repository name
+          branch: 'main',                // Update with your branch name
+          configPath: 'src/config',
+          postsPath: 'src/content'
+        });
+      }
     }
     
     // Show GitHub auth form
@@ -69,7 +81,13 @@
             }, 3000);
           } catch (error) {
             console.error('Token validation error:', error);
-            commitStatus.error = 'Invalid token or repository access. Please check your token permissions.';
+            if (error.message.includes('401')) {
+              commitStatus.error = 'Authentication failed. Please check your token permissions.';
+            } else if (error.message.includes('404')) {
+              commitStatus.error = 'Repository or README.md not found. Check your repository settings.';
+            } else {
+              commitStatus.error = `Token validation error: ${error.message}`;
+            }
             githubService.logout(); // Clear the invalid token
           }
         } else {
@@ -104,6 +122,8 @@
         config.defaultTheme = `__CONSTANT_${themeValue}__`;
       }
       
+      // Add handling for other constants here if needed
+      
       return config;
     }
     
@@ -118,10 +138,12 @@
           .replace(/"__CONSTANT_dark__"/g, 'DARK_MODE')
           .replace(/"__CONSTANT_auto__"/g, 'AUTO_MODE');
       } else if (configName === 'navBarConfig') {
+        // Handle special LinkPreset enum values
         return JSON.stringify(configObj, null, 2)
           .replace(/"([^"]+)":/g, '$1:')
           .replace(/"LinkPreset\.([a-zA-Z]+)"/g, 'LinkPreset.$1');
       } else {
+        // Generic handling for other config types
         return JSON.stringify(configObj, null, 2)
           .replace(/"([^"]+)":/g, '$1:');
       }
@@ -136,6 +158,20 @@
       }
       
       let fileContent = currentFile.content;
+      
+      // Ensure necessary imports are present
+      if (!fileContent.includes('import { AUTO_MODE, DARK_MODE, LIGHT_MODE }')) {
+        // Add import at top of file
+        fileContent = `import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'\n\n${fileContent}`;
+      }
+      
+      // Make sure LinkPreset is imported if changing navBarConfig
+      if (changes.some(c => c.name === 'navBarConfig') && !fileContent.includes('import { LinkPreset }')) {
+        fileContent = fileContent.replace(
+          /import type {/,
+          'import type {\n  LinkPreset,'
+        );
+      }
       
       // For each changed config, update its section in the file
       for (const config of changes) {
@@ -169,53 +205,53 @@
       
       if (config.name === 'timelineConfig') {
         fileContent = `// TimelineConfig.ts - Central configuration for all timeline services
-  import type { TimelineConfig } from '../types/timelineconfig'
-  
-  export const timelineConfig: TimelineConfig = ${formatConfigObject(config.name, config.obj)}`;
+import type { TimelineConfig } from '../types/timelineconfig'
+
+export const timelineConfig: TimelineConfig = ${formatConfigObject(config.name, config.obj)}`;
       } 
       else if (config.name === 'avatarConfig') {
         fileContent = `// Import type - use import type syntax to fix verbatimModuleSyntax error
-  import type { ImageMetadata } from 'astro'
-  
-  // Define the avatar configuration type
-  export interface AvatarConfig {
-    avatarList: string[]
-    homeAvatar: string
-    animationInterval: number
-  }
-  
-  /**
-   * Avatar configuration for the site
-   * Controls which avatars are used for the home page and posts
-   */
-  export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)}`;
+import type { ImageMetadata } from 'astro'
+
+// Define the avatar configuration type
+export interface AvatarConfig {
+  avatarList: string[]
+  homeAvatar: string
+  animationInterval: number
+}
+
+/**
+ * Avatar configuration for the site
+ * Controls which avatars are used for the home page and posts
+ */
+export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)}`;
       }
       else if (config.name === 'communityConfig') {
         fileContent = `// Import types
-  import type { 
-    CommunityConfig,
-    DiscordConfig,
-    ContactConfig,
-    NewsletterConfig,
-    EventsConfig,
-    GuidelinesConfig,
-    HeroConfig
-  } from '../types/communityconfig';
-  
-  // Community page configuration
-  export const communityConfig: CommunityConfig = ${formatConfigObject(config.name, config.obj)}`;
+import type { 
+  CommunityConfig,
+  DiscordConfig,
+  ContactConfig,
+  NewsletterConfig,
+  EventsConfig,
+  GuidelinesConfig,
+  HeroConfig
+} from '../types/communityconfig';
+
+// Community page configuration
+export const communityConfig: CommunityConfig = ${formatConfigObject(config.name, config.obj)}`;
       }
       else if (config.name === 'aboutConfig') {
         fileContent = `// Import types
-  import type { 
-    AboutConfig,
-    TeamSectionConfig,
-    ContentSectionConfig,
-    ContactSectionConfig
-  } from '../types/aboutconfig';
-  
-  // About page configuration
-  export const aboutConfig: AboutConfig = ${formatConfigObject(config.name, config.obj)}`;
+import type { 
+  AboutConfig,
+  TeamSectionConfig,
+  ContentSectionConfig,
+  ContactSectionConfig
+} from '../types/aboutconfig';
+
+// About page configuration
+export const aboutConfig: AboutConfig = ${formatConfigObject(config.name, config.obj)}`;
       }
       
       // Save the standalone file
@@ -347,7 +383,15 @@
         }, 3000);
       } catch (error) {
         console.error('Error saving configs to GitHub:', error);
-        commitStatus.error = `Failed to save to GitHub: ${error.message}`;
+        
+        // Provide more detailed error messages
+        if (error.message.includes('401')) {
+          commitStatus.error = 'Authentication failed. Please refresh your GitHub token.';
+        } else if (error.message.includes('404')) {
+          commitStatus.error = 'Repository or file not found. Check your repository settings.';
+        } else {
+          commitStatus.error = `Failed to save to GitHub: ${error.message}`;
+        }
         
         // Notify parent of error
         dispatch('configsaved', {
@@ -375,6 +419,7 @@
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Trigger the GitHub Action workflow for rebuilding the site
+        // Make sure this matches your actual workflow filename
         await githubService.triggerWorkflow('deploy.yml');
         
         // Update UI status
@@ -393,7 +438,12 @@
         }, 3000);
       } catch (error) {
         console.error('Error triggering rebuild:', error);
-        commitStatus.error = `Failed to trigger rebuild: ${error.message}`;
+        
+        if (error.message.includes('404')) {
+          commitStatus.error = `Failed to trigger rebuild: Workflow file not found. Make sure 'deploy.yml' exists in your repository's .github/workflows directory.`;
+        } else {
+          commitStatus.error = `Failed to trigger rebuild: ${error.message}`;
+        }
         
         // Notify parent of error
         dispatch('deploy', {
