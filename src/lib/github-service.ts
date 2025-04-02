@@ -153,11 +153,44 @@ export class GitHubService {
   
   /**
    * Save a configuration file to the repository
+   * @param fileName - The name of the config file to save
+   * @param content - The content of the config file
+   * @param batchInfo - Optional info for batched commits
+   * @returns Promise resolving to true if successful
    */
-  async saveConfig(fileName: string, content: string): Promise<boolean> {
+  async saveConfig(
+    fileName: string, 
+    content: string, 
+    batchInfo?: { isBatch: boolean; isLast: boolean; totalFiles: number }
+  ): Promise<boolean> {
     const path = `${this.config.configPath}/${fileName}`;
-    const message = `Update ${fileName} configuration`;
-    return this.commitFile(path, content, message);
+    
+    // Create a more descriptive commit message
+    let message: string;
+    if (batchInfo && batchInfo.isBatch) {
+      message = batchInfo.isLast 
+        ? `Update site configuration (${batchInfo.totalFiles} files)` 
+        : `Update ${fileName} configuration (part of batch update)`;
+    } else {
+      message = `Update ${fileName} configuration`;
+    }
+    
+    try {
+      // First, get existing content to see if there are actual changes
+      const existingFile = await this.getFile(path).catch(() => null);
+      
+      // If the file exists and content is the same, skip the commit
+      if (existingFile && existingFile.content === content) {
+        console.log(`No changes detected in ${fileName}, skipping commit`);
+        return true;
+      }
+      
+      // Commit the file with changes
+      return this.commitFile(path, content, message);
+    } catch (error) {
+      console.error(`Error saving config file ${fileName}:`, error);
+      throw error;
+    }
   }
   
   /**

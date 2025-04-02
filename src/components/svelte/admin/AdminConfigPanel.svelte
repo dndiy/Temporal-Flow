@@ -12,6 +12,7 @@
   import ConfigExporter from './ConfigExporter.svelte';
   import CommunityConfigExporter from './CommunityConfigExporter.svelte';
   import AboutConfigExporter from './AboutConfigExporter.svelte';
+  import GithubAuthForm from './GithubAuthForm.svelte';
   import { createGitHubService } from '../../../lib/github-service';
     
   // Props for configuration objects
@@ -149,8 +150,11 @@
   }
   
   // Handle GitHub authentication
-  async function handleGitHubAuth() {
-    if (!githubToken) {
+  async function handleGitHubAuth(event) {
+    // Get token from event if provided, otherwise use the bound value
+    const token = event && event.detail ? event.detail : githubToken;
+    
+    if (!token) {
       commitStatus.error = 'Please enter a valid token';
       return;
     }
@@ -160,7 +164,7 @@
       commitStatus.error = null;
       
       // Authenticate with GitHub
-      const success = githubService.authenticate(githubToken);
+      const success = githubService.authenticate(token);
       
       if (success) {
         // Test the token with a simple API call
@@ -197,6 +201,125 @@
     showDeployOptions = false;
   }
   
+  // Handle constant references in the config
+  function preserveConstants(configObj) {
+    // Create a deep copy to avoid modifying the original
+    const config = JSON.parse(JSON.stringify(configObj));
+    
+    // Check if defaultTheme exists and handle it specially
+    if (config.defaultTheme) {
+      // Store the original value to determine which constant to use
+      const themeValue = config.defaultTheme;
+      
+      // Mark it for replacement with the appropriate constant
+      config.defaultTheme = `__CONSTANT_${themeValue}__`;
+    }
+    
+    return config;
+  }
+  
+  // Generate configuration file content with proper types and imports
+  function generateConfigFileContent(configName, configObj) {
+    // Different file formats based on config type
+    if (configName === 'siteConfig') {
+      const processedConfig = preserveConstants(configObj);
+      
+      return `import type {
+  LicenseConfig,
+  NavBarConfig,
+  ProfileConfig,
+  SiteConfig,
+} from '../types/config'
+import { LinkPreset } from '../types/config'
+import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'
+
+export const siteConfig: SiteConfig = ${JSON.stringify(processedConfig, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')
+        .replace(/"__CONSTANT_light__"/g, 'LIGHT_MODE')
+        .replace(/"__CONSTANT_dark__"/g, 'DARK_MODE')
+        .replace(/"__CONSTANT_auto__"/g, 'AUTO_MODE')}`;
+    }
+    
+    else if (configName === 'navBarConfig') {
+      return `import type { NavBarConfig } from '../types/config'
+import { LinkPreset } from '../types/config'
+
+export const navBarConfig: NavBarConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')
+        .replace(/"LinkPreset\.([a-zA-Z]+)"/g, 'LinkPreset.$1')}`;
+    }
+    
+    else if (configName === 'profileConfig') {
+      return `import type { ProfileConfig } from '../types/config'
+
+export const profileConfig: ProfileConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')}`;
+    }
+    
+    else if (configName === 'licenseConfig') {
+      return `import type { LicenseConfig } from '../types/config'
+
+export const licenseConfig: LicenseConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')}`;
+    }
+    
+    else if (configName === 'timelineConfig') {
+      return `// TimelineConfig.ts - Central configuration for all timeline services
+
+export const timelineConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')}`;
+    }
+    
+    else if (configName === 'avatarConfig') {
+      // Special handling for avatar config with image imports
+      return `// Import type - use import type syntax to fix verbatimModuleSyntax error
+import type { ImageMetadata } from 'astro'
+
+// Avatar configuration for the site
+export const avatarConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')}`;
+    }
+    
+    else if (configName === 'communityConfig') {
+      return `// Import types
+import type { 
+  CommunityConfig,
+  DiscordConfig,
+  ContactConfig,
+  NewsletterConfig,
+  EventsConfig,
+  GuidelinesConfig,
+  HeroConfig
+} from '../types/communityconfig';
+
+// Community page configuration
+export const communityConfig: CommunityConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')}`;
+    }
+    
+    else if (configName === 'aboutConfig') {
+      return `// Import types
+import type { 
+  AboutConfig,
+  TeamSectionConfig,
+  ContentSectionConfig,
+  ContactSectionConfig
+} from '../types/aboutconfig';
+
+// About page configuration
+export const aboutConfig: AboutConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')}`;
+    }
+    
+    // Default format for any other configs
+    return `// ${configName} configuration
+import type { ${configName.charAt(0).toUpperCase() + configName.slice(1)} } from '../types';
+
+export const ${configName} = ${JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:')};
+`;
+  }
+  
   // Save configs to GitHub
   async function saveConfigsToGitHub() {
     if (!isGitHubAuthenticated) {
@@ -208,30 +331,74 @@
       isCommitting = true;
       commitStatus.error = null;
       
-      // Save site config
-      await githubService.saveConfig('config.ts', generateConfigFileContent('siteConfig', siteConfig));
+      // Track which configs have changed
+      const changedConfigs = [];
       
-      // Save navigation config
-      await githubService.saveConfig('navbar.config.ts', generateConfigFileContent('navBarConfig', navBarConfig));
+      // Check each config against its original value
+      if (JSON.stringify(siteConfig) !== originalConfigValues.siteConfig) {
+        changedConfigs.push({ name: 'siteConfig', obj: siteConfig, filename: 'config.ts' });
+      }
       
-      // Save profile config
-      await githubService.saveConfig('profile.config.ts', generateConfigFileContent('profileConfig', profileConfig));
+      if (JSON.stringify(navBarConfig) !== originalConfigValues.navBarConfig) {
+        changedConfigs.push({ name: 'navBarConfig', obj: navBarConfig, filename: 'navbar.config.ts' });
+      }
       
-      // Save license config
-      await githubService.saveConfig('license.config.ts', generateConfigFileContent('licenseConfig', licenseConfig));
+      if (JSON.stringify(profileConfig) !== originalConfigValues.profileConfig) {
+        changedConfigs.push({ name: 'profileConfig', obj: profileConfig, filename: 'profile.config.ts' });
+      }
       
-      // Save timeline config
-      await githubService.saveConfig('timeline.config.ts', generateConfigFileContent('timelineConfig', timelineConfig));
+      if (JSON.stringify(licenseConfig) !== originalConfigValues.licenseConfig) {
+        changedConfigs.push({ name: 'licenseConfig', obj: licenseConfig, filename: 'license.config.ts' });
+      }
       
-      // Save avatar config
-      await githubService.saveConfig('avatar.config.ts', generateConfigFileContent('avatarConfig', avatarConfig));
+      if (JSON.stringify(timelineConfig) !== originalConfigValues.timelineConfig) {
+        changedConfigs.push({ name: 'timelineConfig', obj: timelineConfig, filename: 'timelineconfig.ts' });
+      }
       
-      // Save community config
-      await githubService.saveConfig('community.config.ts', generateConfigFileContent('communityConfig', communityConfig));
+      if (JSON.stringify(avatarConfig) !== originalConfigValues.avatarConfig) {
+        changedConfigs.push({ name: 'avatarConfig', obj: avatarConfig, filename: 'avatar.config.ts' });
+      }
       
-      // Save about config
-      await githubService.saveConfig('about.config.ts', generateConfigFileContent('aboutConfig', aboutConfig));
+      if (JSON.stringify(communityConfig) !== originalConfigValues.communityConfig) {
+        changedConfigs.push({ name: 'communityConfig', obj: communityConfig, filename: 'community.config.ts' });
+      }
       
+      if (JSON.stringify(aboutConfig) !== originalConfigValues.aboutConfig) {
+        changedConfigs.push({ name: 'aboutConfig', obj: aboutConfig, filename: 'about.config.ts' });
+      }
+      
+      // If no configs have changed, inform the user
+      if (changedConfigs.length === 0) {
+        commitStatus.error = 'No configuration changes detected to commit';
+        isCommitting = false;
+        return;
+      }
+      
+      console.log(`Saving ${changedConfigs.length} modified config files...`);
+      
+      // Save each changed config
+      for (const config of changedConfigs) {
+        const content = generateConfigFileContent(config.name, config.obj);
+        await githubService.saveConfig(config.filename, content);
+        console.log(`Saved ${config.filename}`);
+      }
+      
+      // Update original values to reflect new saved state
+      originalConfigValues = {
+        siteConfig: JSON.stringify(siteConfig),
+        navBarConfig: JSON.stringify(navBarConfig),
+        profileConfig: JSON.stringify(profileConfig),
+        licenseConfig: JSON.stringify(licenseConfig),
+        timelineConfig: JSON.stringify(timelineConfig),
+        avatarConfig: JSON.stringify(avatarConfig),
+        communityConfig: JSON.stringify(communityConfig),
+        aboutConfig: JSON.stringify(aboutConfig)
+      };
+      
+      // Reset hasChanges flag
+      hasChanges = false;
+      
+      // Show success and deploy options
       commitStatus.success = true;
       showDeployOptions = true;
       
@@ -247,17 +414,6 @@
     }
   }
   
-  // Generate configuration file content
-  function generateConfigFileContent(configName, configObj) {
-    return `// ${configName} - Updated on ${new Date().toISOString()}
-// This file was automatically generated by the admin panel
-
-import type { ${configName.charAt(0).toUpperCase() + configName.slice(1)} } from '../types';
-
-export const ${configName} = ${JSON.stringify(configObj, null, 2)};
-`;
-  }
-  
   // Trigger site rebuild
   async function triggerSiteRebuild() {
     if (!isGitHubAuthenticated) {
@@ -269,10 +425,14 @@ export const ${configName} = ${JSON.stringify(configObj, null, 2)};
       isCommitting = true;
       commitStatus.error = null;
       
+      // Add a small delay to ensure all commits are processed
+      // This prevents triggering a rebuild while commits are still being processed
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       // Trigger the GitHub Action workflow for rebuilding the site
-      // You'll need to replace 'rebuild.yml' with your actual workflow file name
       await githubService.triggerWorkflow('rebuild.yml');
       
+      // Update UI status
       commitStatus.success = true;
       showDeployOptions = false;
       
@@ -651,78 +811,14 @@ export const ${configName} = ${JSON.stringify(configObj, null, 2)};
           </div>
           
           {#if showGitHubAuthForm}
-            <div class="bg-neutral-50 dark:bg-neutral-800/50 p-5 rounded-lg border border-neutral-300 dark:border-neutral-600 mb-4">
-              <h4 class="text-base font-medium mb-4">GitHub Authentication</h4>
-              
-              <div class="mb-6">
-                <p class="text-neutral-600 dark:text-neutral-400 mb-4">
-                  To publish directly to your GitHub repository, you'll need to create a Personal Access Token (PAT) with repository access.
-                </p>
-                
-                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 p-3 rounded-md text-sm mb-4">
-                  <h5 class="font-medium text-blue-800 dark:text-blue-200 mb-1">How to create a GitHub Personal Access Token:</h5>
-                  <ol class="list-decimal pl-5 text-blue-700 dark:text-blue-300 space-y-1">
-                    <li>Go to <a href="https://github.com/settings/tokens" target="_blank" class="underline">GitHub Settings &gt; Developer settings &gt; Personal access tokens</a></li>
-                    <li>Click "Generate new token" (classic)</li>
-                    <li>Add a note (e.g., "Blog Admin")</li>
-                    <li>Set expiration as needed</li>
-                    <li>Select "repo" scope permissions</li>
-                    <li>Click "Generate token"</li>
-                    <li>Copy the token immediately (you won't see it again)</li>
-                  </ol>
-                </div>
-              </div>
-              
-              {#if commitStatus.error}
-                <div class="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-sm p-3 rounded border border-red-200 dark:border-red-800 mb-4">
-                  {commitStatus.error}
-                </div>
-              {/if}
-              
-              <div class="space-y-4">
-                <div class="form-group">
-                  <label for="github-token" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                    Personal Access Token
-                  </label>
-                  <input 
-                    type="password" 
-                    id="github-token" 
-                    bind:value={githubToken} 
-                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" 
-                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm" 
-                    disabled={isCommitting}
-                  />
-                  <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
-                    Your token is stored locally and only used for GitHub API requests.
-                  </p>
-                </div>
-                
-                <div class="flex justify-end space-x-3">
-                  <button 
-                    on:click={() => showGitHubAuthForm = false}
-                    class="px-4 py-2 border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  
-                  <button 
-                    on:click={handleGitHubAuth}
-                    disabled={isCommitting || !githubToken}
-                    class="px-4 py-2 bg-[var(--primary)] hover:opacity-90 text-white font-medium rounded-md transition-opacity flex items-center disabled:opacity-50"
-                  >
-                    {#if isCommitting}
-                      <svg class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Authenticating...
-                    {:else}
-                      Authenticate
-                    {/if}
-                  </button>
-                </div>
-              </div>
-            </div>
+            <GithubAuthForm 
+              isAuthenticating={isCommitting}
+              errorMessage={commitStatus.error}
+              bind:token={githubToken}
+              on:authenticate={handleGitHubAuth}
+              on:cancel={() => showGitHubAuthForm = false}
+              on:error={(e) => commitStatus.error = e.detail}
+            />
           {:else}
             <button 
               on:click={showGitHubAuth}
