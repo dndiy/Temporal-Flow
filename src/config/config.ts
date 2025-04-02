@@ -9,7 +9,7 @@ import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'
 
 
 export const siteConfig: SiteConfig = {
-  title: "Temporal Flow",
+  title: "Temporal Flow Net",
   subtitle: "A Decentralized Content Platform",
   lang: "en",
   themeColor: {
