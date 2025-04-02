@@ -1,0 +1,45 @@
+# .github/workflows/rebuild.yml
+name: Rebuild and Deploy Site
+
+# Controls when the action will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+  # Runs on pushes to the main branch
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/content/**'
+      - 'src/config/**'
+
+# Jobs to perform
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository
+      - uses: actions/checkout@v3
+      
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      
+      # Build the site
+      - name: Build site
+        run: pnpm run build
+      
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: dist
+          clean: true
