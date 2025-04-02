@@ -60,6 +60,8 @@ export class GitHubService {
   
   /**
    * Get file content from the repository
+   * @param path - Path to the file in the repository
+   * @returns Promise with file content and SHA, or null if file doesn't exist
    */
   async getFile(path: string): Promise<{ content: string; sha: string } | null> {
     if (!this.isAuthenticated()) {
@@ -96,6 +98,10 @@ export class GitHubService {
   
   /**
    * Commit a file to the repository
+   * @param path - Path to the file in the repository
+   * @param content - Content to write to the file
+   * @param message - Commit message
+   * @returns Promise resolving to true if successful
    */
   async commitFile(path: string, content: string, message: string): Promise<boolean> {
     if (!this.isAuthenticated()) {
@@ -108,10 +114,16 @@ export class GitHubService {
       try {
         const existingFile = await this.getFile(path);
         if (existingFile) {
+          // If content hasn't changed, skip the commit
+          if (existingFile.content === content) {
+            console.log(`No changes detected in ${path}, skipping commit`);
+            return true;
+          }
           sha = existingFile.sha;
         }
       } catch (error) {
         // File doesn't exist, which is fine for new files
+        console.log(`Creating new file: ${path}`);
       }
       
       // Prepare the request body
@@ -141,7 +153,8 @@ export class GitHubService {
       );
       
       if (!response.ok) {
-        throw new Error(`Failed to commit file: ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(`Failed to commit file: ${response.statusText} - ${JSON.stringify(errorData)}`);
       }
       
       return true;
@@ -155,37 +168,13 @@ export class GitHubService {
    * Save a configuration file to the repository
    * @param fileName - The name of the config file to save
    * @param content - The content of the config file
-   * @param batchInfo - Optional info for batched commits
    * @returns Promise resolving to true if successful
    */
-  async saveConfig(
-    fileName: string, 
-    content: string, 
-    batchInfo?: { isBatch: boolean; isLast: boolean; totalFiles: number }
-  ): Promise<boolean> {
+  async saveConfig(fileName: string, content: string): Promise<boolean> {
     const path = `${this.config.configPath}/${fileName}`;
-    
-    // Create a more descriptive commit message
-    let message: string;
-    if (batchInfo && batchInfo.isBatch) {
-      message = batchInfo.isLast 
-        ? `Update site configuration (${batchInfo.totalFiles} files)` 
-        : `Update ${fileName} configuration (part of batch update)`;
-    } else {
-      message = `Update ${fileName} configuration`;
-    }
+    const message = `Update ${fileName} configuration`;
     
     try {
-      // First, get existing content to see if there are actual changes
-      const existingFile = await this.getFile(path).catch(() => null);
-      
-      // If the file exists and content is the same, skip the commit
-      if (existingFile && existingFile.content === content) {
-        console.log(`No changes detected in ${fileName}, skipping commit`);
-        return true;
-      }
-      
-      // Commit the file with changes
       return this.commitFile(path, content, message);
     } catch (error) {
       console.error(`Error saving config file ${fileName}:`, error);
@@ -195,6 +184,10 @@ export class GitHubService {
   
   /**
    * Save a blog post to the repository
+   * @param slug - Post slug/filename
+   * @param content - Post content (Markdown/MDX)
+   * @param isDraft - Whether this is a draft post
+   * @returns Promise resolving to true if successful
    */
   async savePost(slug: string, content: string, isDraft: boolean = false): Promise<boolean> {
     // Determine the folder path based on draft status
@@ -206,7 +199,8 @@ export class GitHubService {
   
   /**
    * Trigger a GitHub Action workflow
-   * Useful for rebuilding/redeploying the site after changes
+   * @param workflowId - The filename of the workflow to trigger (e.g., 'deploy.yml')
+   * @returns Promise resolving to true if successful
    */
   async triggerWorkflow(workflowId: string): Promise<boolean> {
     if (!this.isAuthenticated()) {
@@ -230,7 +224,8 @@ export class GitHubService {
       );
       
       if (!response.ok) {
-        throw new Error(`Failed to trigger workflow: ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`Failed to trigger workflow: ${response.statusText} - ${errorText}`);
       }
       
       return true;

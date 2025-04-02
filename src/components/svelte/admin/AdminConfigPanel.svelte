@@ -218,70 +218,91 @@
     return config;
   }
   
-  // Generate configuration file content with proper types and imports
-  function generateConfigFileContent(configName, configObj) {
-    // Different file formats based on config type
+  // Format a config object into TypeScript code
+  function formatConfigObject(configName, configObj) {
     if (configName === 'siteConfig') {
       const processedConfig = preserveConstants(configObj);
       
-      return `import type {
-  LicenseConfig,
-  NavBarConfig,
-  ProfileConfig,
-  SiteConfig,
-} from '../types/config'
-import { LinkPreset } from '../types/config'
-import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'
-
-export const siteConfig: SiteConfig = ${JSON.stringify(processedConfig, null, 2)
+      return JSON.stringify(processedConfig, null, 2)
         .replace(/"([^"]+)":/g, '$1:')
         .replace(/"__CONSTANT_light__"/g, 'LIGHT_MODE')
         .replace(/"__CONSTANT_dark__"/g, 'DARK_MODE')
-        .replace(/"__CONSTANT_auto__"/g, 'AUTO_MODE')}`;
-    }
-    
-    else if (configName === 'navBarConfig') {
-      return `import type { NavBarConfig } from '../types/config'
-import { LinkPreset } from '../types/config'
-
-export const navBarConfig: NavBarConfig = ${JSON.stringify(configObj, null, 2)
+        .replace(/"__CONSTANT_auto__"/g, 'AUTO_MODE');
+    } else if (configName === 'navBarConfig') {
+      return JSON.stringify(configObj, null, 2)
         .replace(/"([^"]+)":/g, '$1:')
-        .replace(/"LinkPreset\.([a-zA-Z]+)"/g, 'LinkPreset.$1')}`;
+        .replace(/"LinkPreset\.([a-zA-Z]+)"/g, 'LinkPreset.$1');
+    } else {
+      return JSON.stringify(configObj, null, 2)
+        .replace(/"([^"]+)":/g, '$1:');
+    }
+  }
+  
+  // Update config.ts file with all changes
+  async function updateMainConfigFile(changes) {
+    // First retrieve the current file
+    const currentFile = await githubService.getFile('src/config/config.ts');
+    if (!currentFile) {
+      throw new Error('Could not retrieve the current config.ts file');
     }
     
-    else if (configName === 'profileConfig') {
-      return `import type { ProfileConfig } from '../types/config'
+    let fileContent = currentFile.content;
+    
+    // For each changed config, update its section in the file
+    for (const config of changes) {
+      const formattedConfig = formatConfigObject(config.name, config.obj);
+      const regexPattern = new RegExp(`export const ${config.name}[\\s\\S]*?(?=\\n\\n|$)`, 'g');
+      
+      if (regexPattern.test(fileContent)) {
+        // Update existing config section
+        fileContent = fileContent.replace(
+          regexPattern,
+          `export const ${config.name}: ${config.typeName} = ${formattedConfig}`
+        );
+      } else {
+        // Append new config section if it doesn't exist
+        fileContent += `\n\nexport const ${config.name}: ${config.typeName} = ${formattedConfig}`;
+      }
+    }
+    
+    // Save the updated file
+    return githubService.commitFile(
+      'src/config/config.ts', 
+      fileContent, 
+      `Update ${changes.map(c => c.name).join(', ')} in config.ts`
+    );
+  }
+  
+  // Update standalone config files
+  async function updateStandaloneConfigFile(config) {
+    // Generate standalone file content based on config type
+    let fileContent = '';
+    
+    if (config.name === 'timelineConfig') {
+      fileContent = `// TimelineConfig.ts - Central configuration for all timeline services
+import type { TimelineConfig } from '../types/timelineconfig'
 
-export const profileConfig: ProfileConfig = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')}`;
-    }
-    
-    else if (configName === 'licenseConfig') {
-      return `import type { LicenseConfig } from '../types/config'
-
-export const licenseConfig: LicenseConfig = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')}`;
-    }
-    
-    else if (configName === 'timelineConfig') {
-      return `// TimelineConfig.ts - Central configuration for all timeline services
-
-export const timelineConfig = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')}`;
-    }
-    
-    else if (configName === 'avatarConfig') {
-      // Special handling for avatar config with image imports
-      return `// Import type - use import type syntax to fix verbatimModuleSyntax error
+export const timelineConfig: TimelineConfig = ${formatConfigObject(config.name, config.obj)}`;
+    } 
+    else if (config.name === 'avatarConfig') {
+      fileContent = `// Import type - use import type syntax to fix verbatimModuleSyntax error
 import type { ImageMetadata } from 'astro'
 
-// Avatar configuration for the site
-export const avatarConfig = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')}`;
+// Define the avatar configuration type
+export interface AvatarConfig {
+  avatarList: string[]
+  homeAvatar: string
+  animationInterval: number
+}
+
+/**
+ * Avatar configuration for the site
+ * Controls which avatars are used for the home page and posts
+ */
+export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)}`;
     }
-    
-    else if (configName === 'communityConfig') {
-      return `// Import types
+    else if (config.name === 'communityConfig') {
+      fileContent = `// Import types
 import type { 
   CommunityConfig,
   DiscordConfig,
@@ -293,12 +314,10 @@ import type {
 } from '../types/communityconfig';
 
 // Community page configuration
-export const communityConfig: CommunityConfig = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')}`;
+export const communityConfig: CommunityConfig = ${formatConfigObject(config.name, config.obj)}`;
     }
-    
-    else if (configName === 'aboutConfig') {
-      return `// Import types
+    else if (config.name === 'aboutConfig') {
+      fileContent = `// Import types
 import type { 
   AboutConfig,
   TeamSectionConfig,
@@ -307,17 +326,15 @@ import type {
 } from '../types/aboutconfig';
 
 // About page configuration
-export const aboutConfig: AboutConfig = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')}`;
+export const aboutConfig: AboutConfig = ${formatConfigObject(config.name, config.obj)}`;
     }
     
-    // Default format for any other configs
-    return `// ${configName} configuration
-import type { ${configName.charAt(0).toUpperCase() + configName.slice(1)} } from '../types';
-
-export const ${configName} = ${JSON.stringify(configObj, null, 2)
-        .replace(/"([^"]+)":/g, '$1:')};
-`;
+    // Save the standalone file
+    return githubService.commitFile(
+      `src/config/${config.filename}`, 
+      fileContent, 
+      `Update ${config.name} configuration`
+    );
   }
   
   // Save configs to GitHub
@@ -332,54 +349,93 @@ export const ${configName} = ${JSON.stringify(configObj, null, 2)
       commitStatus.error = null;
       
       // Track which configs have changed
-      const changedConfigs = [];
+      const mainConfigChanges = [];
+      const standaloneConfigChanges = [];
       
-      // Check each config against its original value
+      // Check which configs in the main file have changed
       if (JSON.stringify(siteConfig) !== originalConfigValues.siteConfig) {
-        changedConfigs.push({ name: 'siteConfig', obj: siteConfig, filename: 'config.ts' });
+        mainConfigChanges.push({ 
+          name: 'siteConfig', 
+          obj: siteConfig, 
+          typeName: 'SiteConfig' 
+        });
       }
       
       if (JSON.stringify(navBarConfig) !== originalConfigValues.navBarConfig) {
-        changedConfigs.push({ name: 'navBarConfig', obj: navBarConfig, filename: 'navbar.config.ts' });
+        mainConfigChanges.push({ 
+          name: 'navBarConfig', 
+          obj: navBarConfig, 
+          typeName: 'NavBarConfig' 
+        });
       }
       
       if (JSON.stringify(profileConfig) !== originalConfigValues.profileConfig) {
-        changedConfigs.push({ name: 'profileConfig', obj: profileConfig, filename: 'profile.config.ts' });
+        mainConfigChanges.push({ 
+          name: 'profileConfig', 
+          obj: profileConfig, 
+          typeName: 'ProfileConfig' 
+        });
       }
       
       if (JSON.stringify(licenseConfig) !== originalConfigValues.licenseConfig) {
-        changedConfigs.push({ name: 'licenseConfig', obj: licenseConfig, filename: 'license.config.ts' });
+        mainConfigChanges.push({ 
+          name: 'licenseConfig', 
+          obj: licenseConfig, 
+          typeName: 'LicenseConfig' 
+        });
       }
       
+      // Check which standalone config files have changed
       if (JSON.stringify(timelineConfig) !== originalConfigValues.timelineConfig) {
-        changedConfigs.push({ name: 'timelineConfig', obj: timelineConfig, filename: 'timelineconfig.ts' });
+        standaloneConfigChanges.push({ 
+          name: 'timelineConfig', 
+          obj: timelineConfig, 
+          filename: 'timelineconfig.ts' 
+        });
       }
       
       if (JSON.stringify(avatarConfig) !== originalConfigValues.avatarConfig) {
-        changedConfigs.push({ name: 'avatarConfig', obj: avatarConfig, filename: 'avatar.config.ts' });
+        standaloneConfigChanges.push({ 
+          name: 'avatarConfig', 
+          obj: avatarConfig, 
+          filename: 'avatar.config.ts' 
+        });
       }
       
       if (JSON.stringify(communityConfig) !== originalConfigValues.communityConfig) {
-        changedConfigs.push({ name: 'communityConfig', obj: communityConfig, filename: 'community.config.ts' });
+        standaloneConfigChanges.push({ 
+          name: 'communityConfig', 
+          obj: communityConfig, 
+          filename: 'community.config.ts' 
+        });
       }
       
       if (JSON.stringify(aboutConfig) !== originalConfigValues.aboutConfig) {
-        changedConfigs.push({ name: 'aboutConfig', obj: aboutConfig, filename: 'about.config.ts' });
+        standaloneConfigChanges.push({ 
+          name: 'aboutConfig', 
+          obj: aboutConfig, 
+          filename: 'about.config.ts' 
+        });
       }
       
       // If no configs have changed, inform the user
-      if (changedConfigs.length === 0) {
+      if (mainConfigChanges.length === 0 && standaloneConfigChanges.length === 0) {
         commitStatus.error = 'No configuration changes detected to commit';
         isCommitting = false;
         return;
       }
       
-      console.log(`Saving ${changedConfigs.length} modified config files...`);
+      console.log(`Saving configuration changes...`);
       
-      // Save each changed config
-      for (const config of changedConfigs) {
-        const content = generateConfigFileContent(config.name, config.obj);
-        await githubService.saveConfig(config.filename, content);
+      // Update the main config.ts file if needed
+      if (mainConfigChanges.length > 0) {
+        await updateMainConfigFile(mainConfigChanges);
+        console.log(`Updated ${mainConfigChanges.length} configs in main config.ts file`);
+      }
+      
+      // Update standalone config files if needed
+      for (const config of standaloneConfigChanges) {
+        await updateStandaloneConfigFile(config);
         console.log(`Saved ${config.filename}`);
       }
       
@@ -430,7 +486,7 @@ export const ${configName} = ${JSON.stringify(configObj, null, 2)
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Trigger the GitHub Action workflow for rebuilding the site
-      await githubService.triggerWorkflow('rebuild.yml');
+      await githubService.triggerWorkflow('deploy.yml');
       
       // Update UI status
       commitStatus.success = true;
@@ -503,7 +559,7 @@ export const ${configName} = ${JSON.stringify(configObj, null, 2)
             title: "Get In Touch",
             description: "Have questions, ideas, or want to collaborate? We'd love to hear from you!",
             contactInfo: {
-              email: "Greg@dndiy.org"
+              email: "contact@example.com"
             },
             displayOrder: ["description", "email"]
           }
