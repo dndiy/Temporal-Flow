@@ -115,11 +115,18 @@
       
       // Check if defaultTheme exists and handle it specially
       if (config.defaultTheme) {
-        // Store the original value to determine which constant to use
-        const themeValue = config.defaultTheme;
-        
-        // Mark it for replacement with the appropriate constant
-        config.defaultTheme = `__CONSTANT_${themeValue}__`;
+        // Check if the defaultTheme is already a string constant reference
+        if (typeof config.defaultTheme === 'string' && 
+            (config.defaultTheme === 'LIGHT_MODE' || 
+             config.defaultTheme === 'DARK_MODE' || 
+             config.defaultTheme === 'AUTO_MODE')) {
+          // If it's already a constant name, wrap it for our formatter
+          config.defaultTheme = `__CONSTANT_${config.defaultTheme.toLowerCase()}__`;
+        } else {
+          // Otherwise, use the string value
+          const themeValue = config.defaultTheme;
+          config.defaultTheme = `__CONSTANT_${themeValue}__`;
+        }
       }
       
       // Add handling for other constants here if needed
@@ -129,23 +136,66 @@
     
     // Format a config object into TypeScript code
     function formatConfigObject(configName, configObj) {
+      // Create a more precise formatter that preserves empty arrays and objects
+      function formatWithPreservation(obj, indent = 2, level = 0) {
+        const spaces = ' '.repeat(indent * level);
+        const nextSpaces = ' '.repeat(indent * (level + 1));
+        
+        if (obj === null) return 'null';
+        if (obj === undefined) return 'undefined';
+        
+        if (Array.isArray(obj)) {
+          // Empty array becomes []
+          if (obj.length === 0) return '[]';
+          
+          // Array with items gets formatted with proper indentation
+          const items = obj.map(item => `${nextSpaces}${formatWithPreservation(item, indent, level + 1)}`);
+          return `[\n${items.join(',\n')}\n${spaces}]`;
+        }
+        
+        if (typeof obj === 'object') {
+          // Empty object becomes {}
+          const keys = Object.keys(obj);
+          if (keys.length === 0) return '{}';
+          
+          // Object with properties gets formatted with proper indentation
+          const items = keys.map(key => {
+            const keyStr = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key) ? key : `"${key}"`;
+            return `${nextSpaces}${keyStr}: ${formatWithPreservation(obj[key], indent, level + 1)}`;
+          });
+          
+          return `{\n${items.join(',\n')}\n${spaces}}`;
+        }
+        
+        if (typeof obj === 'string') {
+          // Check if the string is a special constant
+          if (obj.startsWith('__CONSTANT_') && obj.endsWith('__')) {
+            return obj.substring(11, obj.length - 2); // Remove the __CONSTANT_ and __ parts
+          }
+          return `"${obj.replace(/"/g, '\\"')}"`;
+        }
+        
+        // For numbers, booleans, etc.
+        return String(obj);
+      }
+      
       if (configName === 'siteConfig') {
         const processedConfig = preserveConstants(configObj);
         
-        return JSON.stringify(processedConfig, null, 2)
-          .replace(/"([^"]+)":/g, '$1:')
-          .replace(/"__CONSTANT_light__"/g, 'LIGHT_MODE')
-          .replace(/"__CONSTANT_dark__"/g, 'DARK_MODE')
-          .replace(/"__CONSTANT_auto__"/g, 'AUTO_MODE');
+        let formattedConfig = formatWithPreservation(processedConfig);
+        // Replace constants
+        formattedConfig = formattedConfig.replace(/"__CONSTANT_light__"/g, 'LIGHT_MODE')
+                                          .replace(/"__CONSTANT_dark__"/g, 'DARK_MODE')
+                                          .replace(/"__CONSTANT_auto__"/g, 'AUTO_MODE');
+        return formattedConfig;
       } else if (configName === 'navBarConfig') {
         // Handle special LinkPreset enum values
-        return JSON.stringify(configObj, null, 2)
-          .replace(/"([^"]+)":/g, '$1:')
-          .replace(/"LinkPreset\.([a-zA-Z]+)"/g, 'LinkPreset.$1');
+        let formattedConfig = formatWithPreservation(configObj);
+        formattedConfig = formattedConfig.replace(/"LinkPreset\.([a-zA-Z]+)"/g, 'LinkPreset.$1');
+        return formattedConfig;
       } else {
         // Generic handling for other config types
-        return JSON.stringify(configObj, null, 2)
-          .replace(/"([^"]+)":/g, '$1:');
+        return formatWithPreservation(configObj);
       }
     }
     
@@ -165,18 +215,29 @@
         fileContent = `import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'\n\n${fileContent}`;
       }
       
-      // Make sure LinkPreset is imported if changing navBarConfig
-      if (changes.some(c => c.name === 'navBarConfig') && !fileContent.includes('import { LinkPreset }')) {
-        fileContent = fileContent.replace(
-          /import type {/,
-          'import type {\n  LinkPreset,'
-        );
+      // Ensure LinkPreset is properly imported
+      if (changes.some(c => c.name === 'navBarConfig')) {
+        // If file doesn't have LinkPreset import at all
+        if (!fileContent.includes('import { LinkPreset }')) {
+          // Check if file already has import type statement
+          if (fileContent.includes('import type {')) {
+            fileContent = fileContent.replace(
+              /import type {/,
+              'import { LinkPreset } from \'../types/config\'\nimport type {'
+            );
+          } else {
+            // Add it at the top of the file
+            fileContent = `import { LinkPreset } from '../types/config'\n${fileContent}`;
+          }
+        }
       }
       
       // For each changed config, update its section in the file
       for (const config of changes) {
         const formattedConfig = formatConfigObject(config.name, config.obj);
-        const regexPattern = new RegExp(`export const ${config.name}[\\s\\S]*?(?=\\n\\n|$)`, 'g');
+        
+        // Create a more precise regex that matches the export declaration and its value
+        const regexPattern = new RegExp(`export const ${config.name}[\\s\\S]*?(?=\\n\\nexport const|$)`, 'g');
         
         if (regexPattern.test(fileContent)) {
           // Update existing config section
@@ -224,9 +285,28 @@ export interface AvatarConfig {
  * Avatar configuration for the site
  * Controls which avatars are used for the home page and posts
  */
-export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)}`;
+export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)};
+
+/**
+ * Get a consistent avatar index for a given post slug
+ * This ensures the same post always shows the same avatar
+ */
+export function getAvatarIndexFromSlug(slug: string = '', avatarCount: number): number {
+  if (!slug) return 0 // Default to first avatar if no slug
+  
+  // Simple hash function to get consistent avatar for each slug
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) {
+    hash = ((hash << 5) - hash) + slug.charCodeAt(i)
+    hash = hash & hash // Convert to 32bit integer
+  }
+  
+  // Ensure positive index and map to available avatars
+  return Math.abs(hash) % avatarCount
+}`;
       }
       else if (config.name === 'communityConfig') {
+        // Create a specialized format that matches your current file structure
         fileContent = `// Import types
 import type { 
   CommunityConfig,
