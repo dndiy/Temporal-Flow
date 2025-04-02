@@ -21,7 +21,50 @@ jobs:
       # Checks-out your repository
       - uses: actions/checkout@v3
       
-      # Setup Node.js
+      # Setup Node.jsname: Rebuild and Deploy Site
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/content/**'
+      - 'src/config/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # 1. Install pnpm first
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      # 2. Setup Node.js with pnpm support
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      # 3. Install dependencies using pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 4. Build the site
+      - name: Build site
+        run: pnpm run build
+
+      # 5. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: dist
+          clean: true
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
