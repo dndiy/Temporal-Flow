@@ -76,9 +76,9 @@ export const profileConfig: ProfileConfig = {
   bio: "Content Creator & Digital Storyteller",
   links: [
     {
-      name: "Twitter",
-      icon: "fa6-brands:twitter",
-      url: "https://twitter.com/example"
+      name: "Bluesky",
+      icon: "fa6-brands:Bluesky",
+      url: "https://Bluesky.com/example"
     },
     {
       name: "Discord",
