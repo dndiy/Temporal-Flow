@@ -1,17 +1,19 @@
 # Temporal Flow
 
 <p align="center">
-  <img src="https://via.placeholder.com/150" alt="Temporal Flow Logo" width="150" height="150">
+  <img src="https://temporalflow/public/posts/generic/avatar.png" alt="Temporal Flow Logo" width="150" height="150">
 </p>
 
 <p align="center">
-  A decentralized content sharing platform built with Astro, Svelte and Tailwind CSS
+  A modern static content platform built with Astro, Svelte and Tailwind CSS
 </p>
 
 <p align="center">
   <a href="#features">Features</a> •
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a> •
+  <a href="#admin-panel">Admin Panel</a> •
+  <a href="#github-integration">GitHub Integration</a> •
   <a href="#banner-system">Banner System</a> •
   <a href="#friend-content-sharing">Friend Content Sharing</a> •
   <a href="#timeline-visualization">Timeline Visualization</a> •
@@ -21,13 +23,13 @@
   <a href="#license">License</a>
 </p>
 
-> **Note:** Temporal Flow is currently in early beta (v0.1.0). While fully functional, we're actively developing additional features and refining existing ones. Your feedback and contributions are welcome as we work toward our 1.0 release!
+> **Note:** Temporal Flow is currently in beta. While fully functional, we're actively developing additional features and refining existing ones. Your feedback and contributions are welcome!
 
 ## Overview
 
-Temporal Flow is a blazing-fast, self-hosted content platform designed for bloggers, content creators, and digital storytellers who value ownership of their content while desiring connectivity with others. Built on the Astro framework with Svelte components and Tailwind CSS, it delivers a responsive, performant experience across all devices.
+Temporal Flow is a blazing-fast, GitHub Pages compatible content platform designed for bloggers, content creators, and digital storytellers. Built on the Astro framework with Svelte components and Tailwind CSS, it delivers a responsive, performant experience across all devices.
 
-The platform combines the best aspects of traditional blogging with modern social features through its decentralized Friend Content Sharing system, allowing you to build a network of connected sites without sacrificing ownership of your data.
+What sets Temporal Flow apart is its browser-based administration panel that connects directly to your GitHub repository, allowing you to manage and deploy your site without ever touching code or using a local development environment. It also features a unique Friend Content Sharing system for decentralized content connections and dynamic banner options for visual storytelling.
 
 ## Features
 
@@ -39,12 +41,19 @@ The platform combines the best aspects of traditional blogging with modern socia
 - 🔍 **Built-in Search**: Full-text search across all your content
 - 📊 **SEO Optimized**: Built-in meta tags and structured data for better discoverability
 
-### Content Management
-- ✍️ **Markdown/MDX Support**: Write content in Markdown or MDX with frontmatter
-- 📂 **Category & Tag System**: Organize content with categories and tags
-- 📸 **Media Optimization**: Automatic WebP conversion for faster loading
-- 📑 **Table of Contents**: Automatically generated for longer articles
-- 📎 **Static Asset Handling**: Optimized handling of images and attachments
+### Admin Panel
+- ⚙️ **Browser-based Admin**: Configure your site entirely through a web interface
+- 🔄 **Live Preview**: See your changes in real-time before publishing
+- 📂 **Full Configuration Access**: Modify all site settings without touching code
+- 🔐 **Secure Authentication**: Password-protected admin access
+- 📱 **Mobile Friendly**: Manage your site from any device
+
+### GitHub Integration
+- 🔄 **Direct Repository Integration**: Push changes straight to your GitHub repository
+- 🚀 **Automated Deployment**: Trigger GitHub Actions workflows to rebuild your site
+- 🔄 **Version Control**: All changes are committed to your repository with proper commit messages
+- 🔑 **GitHub Token Authentication**: Secure access using personal access tokens
+- 🗂️ **Config File Management**: Automatic generation and updating of configuration files
 
 ### Banner System
 - 🌠 **Dynamic Banners**: Multiple banner types for visual storytelling
@@ -60,11 +69,25 @@ The platform combines the best aspects of traditional blogging with modern socia
 - 📦 **Content Packages**: Export and import content directly between sites
 - 🔄 **Multi-Source Compatibility**: Works with RSS, JSON feeds, and direct site scraping
 
+### Content Management
+- ✍️ **Markdown/MDX Support**: Write content in Markdown or MDX with frontmatter
+- 📂 **Category & Tag System**: Organize content with categories and tags
+- 📸 **Media Optimization**: Automatic WebP conversion for faster loading
+- 📑 **Table of Contents**: Automatically generated for longer articles
+- 📎 **Static Asset Handling**: Optimized handling of images and attachments
+
+### Community Features
+- 👥 **Team Profiles**: Showcase your team members with customizable profiles
+- 📢 **Community Page**: Built-in community page with configurable sections
+- 💬 **Discord Integration**: Connect your Discord community
+- 📧 **Contact Forms**: Customizable contact forms for user engagement
+- 📝 **Community Guidelines**: Easily publish and update community guidelines
+
 ### Timeline Visualization
 - ⏱️ **Interactive Timeline**: Visualize chronological events with an intuitive interface
-- 🌍 **Multiple View Modes**: Timeline, List, Tree, and Map visualizations
-- ⭐ **Event Highlighting**: Visual differentiation between regular and key events
 - 🔍 **Zoom & Pan Controls**: Intuitive navigation of timeline content
+- ⭐ **Event Highlighting**: Visual differentiation between regular and key events
+- 🌈 **Era Management**: Organize timeline events into visually distinct eras
 - 📱 **Touch Optimized**: Special interactions for mobile devices
 
 ## Installation
@@ -156,43 +179,89 @@ isKeyEvent: true                    # Highlight as a key event
 ---
 ```
 
-#### Complete Example
-Here's a comprehensive example showing how all these elements can work together:
+## Admin Panel
 
-```yaml
----
-title: "MEGA MEAL Universe Timeline"
-published: 2025-03-25
-description: "Explore the complete chronology of the MEGA MEAL Universe."
-image: '/posts/timeline/universe.png'
+Temporal Flow features a powerful browser-based admin panel that lets you configure and manage your site without writing code.
 
-# Custom author profile
-avatarImage: "/posts/timeline/universe-avatar.png"
-authorName: "The Universe"
-authorBio: "...and everything in it"
+### Accessing the Admin Panel
 
-# Timeline banner configuration
-bannerType: "timeline"
-bannerData:
-  category: "MEGA MEAL"
-  startYear: 1
-  endYear: 50000
-  background: "/posts/timeline/universe.png"
+1. Navigate to your deployed site's `/admin` path
+2. Enter your admin password to authenticate
+3. You'll be presented with the main admin dashboard
 
-# Timeline integration
-timelineYear: 1
-timelineEra: "all-eras"
-timelineLocation: "Historical Archives"
-isKeyEvent: true
+### Admin Panel Sections
 
-# Additional metadata
-showImageOnPost: false
-tags: [Timeline, Lore, Universe, Documentation]
-category: "MEGA MEAL"
-draft: false
-lang: ""
----
-```
+The admin panel is organized into several tabs for easy navigation:
+
+#### General Settings
+- Site name, subtitle, and language configuration
+- Table of contents settings
+- License information
+
+#### Navigation
+- Add, remove, and reorder navigation links
+- Configure dropdown menus
+- Set up external links
+
+#### Profile
+- Update your profile information
+- Configure social media links
+- Manage avatar images and animations
+
+#### Appearance
+- Light/dark mode preferences
+- Theme color customization
+- Favicon configuration
+
+#### Timeline
+- Configure timeline eras
+- Set default timeline views
+- Adjust timeline display options
+
+#### Community
+- Configure community page sections
+- Set up Discord integration
+- Customize contact forms
+- Manage community guidelines
+
+#### About
+- Configure about page sections
+- Manage team member information
+- Set up contact information
+
+#### Security
+- Reset admin password
+- Configure security settings
+
+#### Advanced
+- Export configurations
+- View and edit raw configuration files
+
+## GitHub Integration
+
+One of Temporal Flow's standout features is its direct GitHub repository integration, allowing you to manage your site without a local development environment.
+
+### Setting Up GitHub Integration
+
+1. Create a GitHub Personal Access Token with repository access
+2. In the admin panel, navigate to any configuration tab
+3. Scroll down to the GitHub Integration section
+4. Click "Connect to GitHub" and enter your token
+5. Your site will now be connected to your GitHub repository
+
+### Using GitHub Integration
+
+Once connected, you can:
+
+1. **Commit Changes**: After making configuration changes, click "Commit to GitHub" to push your changes directly to your repository
+2. **Deploy Changes**: Trigger your site's build workflow with the "Deploy Changes" button
+3. **Monitor Status**: See real-time feedback on commit and deployment status
+
+This integration makes it possible to:
+- Update your site from any device with a web browser
+- Make quick changes directly from a tablet or even a smartphone
+- Avoid the need for a local development environment
+- Maintain proper version control for all site changes
 
 ## Banner System
 
@@ -251,7 +320,7 @@ Banners automatically adapt to different screen sizes:
 
 ### Banner Customization
 
-Site-wide banner defaults can be configured in `config.ts`, while individual page banners are controlled through frontmatter.
+Site-wide banner defaults can be configured in the admin panel's Appearance tab, while individual page banners are controlled through frontmatter.
 
 ## Friend Content Sharing
 
@@ -279,6 +348,14 @@ For GitHub Pages, add a `_headers` file to your repository root:
 
 The system will automatically validate the site and fetch their content, which will be visible only to you when logged in.
 
+### Friend Content Privacy
+
+The Friend Content Sharing system is designed with privacy in mind:
+- Friend content is only visible to you when logged in
+- Your visitors only see your content
+- No central server or database stores the connections
+- You have full control over which friends to connect with
+
 ## Timeline Visualization
 
 Temporal Flow includes a powerful timeline visualization system that can display chronological events in multiple views.
@@ -298,91 +375,68 @@ isKeyEvent: false
 ---
 ```
 
-### Timeline Views
+### Timeline Configuration
 
-- **Timeline View**: Interactive visualization with star-like event nodes
-- **List View**: Chronological list of events organized by era
-- **Tree View**: Hierarchical display showing relationships between events
-- **Map View**: Spatial representation of events with location data
+The timeline can be fully configured through the admin panel:
+- Create and manage different eras
+- Set default viewing options
+- Customize the timeline appearance
+- Configure year spans and display options
 
 ## Configuration
 
-Temporal Flow can be configured through various configuration files:
+Temporal Flow can be configured through the admin panel or by directly editing configuration files:
 
 ### Site Configuration
 
-Edit `config.ts` to set site-wide options:
-
-```typescript
-export const siteConfig: SiteConfig = {
-  title: 'Your Site Name',
-  subtitle: 'Your Tagline',
-  lang: 'en',
-  themeColor: {
-    hue: 200,
-    fixed: false,
-  },
-  // Additional options...
-}
-```
+In the admin panel, navigate to the "General" tab to configure:
+- Site title and subtitle
+- Default language
+- Theme color settings
+- Table of contents options
+- License information
 
 ### Navigation Configuration
 
-Edit the `navBarConfig` in `config.ts` to customize the navigation menu:
-
-```typescript
-export const navBarConfig: NavBarConfig = {
-  links: [
-    LinkPreset.Home,
-    {
-      name: 'Projects',
-      url: '/archive/',
-      dropdown: [
-        // Dropdown items...
-      ]
-    },
-    // Additional links...
-  ],
-}
-```
+In the "Navigation" tab, you can:
+- Add, remove, and reorder navigation links
+- Create dropdown menus
+- Set up external links
+- Configure special page links
 
 ### Timeline Configuration
 
-Timeline settings can be adjusted in `TimelineConfig.ts`:
+The "Timeline" tab allows you to:
+- Create and manage timeline eras
+- Set default timeline display options
+- Configure year marks and spans
+- Adjust timeline appearance settings
 
-```typescript
-export const defaultEraConfig: EraConfigMap = {
-  'digital-age': {
-    displayName: 'The Digital Age',
-    startYear: 2000,
-    endYear: 2100,
-    // Additional options...
-  },
-  // Additional eras...
-}
-```
+### Community & About Pages
+
+Dedicated tabs let you configure:
+- Community page sections and features
+- Team member profiles
+- Contact information
+- Discord integration
+- Community guidelines
 
 ## Roadmap
 
 Temporal Flow is under active development. Here's what we're working on for future releases:
 
-### Coming in v0.2.0
-- Enhanced mobile responsiveness
-- Improved timeline navigation controls
-- Additional banner transition effects
-- Performance optimizations
+### Coming Soon
+- Enhanced media management in admin panel
+- Post editor in the admin panel
+- Extended banner animation options
+- Enhanced friend content discovery
 
-### Coming in v0.3.0
+### Future Plans
+- Multi-user support with permission levels
+- Enhanced analytics integration
+- Comment system options
+- Extended API capabilities
 - ActivityPub protocol support for Fediverse integration
-- Comment system integration
-- Enhanced content editor with WYSIWYG capabilities
-- Custom theming system
-
-### Coming in v1.0.0
-- Content recommendation engine
-- WebSocket-based real-time notifications
-- Advanced analytics dashboard
-- Multi-language support
 
 ## Contributing
 
@@ -405,7 +459,7 @@ This project is licensed under the CC BY-NC-SA 4.0 License - see the [LICENSE](h
 - Built with [Astro](https://astro.build)
 - Styled with [Tailwind CSS](https://tailwindcss.com)
 - Interactive components powered by [Svelte](https://svelte.dev)
-- Page transitions via [Swup](https://swup.js.org)
+- Admin panel inspired by modern CMS systems
 
 ---
 
