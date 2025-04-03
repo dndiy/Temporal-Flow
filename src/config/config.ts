@@ -16,7 +16,7 @@ export const siteConfig: SiteConfig = {
     hue: 210,
     fixed: false
   },
-  defaultTheme: auto,
+  defaultTheme: AUTO_MODE,
   banner: {
     enable: false,
     src: "/assets/banner/0001.png",
@@ -75,10 +75,10 @@ export const profileConfig: ProfileConfig = {
   name: "Site Owner",
   bio: "Content Creator & Digital Storyteller",
   links: [
-    {
+     {
       name: "Bluesky",
-      icon: "fa6-brands:Bluesky",
-      url: "https://Bluesky.com/example"
+      icon: "fa6-brands:bluesky",
+      url: "https://bluesky.com/example"
     },
     {
       name: "Discord",

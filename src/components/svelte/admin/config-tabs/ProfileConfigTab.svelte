@@ -487,7 +487,7 @@
                 id="social-url" 
                 bind:value={editingSocial.data.url}
                 class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
-                placeholder="e.g. https://Bluesky.com/username"
+                placeholder="e.g. https://bluesky.com/username"
               />
             </div>
             

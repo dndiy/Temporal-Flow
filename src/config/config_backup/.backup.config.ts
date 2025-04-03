@@ -77,8 +77,8 @@ export const profileConfig: ProfileConfig = {
   links: [
     {
       name: "Bluesky",
-      icon: "fa6-brands:Bluesky",
-      url: "https://Bluesky.com/example"
+      icon: "fa6-brands:luesky",
+      url: "https://bluesky.com/example"
     },
     {
       name: "Discord",
