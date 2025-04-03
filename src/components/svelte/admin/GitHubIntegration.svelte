@@ -285,25 +285,7 @@ export interface AvatarConfig {
  * Avatar configuration for the site
  * Controls which avatars are used for the home page and posts
  */
-export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)};
-
-/**
- * Get a consistent avatar index for a given post slug
- * This ensures the same post always shows the same avatar
- */
-export function getAvatarIndexFromSlug(slug: string = '', avatarCount: number): number {
-  if (!slug) return 0 // Default to first avatar if no slug
-  
-  // Simple hash function to get consistent avatar for each slug
-  let hash = 0
-  for (let i = 0; i < slug.length; i++) {
-    hash = ((hash << 5) - hash) + slug.charCodeAt(i)
-    hash = hash & hash // Convert to 32bit integer
-  }
-  
-  // Ensure positive index and map to available avatars
-  return Math.abs(hash) % avatarCount
-}`;
+export const avatarConfig: AvatarConfig = ${formatConfigObject(config.name, config.obj)}`;
       }
       else if (config.name === 'communityConfig') {
         // Create a specialized format that matches your current file structure
