@@ -9,14 +9,14 @@ import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'
 
 
 export const siteConfig: SiteConfig = {
-  title: "Temporal Flow",
+  title: "Temporal Flow Network",
   subtitle: "A Decentralized Content Platform",
   lang: "en",
   themeColor: {
-    hue: 0,
+    hue: 210,
     fixed: false
   },
-  defaultTheme: LIGHT_MODE,
+  defaultTheme: auto,
   banner: {
     enable: false,
     src: "/assets/banner/0001.png",
