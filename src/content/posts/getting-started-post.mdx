@@ -42,7 +42,68 @@ Creating and publishing content on Temporal Flow is straightforward and flexible
   <p className="text-gray-700 dark:text-neutral-300 mb-4">All posts are written in either Markdown (.md) or MDX (.mdx) format, giving you powerful formatting options while keeping the content creation process simple and focused.</p>
 </div>
 
-## Step 1: Create Your File
+<div className="card-base p-6 mb-6 bg-[oklch(0.98_0.025_var(--hue))] dark:bg-[oklch(0.2_0.025_var(--hue))]">
+  <h3 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-300">Two Ways to Create Content</h3>
+  
+  <p className="text-gray-700 dark:text-neutral-300 mb-4">Temporal Flow offers two approaches to content creation:</p>
+  
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg">
+      <h4 className="font-bold">Admin Panel Approach</h4>
+      <p className="text-sm">Create and manage posts directly through the browser-based admin interface with GitHub integration for easy publishing.</p>
+    </div>
+    
+    <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg">
+      <h4 className="font-bold">Developer Approach</h4>
+      <p className="text-sm">Create markdown files directly in your code editor and manage them through traditional git workflows.</p>
+    </div>
+  </div>
+  
+  <p className="text-gray-700 dark:text-neutral-300 mt-4">This guide covers both methods, so you can choose the workflow that suits you best.</p>
+</div>
+
+## Method 1: Creating Posts with the Admin Panel
+
+<div className="card-base p-6 mb-6">
+  <h4 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400">Using the Browser-Based Admin</h4>
+  
+  <p className="text-gray-700 dark:text-neutral-300 mb-4">The admin panel provides a convenient interface for creating posts without having to directly edit files:</p>
+  
+  <ol className="list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300">
+    <li>
+      <strong>Access the admin panel</strong> by navigating to your site's <code>/admin</code> path and logging in
+    </li>
+    <li>
+      <strong>Navigate to the Content tab</strong> and click "Create New Post"
+    </li>
+    <li>
+      <strong>Fill in the metadata form</strong> with title, description, publication date, etc.
+    </li>
+    <li>
+      <strong>Write your content</strong> using the Markdown editor
+    </li>
+    <li>
+      <strong>Preview your post</strong> to see how it will look on your site
+    </li>
+    <li>
+      <strong>Save and commit</strong> directly to your GitHub repository
+    </li>
+    <li>
+      <strong>Trigger a deployment</strong> to publish your changes
+    </li>
+  </ol>
+  
+  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md mt-4 text-blue-800 dark:text-blue-200">
+    <p className="font-bold">GitHub Integration</p>
+    <p className="text-sm mt-1">
+      With GitHub integration enabled, your post will be automatically committed to your repository when you save it, and you can trigger a rebuild directly from the admin panel to publish it.
+    </p>
+  </div>
+</div>
+
+## Method 2: Creating Posts with File Editing
+
+### Step 1: Create Your File
 
 <div className="card-base p-6 mb-6">
   <h4 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400">File Creation</h4>
@@ -55,7 +116,7 @@ Creating and publishing content on Temporal Flow is straightforward and flexible
   <p className="text-gray-700 dark:text-neutral-300">You can use either the .md extension for standard Markdown or .mdx if you want to include React/Svelte components in your content.</p>
 </div>
 
-## Step 2: Add Frontmatter
+### Step 2: Add Frontmatter
 
 Every post begins with "frontmatter" - a YAML section at the top of the file that defines metadata about your post. This is enclosed between triple dashes `---`.
 
@@ -104,9 +165,13 @@ Every post begins with "frontmatter" - a YAML section at the top of the file tha
   isKeyEvent: false                     # Highlight as a key event?
   ---
   ```
+  
+  <p className="text-gray-700 dark:text-neutral-300 mt-4">
+    <strong>Note:</strong> When using the admin panel, these frontmatter fields are presented as form inputs with helpful labels and validation.
+  </p>
 </div>
 
-## Step 3: Write Your Content
+### Step 3: Write Your Content
 
 After the frontmatter, add your post content using Markdown syntax:
 
@@ -167,12 +232,36 @@ When using .mdx files, you can include special Temporal Flow components:
 </Alert>
 ```
 
-## Step 4: Save and Build
+## Step 4: Publishing Your Post
 
 <div className="card-base p-6 mb-6">
-  <h4 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400">Publishing Process</h4>
+  <h4 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400">Publishing Workflow</h4>
   
-  <p className="text-gray-700 dark:text-neutral-300 mb-4">Once you've saved your file in the <code>content/posts/</code> directory, Temporal Flow will automatically:</p>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <h5 className="font-bold mb-3">Admin Panel Publishing</h5>
+      <ol className="list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300 text-sm">
+        <li>Click "Save" to store your post</li>
+        <li>Click "Commit to GitHub" to push changes to your repository</li>
+        <li>Click "Deploy Changes" to trigger a site rebuild</li>
+        <li>Wait for the deployment to complete (usually 1-2 minutes)</li>
+        <li>Your post is now live on your site</li>
+      </ol>
+    </div>
+    
+    <div>
+      <h5 className="font-bold mb-3">Developer Workflow Publishing</h5>
+      <ol className="list-decimal pl-5 space-y-2 text-gray-700 dark:text-neutral-300 text-sm">
+        <li>Save your file in the <code>content/posts/</code> directory</li>
+        <li>Add the file to git: <code>git add .</code></li>
+        <li>Commit your changes: <code>git commit -m "Add new post"</code></li>
+        <li>Push to GitHub: <code>git push</code></li>
+        <li>Wait for CI/CD to rebuild your site (if configured)</li>
+      </ol>
+    </div>
+  </div>
+  
+  <p className="text-gray-700 dark:text-neutral-300 mt-4">In both workflows, Temporal Flow will automatically:</p>
   
   <ul className="list-disc pl-5 space-y-2 text-gray-700 dark:text-neutral-300">
     <li>Process your frontmatter metadata</li>
@@ -181,8 +270,6 @@ When using .mdx files, you can include special Temporal Flow components:
     <li>Add the post to your site's feed</li>
     <li>Update search indexes and sitemaps</li>
   </ul>
-  
-  <p className="text-gray-700 dark:text-neutral-300 mt-4">If you're running in development mode (<code>pnpm run astro dev</code>), you'll see changes immediately. For production, rebuild your site with <code>pnpm build</code>.</p>
 </div>
 
 ## Special Post Features
@@ -259,6 +346,15 @@ That's all you need to get started!
   
   <div className="space-y-4">
     <div>
+      <p className="font-bold">Admin Panel Issues</p>
+      <ul className="list-disc pl-5 text-gray-700 dark:text-neutral-300">
+        <li>If GitHub integration isn't working, verify your token has proper repository permissions</li>
+        <li>If deployment isn't triggering, check that your GitHub workflow file is correctly named</li>
+        <li>Clear your browser cache if the admin interface isn't loading properly</li>
+      </ul>
+    </div>
+    
+    <div>
       <p className="font-bold">Post not appearing?</p>
       <ul className="list-disc pl-5 text-gray-700 dark:text-neutral-300">
         <li>Check that the file is in the correct location (<code>content/posts/</code>)</li>
@@ -283,10 +379,12 @@ That's all you need to get started!
 
 Now that you know how to create and publish posts, you might want to:
 
-1. **Customize your site theme** by editing the configuration files
-2. **Connect with other blogs** using the Friend Content Sharing feature
-3. **Create a timeline** of chronological events
-4. **Set up different banner types** for visual variety
+1. **Explore the admin panel** to manage your site configuration
+2. **Set up GitHub integration** for seamless publishing workflow
+3. **Customize your site theme** through the appearance settings
+4. **Connect with other blogs** using the Friend Content Sharing feature
+5. **Create a timeline** of chronological events
+6. **Set up different banner types** for visual variety
 
 Check out our other guides to learn more about these features!
 

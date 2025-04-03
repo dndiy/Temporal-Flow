@@ -49,9 +49,12 @@ lang: "en"
   
   <ul className="mt-4 space-y-2 text-[oklch(0.35_0.05_var(--hue))] dark:text-[oklch(0.85_0.05_var(--hue))]">
     <li>🌐 Static site generation with Astro</li>
+    <li>⚙️ Browser-based Admin Panel</li>
+    <li>🔄 Direct GitHub Integration</li>
     <li>🎨 Beautiful responsive design with Tailwind CSS</li>
     <li>📝 Simple content creation with Markdown and MDX</li>
     <li>🔗 Decentralized friend content sharing</li>
+    <li>🌠 Dynamic banner system for visual storytelling</li>
     <li>📊 Interactive timeline visualization</li>
     <li>🌙 Built-in dark mode support</li>
     <li>🚀 Optimized for performance and SEO</li>
@@ -74,6 +77,20 @@ Before diving into specific features, let's understand some core concepts that m
     <h4 className="font-bold mb-2">Decentralized Connections</h4>
     <p className="text-sm text-gray-700 dark:text-neutral-300">
       Connect with other Temporal Flow sites directly, with no central server or algorithm controlling what you see. Friend connections are private to you, and you control exactly what sites you want to follow.
+    </p>
+  </div>
+  
+  <div className="card-base p-4">
+    <h4 className="font-bold mb-2">Browser-Based Admin</h4>
+    <p className="text-sm text-gray-700 dark:text-neutral-300">
+      Configure and manage your site through a sleek, browser-based admin panel. No need to edit code files directly - make changes through a user-friendly interface from any device.
+    </p>
+  </div>
+  
+  <div className="card-base p-4">
+    <h4 className="font-bold mb-2">GitHub Integration</h4>
+    <p className="text-sm text-gray-700 dark:text-neutral-300">
+      Update your site directly from the admin panel with built-in GitHub integration. Changes are committed to your repository and your site is automatically rebuilt - all without leaving your browser.
     </p>
   </div>
   
@@ -102,6 +119,18 @@ Before diving into specific features, let's understand some core concepts that m
   </p>
   
   <div className="space-y-6 mt-6">
+    <div>
+      <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
+        <a href="/posts/getting-started-admin" className="hover:underline">Getting Started: Admin Panel</a>
+      </h4>
+      <p className="text-gray-700 dark:text-neutral-300 mt-2">
+        Learn how to use the browser-based admin panel to configure and manage your Temporal Flow site without touching code, including GitHub integration for seamless deployment.
+      </p>
+      <div className="mt-2">
+        <a href="/posts/getting-started-admin" className="text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))] text-sm font-medium hover:underline">Read the guide →</a>
+      </div>
+    </div>
+    
     <div>
       <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
         <a href="/posts/getting-started-post" className="hover:underline">Getting Started: Making a Post</a>
@@ -137,6 +166,18 @@ Before diving into specific features, let's understand some core concepts that m
         <a href="/posts/getting-started-timelines" className="text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))] text-sm font-medium hover:underline">Read the guide →</a>
       </div>
     </div>
+    
+    <div>
+      <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
+        <a href="/posts/Getting-Started-Banners" className="hover:underline">Dynamic Banners: Visual Storytelling</a>
+      </h4>
+      <p className="text-gray-700 dark:text-neutral-300 mt-2">
+        Explore how to use Temporal Flow's versatile banner system to enhance your content with dynamic visuals, including animated, video, and timeline banners.
+      </p>
+      <div className="mt-2">
+        <a href="/posts/getting-started-banners" className="text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))] text-sm font-medium hover:underline">Read the guide →</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -159,34 +200,43 @@ Before diving into specific features, let's understand some core concepts that m
     </li>
     
     <li>
-      <strong>Configure your site</strong>
-      <p className="mt-1">Edit <code>src/config.ts</code> to customize your site name, description, and preferences.</p>
-    </li>
-    
-    <li>
-      <strong>Create your first post</strong>
-      <p className="mt-1">Add a markdown file to <code>content/posts/hello-world.mdx</code> with frontmatter and content.</p>
-    </li>
-    
-    <li>
-      <strong>Run the development server</strong>
-      <p className="mt-1">Start the local development server to preview your site:</p>
-      <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded-md mt-2 font-mono text-sm">
-        pnpm run astro dev
-      </div>
-    </li>
-    
-    <li>
       <strong>Deploy to GitHub Pages</strong>
-      <p className="mt-1">Push your changes to GitHub and enable GitHub Pages for your repository.</p>
+      <p className="mt-1">Push your repository to GitHub and enable GitHub Pages for your repository.</p>
+    </li>
+    
+    <li>
+      <strong>Access the Admin Panel</strong>
+      <p className="mt-1">Navigate to your deployed site's <code>/admin</code> path and log in with the default password.</p>
+    </li>
+    
+    <li>
+      <strong>Connect GitHub Integration</strong>
+      <p className="mt-1">Create a GitHub Personal Access Token with repository access and connect it in the admin panel.</p>
+    </li>
+    
+    <li>
+      <strong>Configure your site</strong>
+      <p className="mt-1">Use the admin panel to customize your site name, description, navigation, and other settings.</p>
+    </li>
+    
+    <li>
+      <strong>Create and publish content</strong>
+      <p className="mt-1">Add your posts using Markdown, commit changes to GitHub, and deploy directly from the admin panel.</p>
     </li>
   </ol>
+  
+  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md mt-4 text-blue-800 dark:text-blue-200">
+    <p className="font-bold">Alternative: Developer Workflow</p>
+    <p className="mt-1 text-sm">If you prefer a more traditional development approach, you can also edit files directly, run the local development server with <code>pnpm run astro dev</code>, and push changes to GitHub manually.</p>
+  </div>
 </div>
 
 ## Key Configuration Files
 
 <div className="card-base p-6 mb-6">
   <h4 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400">Important Files to Know</h4>
+  
+  <p className="text-gray-700 dark:text-neutral-300 mb-3">While these files can all be managed through the admin panel, it's helpful to understand the underlying structure:</p>
   
   <div className="space-y-4">
     <div>
@@ -195,8 +245,18 @@ Before diving into specific features, let's understand some core concepts that m
     </div>
     
     <div>
-      <p className="font-bold"><code>tailwind.config.cjs</code></p>
-      <p className="text-gray-700 dark:text-neutral-300">Customize your site's color scheme, typography, and other design elements.</p>
+      <p className="font-bold"><code>src/config/timelineconfig.ts</code></p>
+      <p className="text-gray-700 dark:text-neutral-300">Configuration for the timeline feature, including eras, display options, and visualization settings.</p>
+    </div>
+    
+    <div>
+      <p className="font-bold"><code>src/config/community.config.ts</code></p>
+      <p className="text-gray-700 dark:text-neutral-300">Settings for your community page, including Discord integration and contact forms.</p>
+    </div>
+    
+    <div>
+      <p className="font-bold"><code>src/config/about.config.ts</code></p>
+      <p className="text-gray-700 dark:text-neutral-300">Configuration for your about page, including team information and contact details.</p>
     </div>
     
     <div>
@@ -208,40 +268,46 @@ Before diving into specific features, let's understand some core concepts that m
       <p className="font-bold"><code>content/friends/</code></p>
       <p className="text-gray-700 dark:text-neutral-300">Directory containing your friend connection files for the Friend Content Sharing system.</p>
     </div>
-    
-    <div>
-      <p className="font-bold"><code>src/components/</code></p>
-      <p className="text-gray-700 dark:text-neutral-300">Reusable components that make up your site's interface, built with Svelte and styled with Tailwind CSS.</p>
-    </div>
   </div>
 </div>
 
 ## Recommended Workflow
 
-For the best experience with Temporal Flow, we recommend this workflow:
+Temporal Flow offers two primary workflows to suit different preferences:
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
   <div className="card-base p-4">
-    <h4 className="font-bold mb-2">Content Creation</h4>
+    <h4 className="font-bold mb-2">Admin Panel Workflow</h4>
+    <ol className="list-decimal pl-5 text-sm text-gray-700 dark:text-neutral-300">
+      <li>Access your site's admin panel</li>
+      <li>Configure site settings as needed</li>
+      <li>Write content in Markdown/MDX</li>
+      <li>Connect GitHub integration</li>
+      <li>Commit changes directly from the admin panel</li>
+      <li>Deploy your site with one click</li>
+      <li>Manage all aspects through the browser interface</li>
+    </ol>
+  </div>
+  
+  <div className="card-base p-4">
+    <h4 className="font-bold mb-2">Developer Workflow</h4>
     <ol className="list-decimal pl-5 text-sm text-gray-700 dark:text-neutral-300">
       <li>Write posts in your favorite Markdown editor</li>
       <li>Add appropriate frontmatter for metadata</li>
       <li>Save to content/posts/ directory</li>
       <li>Preview with 'pnpm run astro dev'</li>
+      <li>Edit configuration files directly</li>
       <li>Commit and push to your repository</li>
+      <li>GitHub Actions will rebuild your site</li>
     </ol>
   </div>
-  
-  <div className="card-base p-4">
-    <h4 className="font-bold mb-2">Site Management</h4>
-    <ol className="list-decimal pl-5 text-sm text-gray-700 dark:text-neutral-300">
-      <li>Regularly update dependencies</li>
-      <li>Back up your content directory</li>
-      <li>Review and manage friend connections</li>
-      <li>Update your timeline when adding chronological content</li>
-      <li>Monitor site performance with built-in analytics</li>
-    </ol>
-  </div>
+</div>
+
+<div className="card-base p-4 mb-8">
+  <h4 className="font-bold mb-2">Hybrid Approach</h4>
+  <p className="text-sm text-gray-700 dark:text-neutral-300">
+    Many users find a hybrid approach works best - using the admin panel for quick configuration changes and the developer workflow for more substantial content creation. Temporal Flow supports both seamlessly!
+  </p>
 </div>
 
 ## Community and Support
@@ -263,16 +329,17 @@ For the best experience with Temporal Flow, we recommend this workflow:
 
 Now that you have an overview of Temporal Flow, here are some suggested next steps:
 
-1. **Read the detailed guides** linked above to fully understand each feature
-2. **Set up your development environment** following the Quick Start guide
-3. **Create your first post** using the post creation guide
-4. **Customize your site** by editing the configuration files
-5. **Connect with other Temporal Flow users** through the Friend Content Sharing system
+1. **Access the admin panel** to explore its capabilities
+2. **Set up GitHub integration** for seamless site management
+3. **Read the detailed guides** linked above to fully understand each feature
+4. **Customize your site** using the admin panel or by editing config files
+5. **Create your first post** using the post creation guide
+6. **Connect with other Temporal Flow users** through the Friend Content Sharing system
 
 Welcome to Temporal Flow - we're excited to see what you create!
 
 ---
 
 <div className="text-center text-gray-600 dark:text-gray-400 italic mt-8">
-  This guide was last updated on March 31, 2025. For the latest information, please check the <a href="/documentation" className="text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">official documentation</a>.
+  This guide was last updated on March 31, 2025.
 </div>
