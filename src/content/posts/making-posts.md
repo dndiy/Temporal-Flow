@@ -16,7 +16,7 @@ isKeyEvent: true
 showImageOnPost: true
 tags: [Content Creation, Posts, Markdown, MDX, Publishing]
 category: "Guides"
-draft: false
+draft: true
 lang: "en"
 ---
 

@@ -16,7 +16,7 @@ isKeyEvent: true
 showImageOnPost: false
 tags: [Friend System, Content Sharing, Networking, Connections, Social]
 category: "Guides"
-draft: false
+draft: true
 lang: "en"
 ---
 

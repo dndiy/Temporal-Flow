@@ -16,7 +16,7 @@ isKeyEvent: true
 showImageOnPost: false
 tags: [Installation, Setup, GitHub Pages, Getting Started]
 category: "Guides"
-draft: false
+draft: true
 lang: "en"
 ---
 

@@ -10,14 +10,14 @@ authorBio: "Decentralized content sharing platform"
 # Use a standard image banner
 bannerType: "image"
 bannerData:
-  image: "/posts/banners/welcome-banner.jpg"
+  image: "/posts/generic/bamboo.png"
 # Timeline integration
 timelineYear: 2025
 timelineEra: "introduction"
 timelineLocation: "Temporal Flow"
 isKeyEvent: true
 # Additional metadata
-showImageOnPost: true
+showImageOnPost: false
 tags: [Introduction, Overview, Getting Started]
 category: "Getting Started"
 draft: false
@@ -83,11 +83,21 @@ Ready to dive deeper? Check out our detailed guides:
 
 <div className="card-base p-6 mb-6">
   <h3 className="font-bold text-xl mb-4 text-gray-700 dark:text-neutral-400">Detailed Guides</h3>
-  
+
+    <div className="space-y-4">
+    <div>
+      <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
+        <a href="/posts/installation-guide/" className="hover:underline">Install Guide</a>
+      </h4>
+      <p className="text-gray-700 dark:text-neutral-300 mt-1">
+        Detailed guide to installing and setting up your Temporal Flow instance.
+      </p>
+    </div>
+
   <div className="space-y-4">
     <div>
       <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
-        <a href="/posts/getting-started-post" className="hover:underline">Creating Content</a>
+        <a href="/posts/making-posts/" className="hover:underline">Creating Content</a>
       </h4>
       <p className="text-gray-700 dark:text-neutral-300 mt-1">
         Learn how to create and publish posts with Markdown/MDX.
@@ -96,7 +106,7 @@ Ready to dive deeper? Check out our detailed guides:
     
     <div>
       <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
-        <a href="/posts/Getting-Started-Friends" className="hover:underline">Building Connections</a>
+        <a href="/posts/getting-started-friends/" className="hover:underline">Building Connections</a>
       </h4>
       <p className="text-gray-700 dark:text-neutral-300 mt-1">
         Discover how to connect with other creators and build your network.
@@ -105,7 +115,7 @@ Ready to dive deeper? Check out our detailed guides:
     
     <div>
       <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
-        <a href="/posts/Getting-Started-Timelines" className="hover:underline">Timeline Visualization</a>
+        <a href="/posts/getting-started-timelines/" className="hover:underline">Timeline Visualization</a>
       </h4>
       <p className="text-gray-700 dark:text-neutral-300 mt-1">
         Create interactive chronological displays for your content.
@@ -114,11 +124,12 @@ Ready to dive deeper? Check out our detailed guides:
     
     <div>
       <h4 className="font-bold text-lg text-[oklch(0.55_0.15_var(--hue))] dark:text-[oklch(0.75_0.15_var(--hue))]">
-        <a href="/posts/getting-started-quick" className="hover:underline">Complete Getting Started Guide</a>
+        <a href="/posts/detailed-features/" className="hover:underline">Complete Getting Started Guide</a>
       </h4>
       <p className="text-gray-700 dark:text-neutral-300 mt-1">
         A comprehensive overview of all Temporal Flow features.
       </p>
+      </div>
     </div>
   </div>
 </div>
