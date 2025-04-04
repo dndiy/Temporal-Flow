@@ -93,19 +93,40 @@ Unlike traditional platforms that control your content on centralized servers, T
 
 ## Installation
 
+### Option 1: Use GitHub Template (Recommended)
+
+1. **Create your site from this template**:
+   - Click the "Use this template" button at the top of this repository
+   - Name your repository and click "Create repository from template"
+
+2. **Enable GitHub Pages**:
+   - In your new repository, go to **Settings** > **Pages**
+   - Under **Build and deployment** > **Source**, select **GitHub Actions**
+   
+3. **Trigger your first deployment**:
+   - Go to the **Actions** tab
+   - Click on the failed workflow run (or create one by making a small change to any file)
+   - Click **Re-run all jobs** to trigger a successful deployment
+
+Your site will be live at `https://[username].github.io/[repository-name]/`
+
+### Option 2: Local Development
+
+If you want to develop locally first:
+
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/temporal-flow.git
-cd temporal-flow
+# Use the template on GitHub first, then clone your new repository
+git clone https://github.com/yourusername/your-repository-name.git
+cd your-repository-name
 
 # Install dependencies
 pnpm install
 
-# Build the project
-pnpm build
-
 # Start development server
 pnpm run astro dev
+
+# Build the project when ready
+pnpm build
 ```
 
 ## Usage
