@@ -43,25 +43,54 @@ const corsMiddleware = (_, next) => {
 
 // Base path and site URL configuration
 let basePath = '/';
-let siteUrl = 'https://temporalflow.org';
+let siteUrl = 'https://temporalflow.org'; // Default fallback
 
 // Get current directory to check for CNAME file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const cnamePath = join(__dirname, 'CNAME');
-const hasCNAME = existsSync(cnamePath);
 
-// Auto-detect GitHub Pages environment, but prioritize custom domain
+// Check if CNAME exists and read its content
+let customDomain = null;
+if (existsSync(cnamePath)) {
+  try {
+    // Use synchronous file reading since this is in the config
+    const fs = require('fs');
+    const cnameContent = fs.readFileSync(cnamePath, 'utf-8');
+    // Clean the content (remove whitespace, etc.)
+    customDomain = cnameContent.trim();
+    
+    if (customDomain) {
+      siteUrl = `https://${customDomain}`;
+      console.log(`Using custom domain from CNAME: ${siteUrl}`);
+    }
+  } catch (error) {
+    console.warn('Error reading CNAME file:', error);
+  }
+}
+
+// Auto-detect GitHub Pages environment if no custom domain was found or for subpath
 const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
 
-if (!hasCNAME && GITHUB_REPOSITORY) {
+if (GITHUB_REPOSITORY) {
   const [username, repo] = GITHUB_REPOSITORY.split('/');
-  basePath = `/${repo}/`;
-  siteUrl = `https://${username}.github.io`;
-  console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
+  
+  if (!customDomain) {
+    // No custom domain, use GitHub Pages domain
+    siteUrl = `https://${username}.github.io`;
+    basePath = `/${repo}/`;
+    console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
+  } else {
+    // Has custom domain, but still need basePath for subpaths
+    if (repo !== username + '.github.io') {
+      // Not the main user page, so needs a base path
+      basePath = `/${repo}/`;
+      console.log(`Using custom domain with repo subpath: ${siteUrl}${basePath}`);
+    }
+  }
 } else {
-  // If CNAME exists or we're not in GitHub Actions, use the default site URL
-  console.log(`Using custom domain: ${siteUrl} with base: ${basePath}`);
+  // If not in GitHub Actions, use the default site URL
+  console.log(`Using domain: ${siteUrl} with base: ${basePath}`);
 }
 
 // https://astro.build/config
