@@ -37,17 +37,23 @@ const corsMiddleware = (_, next) => {
   };
 };
 
-// GitHub Pages automatic path detection
-const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
+// Base path and site URL configuration
 let basePath = '/';
 let siteUrl = 'https://temporalflow.org';
 
-// Auto-detect GitHub Pages environment
-if (GITHUB_REPOSITORY) {
-  const [username, repo] = GITHUB_REPOSITORY.split('/');
+// Check if a CNAME file exists in the process
+const fs = require('fs');
+const hasCNAME = fs.existsSync('./CNAME');
+
+// Auto-detect GitHub Pages environment, but prioritize custom domain if CNAME exists
+if (!hasCNAME && process.env.GITHUB_REPOSITORY) {
+  const [username, repo] = process.env.GITHUB_REPOSITORY.split('/');
   basePath = `/${repo}/`;
   siteUrl = `https://${username}.github.io`;
   console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
+} else {
+  // If CNAME exists or we're not in GitHub Actions, use the default site URL
+  console.log(`Using custom domain: ${siteUrl} with base: ${basePath}`);
 }
 
 // https://astro.build/config
