@@ -19,6 +19,9 @@ import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
+import { fileURLToPath } from 'url';
+import { existsSync } from 'fs';
+import { dirname, join } from 'path';
 
 // CORS middleware for friend content sharing
 const corsMiddleware = (_, next) => {
@@ -41,13 +44,17 @@ const corsMiddleware = (_, next) => {
 let basePath = '/';
 let siteUrl = 'https://temporalflow.org';
 
-// Check if a CNAME file exists in the process
-const fs = require('fs');
-const hasCNAME = fs.existsSync('./CNAME');
+// Get current directory to check for CNAME file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const cnamePath = join(__dirname, 'CNAME');
+const hasCNAME = existsSync(cnamePath);
 
-// Auto-detect GitHub Pages environment, but prioritize custom domain if CNAME exists
-if (!hasCNAME && process.env.GITHUB_REPOSITORY) {
-  const [username, repo] = process.env.GITHUB_REPOSITORY.split('/');
+// Auto-detect GitHub Pages environment, but prioritize custom domain
+const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
+
+if (!hasCNAME && GITHUB_REPOSITORY) {
+  const [username, repo] = GITHUB_REPOSITORY.split('/');
   basePath = `/${repo}/`;
   siteUrl = `https://${username}.github.io`;
   console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
