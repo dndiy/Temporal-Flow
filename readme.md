@@ -19,47 +19,41 @@ Temporal Flow is a decentralized content sharing platform designed for creators.
 Unlike traditional platforms that control your content on centralized servers, Temporal Flow gives you full ownership of your work with the benefits of a connected community.
 
 
-## Installation
-<table>
-<tr>
-<td width="70%">
-<h3>Create your site from this template:</h3>
-1. Click the "Use this template" button at the top of this repository
-2. Select "Create a new repository"
-3. Name your repository 
-4. Click "Create repository"
-</td>
-<td width="30%">
-<a href="public/assets/installpng/repository.png" target="_blank">View image: Use template button</a><br>
-<a href="public/assets/installpng/use-template.png" target="_blank">View image: Create repository</a>
-</td>
-</tr>
-<tr>
-<td>
-<h3>Enable GitHub Pages:</h3>
-5. In your new repository, go to <strong>Settings</strong>
-6. Select <strong>Pages</strong> from the left sidebar
-7. Under <strong>Build and deployment</strong> > <strong>Source</strong>, select <strong>GitHub Actions</strong>
-<blockquote>Note: You will NOT need to select between Jekyll or static HTML when using GitHub Actions.</blockquote>
-</td>
-<td>
-<a href="public/assets/installpng/settings.png" target="_blank">View image: Settings tab</a><br>
-<a href="public/assets/installpng/not-jekyll.png" target="_blank">View image: Pages settings</a>
-</td>
-</tr>
-<tr>
-<td>
-<h3>Trigger your first deployment:</h3>
-8. Go to the <strong>Actions</strong> tab
-8b. Click on the workflow run (not pictured)
-9. Click <strong>Re-run all jobs</strong> to trigger a deployment
-Your site will be live at <code>https://[username].github.io/[repository-name]/</code>
-</td>
-<td>
-<a href="public/assets/installpng/deploy.png" target="_blank">View image: Actions tab</a>
-</td>
-</tr>
-</table>
+# Installation Guide
+
+This guide will help you set up your site using this template and deploy it to GitHub Pages.
+
+## Quick Start
+
+<div align="center">
+
+| Step | Instructions | Reference |
+|:---:|---|:---:|
+| **1** | **Create from Template** <br> Click "Use this template" → "Create a new repository" → Name it → Click "Create repository" | [<img src="https://img.shields.io/badge/View_Image-Repository_Setup-2ea44f" alt="View Template Setup Image">](public/assets/installpng/repository.png) <br> [<img src="https://img.shields.io/badge/View_Image-Create_Repository-2ea44f" alt="View Create Repository Image">](public/assets/installpng/use-template.png) |
+| **2** | **Enable GitHub Pages** <br> Go to repository **Settings** → **Pages** → Under **Build and deployment** > **Source**, select **GitHub Actions** <br><br> *Note: You will NOT need to select between Jekyll or static HTML when using GitHub Actions.* | [<img src="https://img.shields.io/badge/View_Image-Settings_Tab-2ea44f" alt="View Settings Tab Image">](public/assets/installpng/settings.png) <br> [<img src="https://img.shields.io/badge/View_Image-Pages_Settings-2ea44f" alt="View Pages Settings Image">](public/assets/installpng/not-jekyll.png) |
+| **3** | **Deploy Your Site** <br> Go to the **Actions** tab → Click on the workflow run → Click **Re-run all jobs** to trigger a deployment <br><br> Your site will be live at: `https://[username].github.io/[repository-name]/` | [<img src="https://img.shields.io/badge/View_Image-Deployment_Actions-2ea44f" alt="View Actions Tab Image">](public/assets/installpng/deploy.png) |
+| **4** | **Access Your Site** <br> After successful deployment, go to **Settings** > **Pages** → Find the green banner at the top with your site URL <br><br> Alternatively, click "Environments" on your repository home page, then "github-pages" to find your deployment URL. | |
+
+</div>
+
+## Troubleshooting
+
+If you're experiencing issues with your deployment:
+
+- ✅ **Verify deployment completion**: Ensure your first deployment has fully completed
+- 🔄 **Check repository name**: Confirm your repository name matches the URL path exactly
+- 🌐 **Browser cache**: Try clearing your browser cache or opening in an incognito window
+- 🔍 **Path issues**: If encountering 404 errors or missing assets, check relative paths in your code
+
+## Custom Domain Setup
+
+For setting up a custom domain, please refer to [GitHub's official documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
+
+---
+
+<div align="center">
+<p>Built with <a href="https://astro.build">Astro</a>, <a href="https://tailwindcss.com">Tailwind CSS</a>, and <a href="https://svelte.dev">Svelte</a></p>
+</div>
 
 ### View your published site:
 11. After successful deployment, go to <strong>Settings</strong> > <strong>Pages</strong>
