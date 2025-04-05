@@ -36,6 +36,7 @@ jobs:
       - name: Check GitHub Pages status
         id: pages_status
         uses: actions/github-script@v6
+        continue-on-error: true
         with:
           script: |
             try {
@@ -43,13 +44,13 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               });
-              return true;
+              return 'enabled';
             } catch (error) {
-              console.log('⚠️ GitHub Pages is not enabled for this repository yet! Go to Settings > Pages and set Source to "GitHub Actions"');
-              return false;
+              core.setFailed('⚠️ GitHub Pages is not enabled for this repository yet! Go to Settings > Pages and set Source to "GitHub Actions"');
+              return 'disabled';
             }
-          result-encoding: string
       
       - name: Deploy to GitHub Pages
         id: deployment
+        if: steps.pages_status.outputs.result == 'enabled'
         uses: actions/deploy-pages@v4
