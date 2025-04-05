@@ -49,18 +49,6 @@ If you're experiencing issues with your deployment:
 
 For setting up a custom domain, please refer to [GitHub's official documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
 
----
-
-<div align="center">
-<p>Built with <a href="https://astro.build">Astro</a>, <a href="https://tailwindcss.com">Tailwind CSS</a>, and <a href="https://svelte.dev">Svelte</a></p>
-</div>
-
-### View your published site:
-11. After successful deployment, go to <strong>Settings</strong> > <strong>Pages</strong>
-12. Find the green banner at the top with your site URL: <code>https://[username].github.io/[repository-name]/</code>
-
-Alternatively, you can click the "Environments" section on your repository home page, then click "github-pages" to find your deployment URL.
-
 ## Important Configuration Notes
 When deploying to GitHub Pages, your site will be available at <code>https://[username].github.io/[repository-name]/</code>. The template should automatically configure the correct base path during deployment.
 
