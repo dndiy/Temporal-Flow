@@ -20,6 +20,23 @@ import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
 
+// CORS middleware for friend content sharing
+const corsMiddleware = (_, next) => {
+  return async (context) => {
+    const response = await next(context);
+    
+    // Add CORS headers to friend-content.json and API routes
+    if (context.request.url.includes('friend-content.json') || 
+        context.request.url.includes('/api/')) {
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET');
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+    }
+    
+    return response;
+  };
+};
+
 // GitHub Pages automatic path detection
 const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
 let basePath = '/';
