@@ -20,85 +20,61 @@ Unlike traditional platforms that control your content on centralized servers, T
 
 
 ## Installation
-
 <table>
 <tr>
 <td width="70%">
-
-### Create your site from this template:
-
+<h3>Create your site from this template:</h3>
 1. Click the "Use this template" button at the top of this repository
 2. Select "Create a new repository"
 3. Name your repository 
 4. Click "Create repository"
-
 </td>
 <td width="30%">
-
-![Use template button](https://temporalflow/public/assets/installpng/repository.png)
-![Create repository](https://temporalflow/public/assets/installpng/use-template.png)
-
+<a href="public/assets/installpng/repository.png" target="_blank">View image: Use template button</a><br>
+<a href="public/assets/installpng/use-template.png" target="_blank">View image: Create repository</a>
 </td>
 </tr>
-
 <tr>
 <td>
-
-### Enable GitHub Pages:
-
-5. In your new repository, go to **Settings**
-6. Select **Pages** from the left sidebar
-7. Under **Build and deployment** > **Source**, select **GitHub Actions**
-
-> Note: You will NOT need to select between Jekyll or static HTML when using GitHub Actions.
-
+<h3>Enable GitHub Pages:</h3>
+5. In your new repository, go to <strong>Settings</strong>
+6. Select <strong>Pages</strong> from the left sidebar
+7. Under <strong>Build and deployment</strong> > <strong>Source</strong>, select <strong>GitHub Actions</strong>
+<blockquote>Note: You will NOT need to select between Jekyll or static HTML when using GitHub Actions.</blockquote>
 </td>
 <td>
-
-![Settings tab](https://temporalflow/public/assets/installpng/settings.png)
-![Pages settings](https://temporalflow/public/assets/installpng/not-jekyll.png)
-
+<a href="public/assets/installpng/settings.png" target="_blank">View image: Settings tab</a><br>
+<a href="public/assets/installpng/not-jekyll.png" target="_blank">View image: Pages settings</a>
 </td>
 </tr>
-
 <tr>
 <td>
-
-### Trigger your first deployment:
-
-8. Go to the **Actions** tab
+<h3>Trigger your first deployment:</h3>
+8. Go to the <strong>Actions</strong> tab
 8b. Click on the workflow run (not pictured)
-9. Click **Re-run all jobs** to trigger a deployment
-
-Your site will be live at `https://[username].github.io/[repository-name]/`
-
+9. Click <strong>Re-run all jobs</strong> to trigger a deployment
+Your site will be live at <code>https://[username].github.io/[repository-name]/</code>
 </td>
 <td>
-
-![Actions tab](https://temporalflow/public/assets/installpng/deploy.png)
-
+<a href="public/assets/installpng/deploy.png" target="_blank">View image: Actions tab</a>
 </td>
 </tr>
 </table>
 
 ### View your published site:
-
-11. After successful deployment, go to **Settings** > **Pages**
-12. Find the green banner at the top with your site URL: `https://[username].github.io/[repository-name]/`
+11. After successful deployment, go to <strong>Settings</strong> > <strong>Pages</strong>
+12. Find the green banner at the top with your site URL: <code>https://[username].github.io/[repository-name]/</code>
 
 Alternatively, you can click the "Environments" section on your repository home page, then click "github-pages" to find your deployment URL.
 
 ## Important Configuration Notes
-
-When deploying to GitHub Pages, your site will be available at `https://[username].github.io/[repository-name]/`. The template should automatically configure the correct base path during deployment.
+When deploying to GitHub Pages, your site will be available at <code>https://[username].github.io/[repository-name]/</code>. The template should automatically configure the correct base path during deployment.
 
 If you're having path-related issues (404 errors, missing styles/images):
-
 1. Ensure your site's first deployment has completed successfully
 2. Check that your repository name exactly matches the URL path
 3. Try clearing your browser cache or opening in an incognito window
 4. For custom domain setup, see [GitHub's documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
-
 ### Core Features
 
 - **Multi-Function Banner System** - Showcase your content with dynamic banners that support videos, images, timelines, and interactive elements
