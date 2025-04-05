@@ -35,8 +35,8 @@ Unlike traditional platforms that control your content on centralized servers, T
 </td>
 <td width="30%">
 
-![Use template button](https://path-to-your-image-2.png)
-![Create repository](https://path-to-your-image-4.png)
+![Use template button](https://temporalflow/public/assets/installpng/repository.png)
+![Create repository](https://temporalflow/public/assets/installpng/use-template.png)
 
 </td>
 </tr>
@@ -55,8 +55,8 @@ Unlike traditional platforms that control your content on centralized servers, T
 </td>
 <td>
 
-![Settings tab](https://path-to-your-image-3.png)
-![Pages settings](https://path-to-your-image-1.png)
+![Settings tab](https://temporalflow/public/assets/installpng/settings.png)
+![Pages settings](https://temporalflow/public/assets/installpng/not-jekyll.png)
 
 </td>
 </tr>
@@ -67,15 +67,15 @@ Unlike traditional platforms that control your content on centralized servers, T
 ### Trigger your first deployment:
 
 8. Go to the **Actions** tab
-9. Click on the workflow run
-10. Click **Re-run all jobs** to trigger a deployment
+8b. Click on the workflow run (not pictured)
+9. Click **Re-run all jobs** to trigger a deployment
 
 Your site will be live at `https://[username].github.io/[repository-name]/`
 
 </td>
 <td>
 
-![Actions tab](https://path-to-your-image-5.png)
+![Actions tab](https://temporalflow/public/assets/installpng/deploy.png)
 
 </td>
 </tr>
