@@ -100,7 +100,11 @@ Learn how to create and publish posts with Markdown/MDX.
 &lt;p&gt;&amp;lt;div className=&quot;text-center text-gray-600 dark:text-gray-400 italic mt-8&quot;&amp;gt;
 Join the growing community of independent creators on Temporal Flow today.
 &amp;lt;/div&amp;gt;&lt;/p&gt;
-</content:encoded></item><item><title>Example Website - DNDIY.org</title><link>https://temporalflow.org/posts/example-dndiy/</link><guid isPermaLink="true">https://temporalflow.org/posts/example-dndiy/</guid><description>A showcase of dndiy.org, the personal website of experimental filmmaker Greg Aster, featuring his surreal and satirical video projects.</description><pubDate>Tue, 01 Apr 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;DNDIY.org - Creative Experimentation in Digital Space&lt;/h1&gt;
+</content:encoded></item><item><title>Example Website - DNDIY.org</title><link>https://temporalflow.org/posts/example-dndiy/</link><guid isPermaLink="true">https://temporalflow.org/posts/example-dndiy/</guid><description>A showcase of dndiy.org, the personal website of experimental filmmaker Greg Aster, featuring his surreal and satirical video projects.</description><pubDate>Tue, 01 Apr 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&amp;lt;div className=&quot;flex justify-center mb-8&quot;&amp;gt;
+&amp;lt;a href=&quot;https://dndiy.org&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot; className=&quot;card-base px-6 py-3 bg-gradient-to-r from-[oklch(0.45_0.2_var(--hue))] to-[oklch(0.55_0.3_var(--hue))] text-white rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1&quot;&amp;gt;
+&amp;lt;span className=&quot;font-bold text-4xl&quot;&amp;gt;Visit DNDIY.org&amp;lt;/span&amp;gt;
+&amp;lt;/a&amp;gt;
+&amp;lt;/div&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;div className=&quot;text-gray-700 dark:text-neutral-300 text-lg italic mb-8&quot;&amp;gt;
 &quot;The digital canvas is boundless, limited only by imagination and rendering time.&quot; - Greg Aster
 &amp;lt;/div&amp;gt;&lt;/p&gt;
