@@ -18,13 +18,25 @@ import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
-
 import mdx from "@astrojs/mdx";
+
+// GitHub Pages automatic path detection
+const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
+let basePath = '/';
+let siteUrl = 'https://temporalflow.org';
+
+// Auto-detect GitHub Pages environment
+if (GITHUB_REPOSITORY) {
+  const [username, repo] = GITHUB_REPOSITORY.split('/');
+  basePath = `/${repo}/`;
+  siteUrl = `https://${username}.github.io`;
+  console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
+}
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://temporalflow.org',
-  base: '/',
+  site: siteUrl,
+  base: basePath,
   trailingSlash: "always",
   integrations: [tailwind(
       {
