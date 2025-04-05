@@ -18,6 +18,87 @@ Temporal Flow is a decentralized content sharing platform designed for creators.
 
 Unlike traditional platforms that control your content on centralized servers, Temporal Flow gives you full ownership of your work with the benefits of a connected community.
 
+
+## Installation
+
+<table>
+<tr>
+<td width="70%">
+
+### Create your site from this template:
+
+1. Click the "Use this template" button at the top of this repository
+2. Select "Create a new repository"
+3. Name your repository 
+4. Click "Create repository"
+
+</td>
+<td width="30%">
+
+![Use template button](https://path-to-your-image-2.png)
+![Create repository](https://path-to-your-image-4.png)
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### Enable GitHub Pages:
+
+5. In your new repository, go to **Settings**
+6. Select **Pages** from the left sidebar
+7. Under **Build and deployment** > **Source**, select **GitHub Actions**
+
+> Note: You will NOT need to select between Jekyll or static HTML when using GitHub Actions.
+
+</td>
+<td>
+
+![Settings tab](https://path-to-your-image-3.png)
+![Pages settings](https://path-to-your-image-1.png)
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### Trigger your first deployment:
+
+8. Go to the **Actions** tab
+9. Click on the workflow run
+10. Click **Re-run all jobs** to trigger a deployment
+
+Your site will be live at `https://[username].github.io/[repository-name]/`
+
+</td>
+<td>
+
+![Actions tab](https://path-to-your-image-5.png)
+
+</td>
+</tr>
+</table>
+
+### View your published site:
+
+11. After successful deployment, go to **Settings** > **Pages**
+12. Find the green banner at the top with your site URL: `https://[username].github.io/[repository-name]/`
+
+Alternatively, you can click the "Environments" section on your repository home page, then click "github-pages" to find your deployment URL.
+
+## Important Configuration Notes
+
+When deploying to GitHub Pages, your site will be available at `https://[username].github.io/[repository-name]/`. The template should automatically configure the correct base path during deployment.
+
+If you're having path-related issues (404 errors, missing styles/images):
+
+1. Ensure your site's first deployment has completed successfully
+2. Check that your repository name exactly matches the URL path
+3. Try clearing your browser cache or opening in an incognito window
+4. For custom domain setup, see [GitHub's documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
+
 ### Core Features
 
 - **Multi-Function Banner System** - Showcase your content with dynamic banners that support videos, images, timelines, and interactive elements
@@ -91,43 +172,6 @@ Unlike traditional platforms that control your content on centralized servers, T
 - 🌈 **Era Management**: Organize timeline events into visually distinct eras
 - 📱 **Touch Optimized**: Special interactions for mobile devices
 
-## Installation
-
-### Option 1: Use GitHub Template (Recommended)
-
-1. **Create your site from this template**:
-   - Click the "Use this template" button at the top of this repository
-   - Name your repository and click "Create repository from template"
-
-2. **Enable GitHub Pages**:
-   - In your new repository, go to **Settings** > **Pages**
-   - Under **Build and deployment** > **Source**, select **GitHub Actions**
-   
-3. **Trigger your first deployment**:
-   - Go to the **Actions** tab
-   - Click on the failed workflow run (or create one by making a small change to any file)
-   - Click **Re-run all jobs** to trigger a successful deployment
-
-Your site will be live at `https://[username].github.io/[repository-name]/`
-
-### Option 2: Local Development
-
-If you want to develop locally first:
-
-```bash
-# Use the template on GitHub first, then clone your new repository
-git clone https://github.com/yourusername/your-repository-name.git
-cd your-repository-name
-
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm run astro dev
-
-# Build the project when ready
-pnpm build
-```
 
 ## Usage
 
