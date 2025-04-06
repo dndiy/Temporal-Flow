@@ -95,18 +95,41 @@
   // Initialize GitHub service
   function initializeGithubService() {
     // Check GitHub authentication status
-    isGitHubAuthenticated = githubService.isAuthenticated();
+    isGitHubAuthenticated = typeof githubService.isAuthenticated === 'function' ? 
+      githubService.isAuthenticated() : false;
     
-    // Set GitHub repository settings if needed
-    if (!githubService.config) {
-      githubService = createGitHubService({
-        // These should match your GitHub repository details
-        owner: 'your-github-username', // Update with your GitHub username
-        repo: 'your-repo-name',        // Update with your repository name
-        branch: 'main',                // Update with your branch name
-        configPath: 'src/config',
-        postsPath: githubFolder
-      });
+    // Check if the githubService has all required methods
+    const requiredMethods = [
+      'isAuthenticated', 'authenticate', 'logout', 
+      'getFile', 'getDirectory', 'commitFile', 
+      'deleteFile', 'triggerWorkflow'
+    ];
+    
+    const missingMethods = requiredMethods.filter(
+      method => typeof githubService[method] !== 'function'
+    );
+    
+    if (missingMethods.length > 0) {
+      console.warn(`GitHub service is missing methods: ${missingMethods.join(', ')}. Some functionality will be limited.`);
+      
+      // Fall back to local storage mode only
+      isGitHubAuthenticated = false;
+      loadError = "GitHub service doesn't have all required methods. Please update your GitHub service implementation.";
+      
+      // Load posts from cache anyway
+      localPosts = getCachedPosts();
+    } else {
+      // Set GitHub repository settings if needed
+      if (!githubService.config) {
+        githubService = createGitHubService({
+          // These should match your GitHub repository details
+          owner: 'your-github-username', // Update with your GitHub username
+          repo: 'your-repo-name',        // Update with your repository name
+          branch: 'main',                // Update with your branch name
+          configPath: 'src/config',
+          postsPath: githubFolder
+        });
+      }
     }
   }
   
@@ -903,9 +926,26 @@
   // Fetch GitHub posts for the browser
   async function fetchGitHubPosts() {
     try {
+      // Check if getDirectory method exists
+      if (typeof githubService.getDirectory !== 'function') {
+        throw new Error('GitHub service does not support directory listing. Make sure your github-service.js file is up to date.');
+      }
+      
+      // Get the posts directory contents
       const postsDir = await githubService.getDirectory(githubFolder);
+      
+      // Make sure we got an array back
+      if (!Array.isArray(postsDir)) {
+        throw new Error('Invalid response from GitHub API when listing directory');
+      }
+      
+      // Process each file that's an MD or MDX file
       const postPromises = postsDir
-        .filter(item => item.type === 'file' && (item.name.endsWith('.md') || item.name.endsWith('.mdx')))
+        .filter(item => 
+          item && 
+          item.type === 'file' && 
+          (item.name.endsWith('.md') || item.name.endsWith('.mdx'))
+        )
         .map(async item => {
           try {
             const file = await githubService.getFile(`${githubFolder}/${item.name}`);
@@ -942,6 +982,7 @@
         
       return await Promise.all(postPromises);
     } catch (error) {
+      console.error('Error in fetchGitHubPosts:', error);
       throw error;
     }
   }
