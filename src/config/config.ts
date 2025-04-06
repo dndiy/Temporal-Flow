@@ -9,14 +9,14 @@ import { AUTO_MODE, DARK_MODE, LIGHT_MODE } from '@constants/constants.ts'
 
 
 export const siteConfig: SiteConfig = {
-  title: "Temporal Flow Network",
+  title: "Temporal Flow",
   subtitle: "A Decentralized Content Platform",
   lang: "en",
   themeColor: {
-    hue: 210,
+    hue: 0,
     fixed: false
   },
-  defaultTheme: AUTO_MODE,
+  defaultTheme: LIGHT_MODE,
   banner: {
     enable: false,
     src: "/assets/banner/0001.png",
@@ -75,11 +75,6 @@ export const profileConfig: ProfileConfig = {
   name: "Site Owner",
   bio: "Content Creator & Digital Storyteller",
   links: [
-     {
-      name: "Bluesky",
-      icon: "fa6-brands:bluesky",
-      url: "https://bluesky.com/example"
-    },
     {
       name: "Discord",
       icon: "fa6-brands:discord",
@@ -89,6 +84,11 @@ export const profileConfig: ProfileConfig = {
       name: "GitHub",
       icon: "fa6-brands:github",
       url: "https://github.com/example"
+    },
+    {
+      name: "BlueSky",
+      icon: "fa6-brands:bluesky",
+      url: "https://bsky.app/profile/"
     }
   ],
   avatarFilename: "ComfyUI_0003.png"
