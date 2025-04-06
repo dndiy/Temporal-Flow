@@ -424,7 +424,7 @@
                   id="localTitleSize" 
                   bind:value={postCardConfig.localPosts.styling.titleSize}
                   on:change={() => dispatch('change', postCardConfig)}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
                 >
                   <option value="text-xl">Small</option>
                   <option value="text-2xl">Medium</option>
@@ -441,7 +441,7 @@
                   id="localDescriptionLines" 
                   bind:value={postCardConfig.localPosts.styling.descriptionLines}
                   on:change={() => dispatch('change', postCardConfig)}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
                 >
                   <option value={1}>1 Line</option>
                   <option value={2}>2 Lines</option>
@@ -639,7 +639,7 @@
                   id="friendIndicatorType" 
                   bind:value={postCardConfig.friendPosts.friendStyling.indicatorType}
                   on:change={() => dispatch('change', postCardConfig)}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
                 >
                   <option value="border">Border</option>
                   <option value="badge">Badge</option>
@@ -739,7 +739,7 @@
                   id="friendSortingMethod" 
                   bind:value={postCardConfig.friendPosts.behavior.sortingMethod}
                   on:change={() => dispatch('change', postCardConfig)}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
                 >
                   <option value="date">By Date (newest first)</option>
                   <option value="source">Group by Source</option>
@@ -902,7 +902,7 @@
                 type="text" 
                 id="favicon-src" 
                 bind:value={editingFavicon.data.src}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100" 
                 placeholder="/favicon/icon-32x32.png"
               />
               <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
@@ -918,7 +918,7 @@
                 <select 
                   id="favicon-theme" 
                   bind:value={editingFavicon.data.theme}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
                 >
                   <option value="">All Themes</option>
                   <option value="light">Light Mode Only</option>
@@ -934,7 +934,7 @@
                   type="text" 
                   id="favicon-sizes" 
                   bind:value={editingFavicon.data.sizes}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100" 
                   placeholder="e.g. 32x32"
                 />
               </div>

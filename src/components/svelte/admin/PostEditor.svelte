@@ -7,7 +7,7 @@
   // Don't import mammoth directly here - we'll load it dynamically when needed
   
   // Tab state
-  let activeTab = 'create'; // 'create' or 'import'
+  let activeTab = 'create'; // 'create', 'import', or 'browse'
   
   // File import state
   let fileToImport = null;
@@ -26,6 +26,17 @@
   let githubToken = '';
   let githubFolder = 'src/content/posts';
   let subfolderPath = '';
+  
+  // Local posts browsing state
+  let localPosts = [];
+  let isLoadingPosts = false;
+  let loadError = null;
+  let selectedPost = null;
+  let isEditing = false;
+  let isDeleting = false;
+  let searchQuery = '';
+  let filteredPosts = [];
+  let cachedPosts = []; // For storing posts from localStorage
   
   // Reactive state management
   let post = {
@@ -58,7 +69,8 @@
       timelineCategory: ''
     },
     content: '',
-    draft: true
+    draft: true,
+    filepath: '' // To track original file path for editing existing posts
   };
   
   // Derived values
@@ -68,6 +80,12 @@
   $: showVideoFields = post.banner.type === 'video';
   $: showTimelineFields = post.timelineData.enabled;
   $: showAdvancedFields = post.showAdvancedOptions;
+  $: filteredPosts = searchQuery 
+      ? localPosts.filter(p => 
+          p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (p.tags && Array.isArray(p.tags) && p.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))))
+      : localPosts;
   
   // Toast notification state
   let showToast = false;
@@ -126,6 +144,11 @@
           setTimeout(() => {
             commitStatus.success = false;
           }, 3000);
+          
+          // If we're in browse tab, fetch posts
+          if (activeTab === 'browse') {
+            fetchLocalPosts();
+          }
         } catch (error) {
           console.error('Token validation error:', error);
           if (error.message.includes('401')) {
@@ -219,15 +242,67 @@
         }
       }
       
-      // In a real implementation, send to your API
-      // For now, we'll just generate and download the MDX
+      // Generate and download the MDX file
       generateMdxFile(postData);
+      
+      // Save to localStorage for future reference
+      saveCachedPost(postData);
       
       // Show success toast
       showNotification(isDraft ? 'Draft saved successfully!' : 'Post published successfully!');
     } catch (error) {
       console.error('Error saving post:', error);
       showNotification('Failed to save post: ' + error.message, 'error');
+    }
+  }
+  
+  // Cache the post to localStorage for future reference
+  function saveCachedPost(postData) {
+    try {
+      // Get existing cached posts
+      const existingPostsStr = localStorage.getItem('cachedPosts');
+      let existingPosts = existingPostsStr ? JSON.parse(existingPostsStr) : [];
+      
+      // Create a metadata entry for this post
+      const postMetadata = {
+        id: `${postData.slug}.mdx`,
+        title: postData.title,
+        description: postData.description,
+        slug: postData.slug,
+        published: postData.published,
+        updated: new Date().toISOString().split('T')[0],
+        tags: postData.tags,
+        category: postData.category,
+        draft: postData.draft,
+        content: postData.content.substring(0, 150) + (postData.content.length > 150 ? '...' : ''),
+        // Use the original filepath if we're editing an existing post
+        filepath: postData.filepath || `${githubFolder}/${postData.slug}.mdx`
+      };
+      
+      // Check if post already exists (by slug) and update it, otherwise add it
+      const existingIndex = existingPosts.findIndex(p => p.slug === postData.slug);
+      if (existingIndex !== -1) {
+        existingPosts[existingIndex] = postMetadata;
+      } else {
+        existingPosts.push(postMetadata);
+      }
+      
+      // Save the updated list back to localStorage
+      localStorage.setItem('cachedPosts', JSON.stringify(existingPosts));
+      
+      // Also save the full post content separately for potential future editing
+      localStorage.setItem(`fullPost_${postData.slug}`, JSON.stringify({
+        ...postMetadata,
+        content: postData.content,
+        advanced: postData.advanced,
+        timelineData: postData.timelineData,
+        banner: postData.banner
+      }));
+      
+      // Update the cachedPosts reference
+      cachedPosts = existingPosts;
+    } catch (error) {
+      console.error('Error saving post to cache:', error);
     }
   }
   
@@ -340,11 +415,17 @@
       
       // Determine the file path in the repository
       let filePath;
-      if (subfolderPath) {
+      if (isEditing && post.filepath) {
+        // If editing an existing post, use its original filepath
+        filePath = post.filepath;
+      } else if (subfolderPath) {
         filePath = `${githubFolder}/${subfolderPath}/${post.slug}.mdx`;
       } else {
         filePath = `${githubFolder}/${post.slug}.mdx`;
       }
+      
+      // Update the filepath in the post object
+      post.filepath = filePath;
       
       // Commit the file to GitHub
       await githubService.commitFile(
@@ -357,6 +438,9 @@
       commitStatus.success = true;
       showDeployOptions = true;
       
+      // Save to localStorage for future reference
+      saveCachedPost(post);
+      
       // Show success message
       showNotification(
         isDraft 
@@ -368,6 +452,16 @@
       setTimeout(() => {
         commitStatus.success = false;
       }, 3000);
+      
+      // If we're in browse mode and edited a post, refresh the post list
+      if (isEditing && activeTab === 'browse') {
+        await fetchLocalPosts();
+      }
+      
+      // Reset editing state if required
+      if (!isDraft) {
+        isEditing = false;
+      }
     } catch (error) {
       console.error('Error saving post to GitHub:', error);
       
@@ -486,12 +580,78 @@
           break;
         case 'md':
         case 'markdown':
-          // For markdown files, we can use them directly
-          converted = result;
-          // Try to extract title from first heading
-          const mdTitleMatch = result.match(/^#\s+(.+)$/m);
-          if (mdTitleMatch && mdTitleMatch[1]) {
-            title = mdTitleMatch[1].trim();
+        case 'mdx':
+          // Check if this is a full MDX file with frontmatter
+          if (result.startsWith('---')) {
+            const { frontmatter, content } = parseMdxFile(result);
+            if (frontmatter.title) {
+              // We have a full MDX file with frontmatter, extract everything
+              const updatedPost = { ...post };
+              updatedPost.title = frontmatter.title || '';
+              updatedPost.description = frontmatter.description || '';
+              updatedPost.slug = frontmatter.slug || title
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+              updatedPost.published = frontmatter.published || new Date().toISOString().split('T')[0];
+              updatedPost.image = frontmatter.image || '';
+              updatedPost.tags = Array.isArray(frontmatter.tags) ? frontmatter.tags.join(', ') : frontmatter.tags || '';
+              updatedPost.category = frontmatter.category || '';
+              updatedPost.draft = frontmatter.draft === undefined ? true : frontmatter.draft;
+              updatedPost.content = content;
+              
+              // Set advanced fields if they exist
+              if (frontmatter.avatarImage || frontmatter.authorName || frontmatter.authorBio || 
+                  frontmatter.showImageOnPost !== undefined || frontmatter.lang) {
+                updatedPost.showAdvancedOptions = true;
+                updatedPost.advanced = {
+                  avatarImage: frontmatter.avatarImage || '',
+                  authorName: frontmatter.authorName || '',
+                  authorBio: frontmatter.authorBio || '',
+                  showImageOnPost: frontmatter.showImageOnPost === undefined ? false : frontmatter.showImageOnPost,
+                  lang: frontmatter.lang || 'en',
+                  bannerImage: frontmatter.bannerImage || ''
+                };
+              }
+              
+              // Set timeline fields if they exist
+              if (frontmatter.timelineYear || frontmatter.timelineEra || frontmatter.timelineLocation) {
+                updatedPost.timelineData = {
+                  enabled: true,
+                  year: frontmatter.timelineYear || new Date().getFullYear(),
+                  era: frontmatter.timelineEra || '',
+                  location: frontmatter.timelineLocation || '',
+                  isKeyEvent: frontmatter.isKeyEvent || false
+                };
+              }
+              
+              // Set banner fields if they exist
+              if (frontmatter.bannerType) {
+                updatedPost.banner = {
+                  type: frontmatter.bannerType || '',
+                  videoId: frontmatter.bannerData?.videoId || '',
+                  timelineCategory: frontmatter.bannerData?.category || ''
+                };
+              }
+              
+              post = updatedPost;
+              converted = content;
+            } else {
+              // There's frontmatter but no title, just use the content
+              converted = content;
+            }
+          } else {
+            // For plain markdown files without frontmatter
+            converted = result;
+            // Try to extract title from first heading
+            const mdTitleMatch = result.match(/^#\s+(.+)$/m);
+            if (mdTitleMatch && mdTitleMatch[1]) {
+              title = mdTitleMatch[1].trim();
+            }
+            post.title = title;
+            post.content = converted;
           }
           break;
         case 'docx':
@@ -503,21 +663,24 @@
           converted = `# Imported Content\n\nOriginal file: ${fileToImport.name}\n\n${result}`;
       }
       
-      // Update the post state with the converted content
-      post.title = title;
-      post.content = converted;
-      post.slug = title
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim();
+      // If we didn't set the post content in the mdx case, set it now
+      if (post.content !== converted) {
+        post.title = title;
+        post.content = converted;
+        post.slug = title
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .trim();
+      }
       
       importStatus = 'Import successful! You can now edit the content before saving.';
       showNotification('File imported successfully!');
       
       // Switch to create tab to show the imported content
       activeTab = 'create';
+      isEditing = false;
     } catch (error) {
       console.error('Import error:', error);
       importStatus = `Error: ${error.message}`;
@@ -691,6 +854,344 @@
     }
   }
   
+  // Parse MDX/MD file content
+  function parseMdxFile(fileContent) {
+    try {
+      // Simple frontmatter parser
+      const frontmatterMatch = fileContent.match(/---\n([\s\S]*?)\n---/);
+      let frontmatter = {};
+      let content = fileContent;
+      
+      if (frontmatterMatch) {
+        const frontmatterText = frontmatterMatch[1];
+        
+        // Extract each line and parse
+        frontmatterText.split('\n').forEach(line => {
+          const match = line.match(/^(\w+):\s*(.*)$/);
+          if (match) {
+            let [_, key, value] = match;
+            
+            // Handle array values (tags: ["a", "b"])
+            if (value.startsWith('[') && value.endsWith(']')) {
+              try {
+                value = JSON.parse(value.replace(/'/g, '"'));
+              } catch (e) {
+                value = value.slice(1, -1).split(',').map(item => item.trim().replace(/["']/g, ''));
+              }
+            }
+            
+            // Handle boolean values
+            else if (value === 'true' || value === 'false') {
+              value = value === 'true';
+            }
+            
+            frontmatter[key] = value;
+          }
+        });
+        
+        // Remove frontmatter from content
+        content = fileContent.slice(frontmatterMatch[0].length).trim();
+      }
+      
+      return { frontmatter, content };
+    } catch (error) {
+      console.error('Error parsing MDX file:', error);
+      return { frontmatter: {}, content: fileContent };
+    }
+  }
+  
+  // Fetch GitHub posts for the browser
+  async function fetchGitHubPosts() {
+    try {
+      const postsDir = await githubService.getDirectory(githubFolder);
+      const postPromises = postsDir
+        .filter(item => item.type === 'file' && (item.name.endsWith('.md') || item.name.endsWith('.mdx')))
+        .map(async item => {
+          try {
+            const file = await githubService.getFile(`${githubFolder}/${item.name}`);
+            const { frontmatter, content } = parseMdxFile(file.content);
+            
+            return {
+              id: item.name,
+              slug: item.name.replace(/\.(md|mdx)$/, ''),
+              title: frontmatter.title || item.name,
+              description: frontmatter.description || '',
+              published: frontmatter.published || new Date().toISOString().split('T')[0],
+              updated: frontmatter.updated,
+              tags: frontmatter.tags || [],
+              category: frontmatter.category || '',
+              draft: frontmatter.draft === undefined ? false : frontmatter.draft,
+              filepath: `${githubFolder}/${item.name}`,
+              content: content.substring(0, 150) + (content.length > 150 ? '...' : '')
+            };
+          } catch (error) {
+            console.error(`Error fetching file ${item.name}:`, error);
+            // Return a basic entry with an error indication
+            return {
+              id: item.name,
+              slug: item.name.replace(/\.(md|mdx)$/, ''),
+              title: item.name,
+              description: 'Error loading post content',
+              published: 'Unknown',
+              draft: false,
+              filepath: `${githubFolder}/${item.name}`,
+              error: true
+            };
+          }
+        });
+        
+      return await Promise.all(postPromises);
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  // Get cached posts from localStorage
+  function getCachedPosts() {
+    try {
+      const cachedPostsStr = localStorage.getItem('cachedPosts');
+      if (cachedPostsStr) {
+        return JSON.parse(cachedPostsStr);
+      }
+      return [];
+    } catch (error) {
+      console.error('Error loading cached posts:', error);
+      return [];
+    }
+  }
+  
+  // Fetch local posts
+  async function fetchLocalPosts() {
+    isLoadingPosts = true;
+    loadError = null;
+    
+    try {
+      // Try to get posts from GitHub if authenticated
+      if (isGitHubAuthenticated) {
+        try {
+          const posts = await fetchGitHubPosts();
+          localPosts = posts;
+          
+          // Save these posts to localStorage for future reference
+          localStorage.setItem('cachedPosts', JSON.stringify(posts));
+          cachedPosts = posts;
+          
+          return;
+        } catch (error) {
+          console.error("Failed to fetch posts from GitHub:", error);
+          loadError = "Failed to load posts from GitHub. Falling back to cached posts.";
+          
+          // Fall back to localStorage cache
+          localPosts = getCachedPosts();
+          return;
+        }
+      } else {
+        // Not authenticated with GitHub, use localStorage cache
+        const cached = getCachedPosts();
+        if (cached.length > 0) {
+          localPosts = cached;
+        } else {
+          loadError = "No cached posts found. Please authenticate with GitHub to load posts.";
+          localPosts = [];
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      loadError = 'Failed to load posts: ' + error.message;
+      localPosts = [];
+    } finally {
+      isLoadingPosts = false;
+    }
+  }
+  
+  // Load post for editing
+  async function loadPostForEditing(postId) {
+    try {
+      let postContent = '';
+      let postData = null;
+      
+      // First try to get the full post data from localStorage
+      const cachedFullPost = localStorage.getItem(`fullPost_${postId.replace(/\.(md|mdx)$/, '')}`);
+      
+      if (cachedFullPost) {
+        // We have the full post in localStorage
+        postData = JSON.parse(cachedFullPost);
+      } else if (isGitHubAuthenticated) {
+        // If using GitHub, get the content from the repository
+        const selectedPost = localPosts.find(p => p.id === postId);
+        if (!selectedPost) {
+          throw new Error('Post not found');
+        }
+        
+        const filepath = selectedPost.filepath;
+        const file = await githubService.getFile(filepath);
+        const { frontmatter, content } = parseMdxFile(file.content);
+        
+        // Create a full post object
+        postData = {
+          title: frontmatter.title || selectedPost.title,
+          description: frontmatter.description || selectedPost.description || '',
+          slug: selectedPost.slug,
+          published: frontmatter.published || selectedPost.published || new Date().toISOString().split('T')[0],
+          image: frontmatter.image || '',
+          tags: Array.isArray(frontmatter.tags) ? frontmatter.tags.join(', ') : frontmatter.tags || '',
+          category: frontmatter.category || selectedPost.category || '',
+          draft: frontmatter.draft === undefined ? false : frontmatter.draft,
+          content: content,
+          filepath: filepath,
+          advanced: {
+            avatarImage: frontmatter.avatarImage || '',
+            authorName: frontmatter.authorName || '',
+            authorBio: frontmatter.authorBio || '',
+            showImageOnPost: frontmatter.showImageOnPost === undefined ? false : frontmatter.showImageOnPost,
+            lang: frontmatter.lang || 'en',
+            bannerImage: frontmatter.bannerImage || ''
+          },
+          timelineData: {
+            enabled: !!(frontmatter.timelineYear || frontmatter.timelineEra || frontmatter.timelineLocation),
+            year: frontmatter.timelineYear,
+            era: frontmatter.timelineEra || '',
+            location: frontmatter.timelineLocation || '',
+            isKeyEvent: frontmatter.isKeyEvent || false
+          },
+          banner: {
+            type: frontmatter.bannerType || '',
+            videoId: frontmatter.bannerData?.videoId || '',
+            timelineCategory: frontmatter.bannerData?.category || ''
+          }
+        };
+        
+        // Save this full post to localStorage for future use
+        localStorage.setItem(`fullPost_${postData.slug}`, JSON.stringify(postData));
+      } else {
+        // Can't get the full post
+        throw new Error('Could not load the full post. Try authenticating with GitHub.');
+      }
+      
+      // Reset the post object with the loaded content
+      post = {
+        title: postData.title || '',
+        description: postData.description || '',
+        slug: postData.slug || postId.replace(/\.(md|mdx)$/, ''),
+        published: postData.published || new Date().toISOString().split('T')[0],
+        image: postData.image || '',
+        tags: postData.tags || '',
+        category: postData.category || '',
+        draft: postData.draft === undefined ? false : postData.draft,
+        content: postData.content || '',
+        filepath: postData.filepath || '',
+        showAdvancedOptions: false,
+        advanced: {
+          avatarImage: postData.advanced?.avatarImage || '',
+          authorName: postData.advanced?.authorName || '',
+          authorBio: postData.advanced?.authorBio || '',
+          showImageOnPost: postData.advanced?.showImageOnPost === undefined ? false : postData.advanced.showImageOnPost,
+          lang: postData.advanced?.lang || 'en',
+          bannerImage: postData.advanced?.bannerImage || ''
+        },
+        timelineData: {
+          enabled: postData.timelineData?.enabled || false,
+          year: postData.timelineData?.year || undefined,
+          era: postData.timelineData?.era || '',
+          location: postData.timelineData?.location || '',
+          isKeyEvent: postData.timelineData?.isKeyEvent || false
+        },
+        banner: {
+          type: postData.banner?.type || '',
+          videoId: postData.banner?.videoId || '',
+          timelineCategory: postData.banner?.timelineCategory || ''
+        }
+      };
+      
+      // Enable advanced options if any of those fields are populated
+      if (post.advanced.avatarImage || post.advanced.authorName || post.advanced.authorBio || 
+          post.advanced.bannerImage || post.advanced.lang !== 'en' || post.advanced.showImageOnPost === true) {
+        post.showAdvancedOptions = true;
+      }
+      
+      // Set editing state
+      isEditing = true;
+      selectedPost = postId;
+      
+      // Switch to the create tab to show the loaded post for editing
+      activeTab = 'create';
+      
+      showNotification('Post loaded for editing');
+    } catch (error) {
+      console.error('Error loading post:', error);
+      showNotification('Failed to load post: ' + error.message, 'error');
+    }
+  }
+  
+  // Delete a post
+  async function deletePost(postId) {
+    if (!confirm(`Are you sure you want to delete this post? This cannot be undone.`)) {
+      return;
+    }
+    
+    try {
+      isDeleting = true;
+      
+      // Find the post
+      const postToDelete = localPosts.find(p => p.id === postId);
+      if (!postToDelete) {
+        throw new Error('Post not found');
+      }
+      
+      if (isGitHubAuthenticated) {
+        // Delete from GitHub repository
+        await githubService.deleteFile(
+          postToDelete.filepath,
+          `Delete post: ${postToDelete.title}`
+        );
+        
+        showNotification('Post deleted from GitHub successfully');
+        
+        // Remove from localStorage
+        const slug = postToDelete.slug || postId.replace(/\.(md|mdx)$/, '');
+        localStorage.removeItem(`fullPost_${slug}`);
+        
+        // Update cached posts list
+        const cachedPostsStr = localStorage.getItem('cachedPosts');
+        if (cachedPostsStr) {
+          let cachedPosts = JSON.parse(cachedPostsStr);
+          cachedPosts = cachedPosts.filter(p => p.id !== postId);
+          localStorage.setItem('cachedPosts', JSON.stringify(cachedPosts));
+        }
+        
+        // Refresh the post list
+        await fetchLocalPosts();
+      } else {
+        // Just remove from localStorage
+        const slug = postToDelete.slug || postId.replace(/\.(md|mdx)$/, '');
+        localStorage.removeItem(`fullPost_${slug}`);
+        
+        // Update cached posts list
+        const cachedPostsStr = localStorage.getItem('cachedPosts');
+        if (cachedPostsStr) {
+          let cachedPosts = JSON.parse(cachedPostsStr);
+          cachedPosts = cachedPosts.filter(p => p.id !== postId);
+          localStorage.setItem('cachedPosts', JSON.stringify(cachedPosts));
+          
+          // Update the localPosts array
+          localPosts = cachedPosts;
+        }
+        
+        showNotification('Post removed from local cache. To delete from GitHub, please authenticate first.');
+      }
+      
+      // If we were editing this post, reset the form
+      if (selectedPost === postId) {
+        clearForm();
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      showNotification('Failed to delete post: ' + error.message, 'error');
+    } finally {
+      isDeleting = false;
+    }
+  }
+  
   // Clear the form
   function clearForm() {
     localStorage.removeItem('draftPost');
@@ -724,12 +1225,31 @@
         timelineCategory: ''
       },
       content: '',
-      draft: true
+      draft: true,
+      filepath: ''
     };
     fileToImport = null;
     fileContent = '';
     importStatus = '';
+    isEditing = false;
+    selectedPost = null;
     showNotification('Content cleared!');
+  }
+  
+  // Format date for display
+  function formatDate(dateString) {
+    if (!dateString) return '';
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (e) {
+      return dateString;
+    }
   }
   
   // Load saved draft if available
@@ -769,10 +1289,23 @@
       }
     }, 30000);
     
+    // Load cached posts
+    cachedPosts = getCachedPosts();
+    
+    // Fetch local posts if we're in browse mode
+    if (activeTab === 'browse') {
+      fetchLocalPosts();
+    }
+    
     return () => {
       clearInterval(autoSaveInterval);
     };
   });
+  
+  // Watch for tab changes to load posts when needed
+  $: if (activeTab === 'browse') {
+    fetchLocalPosts();
+  }
 </script>
 
 <div class="post-editor w-full">
@@ -792,7 +1325,13 @@
         class="py-2 px-4 font-medium {activeTab === 'create' ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}"
         on:click={() => activeTab = 'create'}
       >
-        Create New
+        {isEditing ? 'Edit Post' : 'Create New'}
+      </button>
+      <button 
+        class="py-2 px-4 font-medium {activeTab === 'browse' ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}"
+        on:click={() => activeTab = 'browse'}
+      >
+        Browse Posts
       </button>
       <button 
         class="py-2 px-4 font-medium {activeTab === 'import' ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}"
@@ -900,7 +1439,163 @@
     {/if}
   </div>
   
-  {#if activeTab === 'import'}
+  {#if activeTab === 'browse'}
+    <!-- Browse Posts Tab Content -->
+    <div class="space-y-6">
+      <div class="p-6 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+        <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-4">Browse Posts</h2>
+        
+        {#if isLoadingPosts}
+          <div class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          </div>
+        {:else if loadError}
+          <div class="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-sm p-4 rounded border border-red-200 dark:border-red-800 mb-4">
+            {loadError}
+          </div>
+        {:else}
+          <!-- Search and filter -->
+          <div class="mb-6">
+            <div class="relative">
+              <input 
+                type="text" 
+                bind:value={searchQuery} 
+                placeholder="Search by title, description, or tag..." 
+                class="w-full px-4 py-2 pl-10 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded text-sm"
+              />
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Post List -->
+          {#if filteredPosts.length === 0}
+            <div class="text-center py-8 text-neutral-500 dark:text-neutral-400">
+              {searchQuery ? 'No posts match your search criteria.' : 'No posts found. Connect to GitHub or add posts locally.'}
+            </div>
+          {:else}
+            <div class="space-y-4">
+              {#each filteredPosts as post (post.id)}
+                <div class="bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                  <div class="p-4">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h3 class="text-lg font-medium text-black/80 dark:text-white/80 mb-1">
+                          {post.title}
+                          {#if post.draft}
+                            <span class="ml-2 px-2 py-0.5 text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded">
+                              Draft
+                            </span>
+                          {/if}
+                          {#if post.error}
+                            <span class="ml-2 px-2 py-0.5 text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded">
+                              Error
+                            </span>
+                          {/if}
+                        </h3>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-300 mb-2">{post.description}</p>
+                        
+                        <div class="flex flex-wrap items-center text-xs text-neutral-500 dark:text-neutral-400 gap-4 mb-4">
+                          <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            {formatDate(post.published)}
+                          </div>
+                          
+                          {#if post.updated && post.updated !== post.published}
+                            <div class="flex items-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                              Updated: {formatDate(post.updated)}
+                            </div>
+                          {/if}
+                          
+                          {#if post.category}
+                            <div class="flex items-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                              </svg>
+                              {post.category}
+                            </div>
+                          {/if}
+                        </div>
+                        
+                        {#if post.tags && post.tags.length > 0}
+                          <div class="flex flex-wrap gap-1 mt-1 mb-2">
+                            {#each post.tags as tag}
+                              <span class="px-2 py-1 text-xs bg-neutral-200 dark:bg-neutral-600 rounded">{tag}</span>
+                            {/each}
+                          </div>
+                        {/if}
+                      </div>
+                      
+                      <!-- Actions -->
+                      <div class="flex space-x-2">
+                        <button 
+                          on:click={() => loadPostForEditing(post.id)}
+                          class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
+                          title="Edit Post"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                        
+                        <button 
+                          on:click={() => deletePost(post.id)}
+                          disabled={isDeleting}
+                          class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
+                          title="Delete Post"
+                        >
+                          {#if isDeleting && selectedPost === post.id}
+                            <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                          {:else}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          {/if}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {/each}
+            </div>
+          {/if}
+        {/if}
+        
+        <!-- Refresh button -->
+        <div class="flex justify-center mt-6">
+          <button 
+            on:click={fetchLocalPosts}
+            disabled={isLoadingPosts}
+            class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 font-medium rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition disabled:opacity-50"
+          >
+            {#if isLoadingPosts}
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Loading...
+            {:else}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Refresh Posts
+            {/if}
+          </button>
+        </div>
+      </div>
+    </div>
+  {:else if activeTab === 'import'}
     <!-- Import Tab Content -->
     <div class="space-y-6">
       <div class="p-6 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
@@ -914,6 +1609,7 @@
           <li>Text files (.txt)</li>
           <li>HTML files (.html)</li>
           <li>Markdown files (.md, .markdown)</li>
+          <li>MDX files (.mdx) - with full frontmatter parsing</li>
           <li>Word documents (.docx)</li>
         </ul>
         
@@ -925,7 +1621,7 @@
             <input 
               type="file" 
               id="file-upload" 
-              accept=".txt,.html,.md,.markdown,.docx" 
+              accept=".txt,.html,.md,.markdown,.mdx,.docx" 
               on:change={handleFileSelect}
               class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100 text-neutral-900 dark:text-neutral-100" 
             />
@@ -958,7 +1654,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Frontmatter Section -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">Post Information</h2>
+        <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">{isEditing ? 'Edit Post' : 'Post Information'}</h2>
         
         <div>
           <label for="title" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Title*</label>
@@ -1313,6 +2009,21 @@
   
   <!-- Action Buttons -->
   <div class="mt-8">
+    <!-- Status information -->
+    {#if isEditing}
+      <div class="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 rounded-md text-blue-800 dark:text-blue-200 mb-4">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <p class="font-medium">Editing Existing Post</p>
+            <p class="mt-1 text-sm">You're editing <span class="font-medium">{post.title}</span> from <span class="italic">{post.filepath || 'local storage'}</span>.</p>
+          </div>
+        </div>
+      </div>
+    {/if}
+  
     <!-- File actions section -->
     <div class="mb-4">
       <h3 class="text-base font-medium text-neutral-700 dark:text-neutral-300 mb-2">Local File Actions</h3>
@@ -1321,7 +2032,7 @@
           on:click={clearForm}
           class="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 font-medium rounded hover:bg-red-200 dark:hover:bg-red-800 transition"
         >
-          Clear
+          {isEditing ? 'Discard Changes' : 'Clear'}
         </button>
         <button 
           on:click={saveDraft}
@@ -1337,6 +2048,9 @@
           Download MDX
         </button>
       </div>
+      <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+        These actions work without GitHub authentication. The downloaded files must be manually added to your project's content/posts directory.
+      </p>
     </div>
 
     <!-- GitHub actions section -->
@@ -1402,11 +2116,15 @@
           </button>
         {/if}
       </div>
+      <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+        GitHub actions require authentication. Changes are committed directly to your repository and can trigger site rebuilds.
+      </p>
     </div>
   </div>
 </div>
 
 <style>
+  /* Markdown Preview Styles */
   :global(.markdown-content h1) {
     font-size: 1.5rem;
     font-weight: bold;
@@ -1469,5 +2187,47 @@
     height: auto;
     margin: 1rem 0;
     border-radius: 0.25rem;
+  }
+  
+  /* Post card styles for browse view */
+  :global(.post-card) {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  :global(.post-card:hover) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Dark mode support for code elements */
+  @media (prefers-color-scheme: dark) {
+    :global(.markdown-content code) {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    :global(.markdown-content pre) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+  
+  /* Animation for toast notifications */
+  .toast-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
+  .toast-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+  .toast-exit {
+    opacity: 1;
+  }
+  
+  .toast-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
   }
 </style>

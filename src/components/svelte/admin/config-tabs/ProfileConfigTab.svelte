@@ -348,7 +348,7 @@
             id="profile-name" 
             bind:value={profileConfig.name}
             on:input={() => dispatch('change', profileConfig)}
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
+            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100" 
             placeholder="Your Name"
           />
         </div>
@@ -362,7 +362,7 @@
             bind:value={profileConfig.bio}
             on:input={() => dispatch('change', profileConfig)}
             rows="3"
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition resize-none"
+            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100 resize-none"
             placeholder="A short description about yourself"
           ></textarea>
           <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
@@ -453,7 +453,7 @@
                 id="social-platform" 
                 value={editingSocial.platformIndex}
                 on:change={updateSelectedPlatform}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
               >
                 <option value="" disabled selected={editingSocial.platformIndex === null}>Select a platform...</option>
                 {#each socialPlatforms as platform, index}
@@ -470,7 +470,7 @@
                 type="text" 
                 id="social-name" 
                 bind:value={editingSocial.data.name}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100" 
                 placeholder="e.g. GitHub, Bluesky, etc."
               />
               <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
@@ -486,7 +486,7 @@
                 type="text" 
                 id="social-url" 
                 bind:value={editingSocial.data.url}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100" 
                 placeholder="e.g. https://bluesky.com/username"
               />
             </div>
@@ -500,7 +500,7 @@
                   type="text" 
                   id="social-icon" 
                   bind:value={editingSocial.data.icon}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition" 
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100" 
                   placeholder="e.g. fa6-brands:github"
                 />
                 <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">

@@ -187,7 +187,7 @@
             <select 
               bind:value={timelineConfig.defaultEra} 
               on:change={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm transition"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-l text-sm text-neutral-900 dark:text-neutral-100"
             >
               {#each timelineConfig.eras as era}
                 <option value={era.name}>{era.name} ({era.startYear}-{era.endYear})</option>
