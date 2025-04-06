@@ -41,57 +41,25 @@ const corsMiddleware = (_, next) => {
   };
 };
 
-// Base path and site URL configuration
+// Bare minimum configuration for base path
 let basePath = '/';
-let siteUrl = 'https://temporalflow.org'; // Default fallback
+let siteUrl = '';
 
-// Get current directory to check for CNAME file
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const cnamePath = join(__dirname, 'CNAME');
-
-// Check if CNAME exists and read its content
-let customDomain = null;
-if (existsSync(cnamePath)) {
-  try {
-    // Use synchronous file reading since this is in the config
-    const fs = require('fs');
-    const cnameContent = fs.readFileSync(cnamePath, 'utf-8');
-    // Clean the content (remove whitespace, etc.)
-    customDomain = cnameContent.trim();
-    
-    if (customDomain) {
-      siteUrl = `https://${customDomain}`;
-      console.log(`Using custom domain from CNAME: ${siteUrl}`);
-    }
-  } catch (error) {
-    console.warn('Error reading CNAME file:', error);
-  }
-}
-
-// Auto-detect GitHub Pages environment if no custom domain was found or for subpath
-const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
-
-if (GITHUB_REPOSITORY) {
-  const [username, repo] = GITHUB_REPOSITORY.split('/');
+// Check if we're on GitHub Pages with no custom domain
+if (process.env.GITHUB_REPOSITORY && !existsSync(join(__dirname, 'CNAME'))) {
+  const [username, repo] = process.env.GITHUB_REPOSITORY.split('/');
   
-  if (!customDomain) {
-    // No custom domain, use GitHub Pages domain
-    siteUrl = `https://${username}.github.io`;
-    basePath = `/${repo}/`;
-    console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
-  } else {
-    // Has custom domain, but still need basePath for subpaths
-    if (repo !== username + '.github.io') {
-      // Not the main user page, so needs a base path
-      basePath = `/${repo}/`;
-      console.log(`Using custom domain with repo subpath: ${siteUrl}${basePath}`);
-    }
-  }
+  // Only set a base path if we're on the default GitHub Pages domain
+  basePath = `/${repo}/`;
+  siteUrl = `https://${username}.github.io`;
+  console.log(`GitHub Pages deployment detected: ${basePath}`);
 } else {
-  // If not in GitHub Actions, use the default site URL
-  console.log(`Using domain: ${siteUrl} with base: ${basePath}`);
+  // Either we have a custom domain or we're in development
+  // Either way, no special path needed
+  console.log(`Using root base path: ${basePath}`);
 }
+
+// For site URL, Astro will handle it appropriately based on environment
 
 // https://astro.build/config
 export default defineConfig({
