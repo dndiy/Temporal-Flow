@@ -1,4 +1,4 @@
-// Update your astro.config.mjs file with this code:
+// Keep all your original imports
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
@@ -7,10 +7,10 @@ import Compress from "astro-compress";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeComponents from "rehype-components";/* Render the custom directive content */
+import rehypeComponents from "rehype-components";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
-import remarkDirective from "remark-directive";/* Handle directives */
+import remarkDirective from "remark-directive";
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
@@ -23,6 +23,7 @@ import mdx from "@astrojs/mdx";
 import { fileURLToPath } from 'url';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
+import fs from 'fs';  // Add this for fs.readFileSync
 
 // CORS middleware for friend content sharing
 const corsMiddleware = (_, next) => {
@@ -45,7 +46,7 @@ const corsMiddleware = (_, next) => {
 let basePath = '/';
 let siteUrl = 'https://temporalflow.org'; // Default fallback
 
-// Get current directory to check for CNAME file
+// Get current directory properly in ES module context
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const cnamePath = join(__dirname, 'CNAME');
@@ -54,8 +55,7 @@ const cnamePath = join(__dirname, 'CNAME');
 let customDomain = null;
 if (existsSync(cnamePath)) {
   try {
-    // Use synchronous file reading since this is in the config
-    const fs = require('fs');
+    // Use fs directly instead of require('fs')
     const cnameContent = fs.readFileSync(cnamePath, 'utf-8');
     // Clean the content (remove whitespace, etc.)
     customDomain = cnameContent.trim();
@@ -83,9 +83,9 @@ if (GITHUB_REPOSITORY) {
   } else {
     // Has custom domain, but still need basePath for subpaths
     if (repo !== username + '.github.io') {
-      // Not the main user page, so needs a base path
-      basePath = `/${repo}/`;
-      console.log(`Using custom domain with repo subpath: ${siteUrl}${basePath}`);
+      // For custom domains, DO NOT use repository name in the path
+      basePath = '/';
+      console.log(`Using custom domain without subpath: ${siteUrl}${basePath}`);
     }
   }
 } else {
