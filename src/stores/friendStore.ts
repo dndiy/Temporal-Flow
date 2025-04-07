@@ -979,16 +979,26 @@ export function downloadFriendAsMarkdown(friend: Friend) {
   // Generate markdown content
   const markdown = generateFriendMarkdown(friend);
   
-  // Create download
-  const blob = new Blob([markdown], { type: 'text/markdown' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  // Create download with safety checks for static environments
+  try {
+    const blob = new Blob([markdown], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    
+    // Check if document.body exists and the document is fully loaded
+    if (document && document.body) {
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else {
+      console.warn('Document body not available for download operation');
+    }
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error during download operation:', error);
+  }
   
   return { filename };
 }
