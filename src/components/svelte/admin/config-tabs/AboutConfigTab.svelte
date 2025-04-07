@@ -108,7 +108,7 @@
               type="text" 
               bind:value={aboutConfig.team.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -120,7 +120,7 @@
               bind:value={aboutConfig.team.description} 
               on:input={notifyChanges}
               rows="2" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -132,7 +132,7 @@
               <select 
                 bind:value={aboutConfig.team.layout} 
                 on:change={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               >
                 <option value="grid">Grid Layout</option>
                 <option value="list">List Layout</option>
@@ -147,7 +147,7 @@
               <select 
                 bind:value={aboutConfig.team.avatarShape} 
                 on:change={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               >
                 <option value="square">Square</option>
                 <option value="rounded">Rounded</option>
@@ -171,7 +171,7 @@
                   max="2" 
                   bind:value={aboutConfig.team.columns.mobile} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div>
@@ -184,7 +184,7 @@
                   max="3" 
                   bind:value={aboutConfig.team.columns.tablet} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div>
@@ -197,7 +197,7 @@
                   max="4" 
                   bind:value={aboutConfig.team.columns.desktop} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -252,7 +252,7 @@
               type="text" 
               bind:value={aboutConfig.content.defaultTitle} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
             <p class="text-xs text-neutral-500 mt-1">This title is shown when no team member is selected</p>
           </div>
@@ -309,7 +309,7 @@
               type="text" 
               bind:value={aboutConfig.contact.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -321,7 +321,7 @@
               bind:value={aboutConfig.contact.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -336,7 +336,7 @@
               type="email" 
               bind:value={aboutConfig.contact.contactInfo.email} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -349,7 +349,7 @@
               type="text" 
               bind:value={aboutConfig.contact.contactInfo.phone} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -362,7 +362,7 @@
               bind:value={aboutConfig.contact.contactInfo.address} 
               on:input={notifyChanges}
               rows="2" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -376,7 +376,7 @@
               bind:value={aboutConfig.contact.contactInfo.hours} 
               on:input={notifyChanges}
               placeholder="e.g., Mon-Fri: 9am-5pm" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           

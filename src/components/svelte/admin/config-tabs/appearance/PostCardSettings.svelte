@@ -404,7 +404,7 @@
                 id="friendIndicatorColor" 
                 bind:value={postCardConfig.friendPosts.friendStyling.indicatorColor}
                 on:input={handleChange}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 placeholder="var(--primary)"
               />
             </div>
@@ -451,7 +451,7 @@
                 id="friendAttributionText" 
                 bind:value={postCardConfig.friendPosts.attribution.attributionText}
                 on:input={handleChange}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 placeholder="Shared from [friendName]"
               />
               <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">

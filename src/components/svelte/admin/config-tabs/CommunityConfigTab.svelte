@@ -180,7 +180,7 @@
               type="text" 
               bind:value={communityConfig.hero.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -192,7 +192,7 @@
               bind:value={communityConfig.hero.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -452,7 +452,7 @@
               type="text" 
               bind:value={communityConfig.discord.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -464,7 +464,7 @@
               bind:value={communityConfig.discord.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -477,7 +477,7 @@
                 type="text" 
                 bind:value={communityConfig.discord.inviteUrl} 
                 on:input={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               />
             </div>
             
@@ -489,7 +489,7 @@
                 type="text" 
                 bind:value={communityConfig.discord.buttonText} 
                 on:input={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               />
             </div>
           </div>
@@ -587,7 +587,7 @@
               type="text" 
               bind:value={communityConfig.contact.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -599,7 +599,7 @@
               bind:value={communityConfig.contact.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -612,7 +612,7 @@
                 type="text" 
                 bind:value={communityConfig.contact.formActionUrl} 
                 on:input={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               />
               <p class="text-xs text-neutral-500 mt-1">e.g., Formspree endpoint</p>
             </div>
@@ -625,7 +625,7 @@
                 type="text" 
                 bind:value={communityConfig.contact.buttonText} 
                 on:input={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               />
             </div>
           </div>
@@ -664,7 +664,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.name.label} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div>
@@ -673,7 +673,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.name.placeholder} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -700,7 +700,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.email.label} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div>
@@ -709,7 +709,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.email.placeholder} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -736,7 +736,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.subject.label} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div>
@@ -745,7 +745,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.subject.placeholder} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -772,7 +772,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.message.label} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div>
@@ -781,7 +781,7 @@
                   type="text" 
                   bind:value={communityConfig.contact.formFields.message.placeholder} 
                   on:input={notifyChanges}
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -794,7 +794,7 @@
                   on:input={notifyChanges}
                   min="2" 
                   max="10" 
-                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 />
               </div>
               <div class="flex items-center">
@@ -838,7 +838,7 @@
               type="text" 
               bind:value={communityConfig.newsletter.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -850,7 +850,7 @@
               bind:value={communityConfig.newsletter.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -862,7 +862,7 @@
               type="text" 
               bind:value={communityConfig.newsletter.buttonText} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -874,7 +874,7 @@
               bind:value={communityConfig.newsletter.consentText} 
               on:input={notifyChanges}
               rows="2" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -927,7 +927,7 @@
               type="text" 
               bind:value={communityConfig.events.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -939,7 +939,7 @@
               bind:value={communityConfig.events.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -952,7 +952,7 @@
                 type="text" 
                 bind:value={communityConfig.events.calendarUrl} 
                 on:input={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               />
             </div>
             
@@ -964,7 +964,7 @@
                 type="text" 
                 bind:value={communityConfig.events.calendarButtonText} 
                 on:input={notifyChanges}
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               />
             </div>
           </div>
@@ -1008,7 +1008,7 @@
               type="text" 
               bind:value={communityConfig.guidelines.title} 
               on:input={notifyChanges}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -1020,7 +1020,7 @@
               bind:value={communityConfig.guidelines.description} 
               on:input={notifyChanges}
               rows="3" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             ></textarea>
           </div>
           
@@ -1082,7 +1082,7 @@
           <input 
             type="text" 
             bind:value={editFeature.title} 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           />
         </div>
         
@@ -1093,7 +1093,7 @@
           <textarea 
             bind:value={editFeature.description} 
             rows="3" 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           ></textarea>
         </div>
         
@@ -1104,7 +1104,7 @@
           <input 
             type="text" 
             bind:value={editFeature.icon} 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           />
           <p class="text-xs text-neutral-500 mt-1">e.g., mdi:chat-processing-outline</p>
         </div>
@@ -1143,7 +1143,7 @@
           <input 
             type="text" 
             bind:value={editChannel.name} 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           />
         </div>
         
@@ -1154,7 +1154,7 @@
           <input 
             type="text" 
             bind:value={editChannel.description} 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           />
         </div>
         
@@ -1164,7 +1164,7 @@
           </label>
           <select 
             bind:value={editChannel.color} 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           >
             <option value="green-500">Green</option>
             <option value="blue-500">Blue</option>
@@ -1210,7 +1210,7 @@
           <textarea 
             bind:value={editGuideline} 
             rows="3" 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
           ></textarea>
         </div>
         

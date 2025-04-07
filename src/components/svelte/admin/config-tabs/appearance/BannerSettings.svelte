@@ -173,7 +173,7 @@
         <!-- Banner Selection Dropdown -->
         <div>
           <select 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             on:change={(e) => {
               const path = e.target.value;
               if (path) {
@@ -187,15 +187,15 @@
               }
             }}
           >
-            <option value="">Select a banner image</option>
-            <option value="src/assets/banner/0001.png">0001.png</option>
-            <option value="src/assets/banner/0002.png">0002.png</option>
-            <option value="src/assets/banner/0003.png">0003.png</option>
-            <option value="src/assets/banner/0004.png">0004.png</option>
-            <option value="src/assets/banner/0005.png">0005.png</option>
-            <option value="src/assets/banner/0006.png">0006.png</option>
-            <option value="src/assets/banner/0007.png">0007.png</option>
-            <option value="src/assets/banner/0008.png">0008.png</option>
+            <option value="" class="text-neutral-900 dark:text-neutral-100">Select a banner image</option>
+            <option value="src/assets/banner/0001.png"class="text-neutral-900 dark:text-neutral-100">0001.png</option>
+            <option value="src/assets/banner/0002.png"class="text-neutral-900 dark:text-neutral-100">0002.png</option>
+            <option value="src/assets/banner/0003.png"class="text-neutral-900 dark:text-neutral-100">0003.png</option>
+            <option value="src/assets/banner/0004.png"class="text-neutral-900 dark:text-neutral-100">0004.png</option>
+            <option value="src/assets/banner/0005.png"class="text-neutral-900 dark:text-neutral-100">0005.png</option>
+            <option value="src/assets/banner/0006.png"class="text-neutral-900 dark:text-neutral-100">0006.png</option>
+            <option value="src/assets/banner/0007.png"class="text-neutral-900 dark:text-neutral-100">0007.png</option>
+            <option value="src/assets/banner/0008.png"class="text-neutral-900 dark:text-neutral-100">0008.png</option>
           </select>
           <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
             Choose a banner image from your project assets
@@ -239,7 +239,7 @@
             <!-- Add to Sequence -->
             <div>
               <select 
-                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+    class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
                 on:change={(e) => {
                   const path = e.target.value;
                   if (path && !bannerConfig.bannerList.includes(path)) {
@@ -251,15 +251,15 @@
                   e.target.value = "";
                 }}
               >
-                <option value="">Add banner to sequence...</option>
-                <option value="src/assets/banner/0001.png">0001.png</option>
-                <option value="src/assets/banner/0002.png">0002.png</option>
-                <option value="src/assets/banner/0003.png">0003.png</option>
-                <option value="src/assets/banner/0004.png">0004.png</option>
-                <option value="src/assets/banner/0005.png">0005.png</option>
-                <option value="src/assets/banner/0006.png">0006.png</option>
-                <option value="src/assets/banner/0007.png">0007.png</option>
-                <option value="src/assets/banner/0008.png">0008.png</option>
+                <option value="" class="text-neutral-900 dark:text-neutral-100">Add banner to sequence...</option>
+                <option value="src/assets/banner/0001.png" class="text-neutral-900 dark:text-neutral-100">0001.png</option>
+                <option value="src/assets/banner/0002.png" class="text-neutral-900 dark:text-neutral-100">0002.png</option>
+                <option value="src/assets/banner/0003.png" class="text-neutral-900 dark:text-neutral-100">0003.png</option>
+                <option value="src/assets/banner/0004.png" class="text-neutral-900 dark:text-neutral-100">0004.png</option>
+                <option value="src/assets/banner/0005.png" class="text-neutral-900 dark:text-neutral-100">0005.png</option>
+                <option value="src/assets/banner/0006.png" class="text-neutral-900 dark:text-neutral-100">0006.png</option>
+                <option value="src/assets/banner/0007.png" class="text-neutral-900 dark:text-neutral-100">0007.png</option>
+                <option value="src/assets/banner/0008.png" class="text-neutral-900 dark:text-neutral-100">0008.png</option>
               </select>
               <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
                 Select banners to add to the animation sequence
@@ -389,7 +389,7 @@
               id="banner-height-desktop" 
               bind:value={bannerConfig.layout.height.desktop}
               on:input={handleChange}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               placeholder="e.g., 50vh"
             />
           </div>
@@ -402,7 +402,7 @@
               id="banner-height-mobile" 
               bind:value={bannerConfig.layout.height.mobile}
               on:input={handleChange}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               placeholder="e.g., 30vh"
             />
           </div>
@@ -418,7 +418,7 @@
               id="banner-overlap-desktop" 
               bind:value={bannerConfig.layout.overlap.desktop}
               on:input={handleChange}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               placeholder="e.g., 3.5rem"
             />
           </div>
@@ -431,7 +431,7 @@
               id="banner-overlap-mobile" 
               bind:value={bannerConfig.layout.overlap.mobile}
               on:input={handleChange}
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+  class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
               placeholder="e.g., 2rem"
             />
           </div>
@@ -446,7 +446,7 @@
             id="banner-max-width" 
             bind:value={bannerConfig.layout.maxWidth}
             on:input={handleChange}
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="e.g., 1920"
           />
         </div>
@@ -483,7 +483,7 @@
             id="banner-object-position" 
             bind:value={bannerConfig.visual.objectPosition}
             on:input={handleChange}
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="e.g., center"
           />
         </div>
@@ -497,7 +497,7 @@
             id="banner-border-radius" 
             bind:value={bannerConfig.visual.borderRadius}
             on:input={handleChange}
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="e.g., 0.5rem"
           />
         </div>
@@ -524,7 +524,7 @@
             id="banner-gradient-overlay" 
             bind:value={bannerConfig.visual.gradientOverlay}
             on:input={handleChange}
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="e.g., linear-gradient(to bottom, rgba(0,0,0,0.2), transparent)"
             disabled={!bannerConfig.visual.applyGradientOverlay}
           />
@@ -575,7 +575,7 @@
             id="banner-fallback-value" 
             bind:value={bannerConfig.fallback.value}
             on:input={handleChange}
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="e.g., #f8f9fa or linear-gradient(...)"
             disabled={!bannerConfig.fallback.enabled}
           />

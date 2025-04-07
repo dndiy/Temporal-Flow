@@ -379,7 +379,7 @@
               on:input={notifyChanges}
               min="1900" 
               max="2100" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
             <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
               Default is the current year, but you can override it for your content
@@ -396,7 +396,7 @@
               on:input={notifyChanges}
               min="1" 
               max="50" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
             <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
               Years between each label on the timeline (e.g., 10 = show every 10th year)
@@ -413,7 +413,7 @@
               on:input={notifyChanges}
               min="2" 
               max="20" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
         </div>
@@ -436,7 +436,7 @@
           <input 
             type="text" 
             bind:value={editingEra.data.name} 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="e.g., past, present, future"
           />
         </div>
@@ -451,7 +451,7 @@
               bind:value={editingEra.data.startYear} 
               min="1900" 
               max="2100" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
           
@@ -464,7 +464,7 @@
               bind:value={editingEra.data.endYear} 
               min="1900" 
               max="2100" 
-              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+                class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             />
           </div>
         </div>
@@ -495,7 +495,7 @@
           <textarea 
             bind:value={editingEra.data.description} 
             rows="3" 
-            class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm"
+              class="w-full px-3 py-2 bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-md text-sm text-neutral-800 dark:text-neutral-200"
             placeholder="A short description of this era"
           ></textarea>
         </div>
