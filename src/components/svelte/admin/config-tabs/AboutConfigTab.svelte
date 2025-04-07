@@ -88,7 +88,7 @@
       <div class="team-section space-y-6">
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-medium text-lg">Team Section</h3>
+            <h3 class="font-medium text-lg text-black/80 dark:text-white/80 text-black/80 dark:text-white/80">Team Section</h3>
             <label class="flex items-center">
               <input 
                 type="checkbox" 
@@ -96,7 +96,7 @@
                 on:change={notifyChanges}
                 class="mr-2 h-4 w-4"
               />
-              <span class="text-sm font-medium">Enabled</span>
+              <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Enabled</span>
             </label>
           </div>
           
@@ -232,7 +232,7 @@
       <div class="content-section space-y-6">
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-medium text-lg">Content Section</h3>
+            <h3 class="font-medium text-lg text-black/80 dark:text-white/80">Content Section</h3>
             <label class="flex items-center">
               <input 
                 type="checkbox" 
@@ -240,7 +240,7 @@
                 on:change={notifyChanges}
                 class="mr-2 h-4 w-4"
               />
-              <span class="text-sm font-medium">Enabled</span>
+              <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Enabled</span>
             </label>
           </div>
           
@@ -289,7 +289,7 @@
       <div class="contact-section space-y-6">
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-medium text-lg">Contact Section</h3>
+            <h3 class="font-medium text-lg text-black/80 dark:text-white/80">Contact Section</h3>
             <label class="flex items-center">
               <input 
                 type="checkbox" 
@@ -297,7 +297,7 @@
                 on:change={notifyChanges}
                 class="mr-2 h-4 w-4"
               />
-              <span class="text-sm font-medium">Enabled</span>
+              <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Enabled</span>
             </label>
           </div>
           
@@ -325,7 +325,9 @@
             ></textarea>
           </div>
           
-          <h4 class="font-medium text-base mb-3 mt-6">Contact Information</h4>
+          <h4 class="font-medium text-base mb-3 mt-6 text-neutral-800 dark:text-neutral-200">
+
+Contact Information</h4>
           
           <!-- Email Input -->
           <div class="mb-4">
@@ -380,7 +382,9 @@
             />
           </div>
           
-          <h4 class="font-medium text-base mb-3 mt-6">Display Order</h4>
+          <h4 class="font-medium text-base mb-3 mt-6 text-neutral-800 dark:text-neutral-200">
+
+Display Order</h4>
           <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
             Drag and drop to change the order of contact information displayed on the page.
           </p>

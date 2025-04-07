@@ -168,7 +168,7 @@
       <div class="general-section space-y-6">
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-medium text-lg">Timeline Settings</h3>
+            <h3 class="font-medium text-lg text-black/80 dark:text-white/80 text-black/80 dark:text-white/80">Timeline Settings</h3>
             <label class="flex items-center">
               <input 
                 type="checkbox" 
@@ -176,7 +176,7 @@
                 on:change={notifyChanges}
                 class="mr-2 h-4 w-4"
               />
-              <span class="text-sm font-medium">Enable Timeline</span>
+              <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Enable Timeline</span>
             </label>
           </div>
           
@@ -215,7 +215,7 @@
         </div>
         
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
-          <h3 class="font-medium text-lg mb-4">Restore Defaults</h3>
+          <h3 class="font-medium text-lg text-black/80 dark:text-white/80 mb-4">Restore Defaults</h3>
           <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
             Reset the timeline configuration to its default settings.
           </p>
@@ -237,7 +237,7 @@
       <div class="eras-section space-y-6">
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-medium text-lg">Timeline Eras</h3>
+            <h3 class="font-medium text-lg text-black/80 dark:text-white/80">Timeline Eras</h3>
             <button 
               class="py-1.5 px-3 bg-[var(--primary)] hover:opacity-90 text-white font-medium rounded-md transition-opacity text-sm flex items-center"
               on:click={addEra}
@@ -331,7 +331,7 @@
     {:else if activeSection === 'display'}
       <div class="display-section space-y-6">
         <div class="card bg-white dark:bg-neutral-800 p-5 rounded-lg border border-neutral-200 dark:border-neutral-700">
-          <h3 class="font-medium text-lg mb-4">Timeline Display Options</h3>
+          <h3 class="font-medium text-lg text-black/80 dark:text-white/80 mb-4">Timeline Display Options</h3>
           
           <div class="mb-4">
             <label class="flex items-center text-sm font-medium text-neutral-700 dark:text-neutral-300">
