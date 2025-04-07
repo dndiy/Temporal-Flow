@@ -60,6 +60,18 @@
         
         console.log(`Integrating ${friendEntries.length} friend posts`);
         
+        // Debug local posts date attributes
+        const localPosts = postsContainer.querySelectorAll('.local-post');
+        console.log(`Found ${localPosts.length} local posts`);
+        if (localPosts.length > 0) {
+          const samplePost = localPosts[0];
+          console.log('Sample local post data attributes:', {
+            timestamp: samplePost.getAttribute('data-post-timestamp'),
+            date: samplePost.getAttribute('data-post-date'),
+            type: samplePost.getAttribute('data-post-type')
+          });
+        }
+        
         // Find a local PostCard to clone its structure
         const localPostCard = postsContainer.querySelector('.card-base');
         if (!localPostCard) {
@@ -74,204 +86,291 @@
         console.log("Using friend config:", friendConfig);
         
         // For each friend post, clone and modify a local post card
-        friendEntries.forEach(entry => {
-          // Clone the structure of a local post card
-          const friendPostElement = localPostCard.cloneNode(true);
-          
-          // Add friend-specific attributes and classes
-          friendPostElement.setAttribute('data-friend-content', 'true');
-          friendPostElement.setAttribute('data-post-id', entry.id);
-          friendPostElement.setAttribute('data-post-type', 'friend');
-          friendPostElement.setAttribute('data-post-timestamp', entry.data.published.getTime());
-          friendPostElement.setAttribute('data-post-date', entry.data.published.toISOString().split('T')[0]);
-          friendPostElement.setAttribute('data-post-category', entry.data.category.toLowerCase());
-          friendPostElement.setAttribute('data-post-tags', (entry.data.tags || []).join(',').toLowerCase());
-          
-          // Apply the configured indicator style (with safety checks)
-          if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'border') {
-            friendPostElement.style.borderLeft = `3px solid ${friendConfig.friendStyling.indicatorColor || '#4f46e5'}`;
-          } else if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'background') {
-            friendPostElement.style.backgroundColor = `${friendConfig.friendStyling.indicatorColor || '#4f46e5'}20`;
-          } else if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'badge') {
-            friendPostElement.setAttribute('data-needs-badge', 'true');
-          }
-          
-          // Update the title link
-          const titleLink = friendPostElement.querySelector('a');
-          if (titleLink) {
-            titleLink.href = entry.data.sourceUrl || `/friend/${entry.slug}`;
-            titleLink.textContent = entry.data.title;
-          }
-          
-          // Update the publication date
-          const dateElement = friendPostElement.querySelector('.text-sm.font-medium');
-          if (dateElement) {
-            dateElement.textContent = entry.data.published.toISOString().split('T')[0];
-          }
-          
-          // Update category
-          const categoryLink = friendPostElement.querySelector('a[href*="/category/"]');
-          if (categoryLink) {
-            categoryLink.href = `/archive/category/${entry.data.category.toLowerCase()}/`;
-            categoryLink.textContent = entry.data.category;
-          }
-          
-          // Update tags
-          const tagsContainer = friendPostElement.querySelector('.hidden.md\\:flex.items-center');
-          if (tagsContainer && entry.data.tags && entry.data.tags.length > 0) {
-            const tagsWrapper = tagsContainer.querySelector('div:last-child');
-            if (tagsWrapper) {
-              // Clear existing tags
-              tagsWrapper.innerHTML = '';
-              
-              // Add each tag
-              entry.data.tags.forEach((tag, i) => {
-                // Add separator for all but first tag
-                if (i > 0) {
-                  const separator = document.createElement('div');
-                  separator.className = 'mx-1.5 text-[var(--meta-divider)] text-sm';
-                  separator.textContent = '/';
-                  tagsWrapper.appendChild(separator);
-                }
-                
-                // Create tag link
-                const tagLink = document.createElement('a');
-                tagLink.href = `/archive/tag/${tag.toLowerCase()}/`;
-                tagLink.className = 'link-lg transition text-50 text-sm font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap';
-                tagLink.textContent = tag;
-                tagsWrapper.appendChild(tagLink);
+        friendEntries.forEach((entry, index) => {
+          try {
+            // Debug friend entry data
+            if (index === 0) {
+              console.log('Sample friend entry:', {
+                id: entry.id,
+                slug: entry.slug,
+                published: entry.data.published,
+                publishedType: typeof entry.data.published,
+                publishedIsDate: entry.data.published instanceof Date
               });
             }
-          }
-          
-          // Update description
-          const descriptionEl = friendPostElement.querySelector('.transition.text-75');
-          if (descriptionEl && entry.data.description) {
-            descriptionEl.textContent = entry.data.description;
-          }
-          
-          // Update word count and reading time
-          const statsElements = friendPostElement.querySelectorAll('.text-sm.text-black\\/30 > div');
-          if (statsElements.length >= 3) {
-            statsElements[0].textContent = `${entry.render().remarkPluginFrontmatter.words} words`;
-            statsElements[2].textContent = `${entry.render().remarkPluginFrontmatter.minutes} min read`;
-          }
-          
-          // Find the metadata section to place attribution after it
-          const metadataSection = friendPostElement.querySelector('.mb-4');
-          
-          // Check if we need to add a badge (indicator type) - with safety checks
-          if (friendConfig.friendStyling && 
-              friendConfig.friendStyling.indicatorType === 'badge' && 
-              friendPostElement.getAttribute('data-needs-badge') === 'true') {
-            const badge = document.createElement('div');
-            badge.className = 'absolute right-3 top-3 py-1 px-2 rounded-md text-xs font-medium';
-            badge.style.backgroundColor = friendConfig.friendStyling.indicatorColor || '#4f46e5';
-            badge.style.color = 'white';
-            badge.textContent = 'Friend';
             
-            // Append badge to post element
-            friendPostElement.appendChild(badge);
-          }
-          
-          // Add friend attribution if enabled - with safety checks
-          if (metadataSection && 
-              friendConfig.attribution && 
-              friendConfig.attribution.showAttribution) {
+            // Ensure published date is a valid Date object
+            let publishedDate = entry.data.published;
+            let timestamp;
+            let dateStr;
             
-            // Create friend attribution element
-            const attribution = document.createElement('div');
-            attribution.className = 'flex items-center mb-3';
-            
-            // Build attribution HTML with avatar if enabled
-            let attributionHTML = '';
-            
-            // Add avatar if enabled - with safety checks
-            if (friendConfig.friendStyling && friendConfig.friendStyling.showFriendAvatar) {
-              const avatarSize = friendConfig.friendStyling.avatarSize || 'w-6 h-6';
-              attributionHTML += `
-                <div class="${avatarSize} bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden mr-2 flex-shrink-0">
-                  ${entry.data.friendAvatar ? `
-                    <img 
-                      src="${entry.data.friendAvatar}" 
-                      alt="${entry.data.friendName || 'Friend'}'s avatar"
-                      class="w-full h-full object-cover"
-                      onerror="this.src='/assets/avatar/avatar.png'"
-                    />
-                  ` : `
-                    <img 
-                      src="/assets/avatar/avatar.png" 
-                      alt="${entry.data.friendName || 'Friend'}'s avatar"
-                      class="w-full h-full object-cover"
-                    />
-                  `}
-                </div>
-              `;
+            try {
+              // If it's already a Date object
+              if (publishedDate instanceof Date) {
+                timestamp = publishedDate.getTime();
+                dateStr = publishedDate.toISOString().split('T')[0];
+              } 
+              // If it's a string, try to parse it
+              else if (typeof publishedDate === 'string') {
+                publishedDate = new Date(publishedDate);
+                if (isNaN(publishedDate.getTime())) {
+                  console.warn(`Invalid date string for post ${entry.id}: ${entry.data.published}`);
+                  publishedDate = new Date(); // Fallback to current date
+                }
+                timestamp = publishedDate.getTime();
+                dateStr = publishedDate.toISOString().split('T')[0];
+              } 
+              // If something else, use current date
+              else {
+                console.warn(`Unknown date format for post ${entry.id}: ${entry.data.published}`);
+                publishedDate = new Date();
+                timestamp = publishedDate.getTime();
+                dateStr = publishedDate.toISOString().split('T')[0];
+              }
+            } catch (error) {
+              console.error(`Error processing date for post ${entry.id}:`, error);
+              publishedDate = new Date();
+              timestamp = publishedDate.getTime();
+              dateStr = publishedDate.toISOString().split('T')[0];
             }
             
-            // Add attribution text with friend name - with safety checks
-            const attributionText = friendConfig.attribution && friendConfig.attribution.attributionText ? 
-              friendConfig.attribution.attributionText.replace('[friendName]', entry.data.friendName || 'Friend') : 
-              `From ${entry.data.friendName || 'Friend'}`;
+            // Clone the structure of a local post card
+            const friendPostElement = localPostCard.cloneNode(true);
             
-            // Add link if enabled - with safety checks
-            if (friendConfig.attribution && friendConfig.attribution.linkToFriendSite) {
-              attributionHTML += `
-                <span class="text-sm text-neutral-500 dark:text-neutral-400">
-                  ${attributionText.replace(entry.data.friendName || 'Friend', `<a href="${entry.data.friendUrl || '#'}" target="_blank" rel="noopener noreferrer" class="text-[var(--primary)] hover:underline">${entry.data.friendName || 'Friend'}</a>`)}
-                </span>
-              `;
-            } else {
-              attributionHTML += `
-                <span class="text-sm text-neutral-500 dark:text-neutral-400">
-                  ${attributionText}
-                </span>
-              `;
+            // Add friend-specific attributes and classes
+            friendPostElement.setAttribute('data-friend-content', 'true');
+            friendPostElement.setAttribute('data-post-id', entry.id);
+            friendPostElement.setAttribute('data-post-type', 'friend');
+            friendPostElement.setAttribute('data-post-timestamp', timestamp);
+            friendPostElement.setAttribute('data-post-date', dateStr);
+            friendPostElement.setAttribute('data-post-category', (entry.data.category || 'uncategorized').toLowerCase());
+            friendPostElement.setAttribute('data-post-tags', (entry.data.tags || []).join(',').toLowerCase());
+            
+            if (index === 0) {
+              console.log('First friend post attributes:', {
+                timestamp: friendPostElement.getAttribute('data-post-timestamp'),
+                date: friendPostElement.getAttribute('data-post-date')
+              });
             }
             
-            attribution.innerHTML = attributionHTML;
-            
-            // Insert after the metadata section
-            metadataSection.after(attribution);
-          }
-          
-          // Update cover image if present
-          const coverImageWrapper = friendPostElement.querySelector('a.group');
-          const imageElement = coverImageWrapper ? coverImageWrapper.querySelector('img') : null;
-          
-          if (imageElement && entry.data.image) {
-            // Ensure the image is visible and using the post's image
-            imageElement.src = entry.data.image;
-            imageElement.alt = `Cover image for ${entry.data.title}`;
-            
-            if (coverImageWrapper) {
-              coverImageWrapper.classList.remove('!hidden');
+            // Continue with the rest of your code...
+            // Apply the configured indicator style (with safety checks)
+            if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'border') {
+              friendPostElement.style.borderLeft = `3px solid ${friendConfig.friendStyling.indicatorColor || '#4f46e5'}`;
+            } else if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'background') {
+              friendPostElement.style.backgroundColor = `${friendConfig.friendStyling.indicatorColor || '#4f46e5'}20`;
+            } else if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'badge') {
+              friendPostElement.setAttribute('data-needs-badge', 'true');
             }
+            
+            // Update the title link
+            const titleLink = friendPostElement.querySelector('a');
+            if (titleLink) {
+              titleLink.href = entry.data.sourceUrl || `/friend/${entry.slug}`;
+              titleLink.textContent = entry.data.title;
+            }
+            
+            // Update the publication date
+            const dateElement = friendPostElement.querySelector('.text-sm.font-medium');
+            if (dateElement) {
+              dateElement.textContent = dateStr;
+            }
+            
+            // Update category
+            const categoryLink = friendPostElement.querySelector('a[href*="/category/"]');
+            if (categoryLink) {
+              categoryLink.href = `/archive/category/${(entry.data.category || 'uncategorized').toLowerCase()}/`;
+              categoryLink.textContent = entry.data.category || 'Uncategorized';
+            }
+            
+            // Update tags
+            const tagsContainer = friendPostElement.querySelector('.hidden.md\\:flex.items-center');
+            if (tagsContainer && entry.data.tags && entry.data.tags.length > 0) {
+              const tagsWrapper = tagsContainer.querySelector('div:last-child');
+              if (tagsWrapper) {
+                // Clear existing tags
+                tagsWrapper.innerHTML = '';
+                
+                // Add each tag
+                entry.data.tags.forEach((tag, i) => {
+                  // Add separator for all but first tag
+                  if (i > 0) {
+                    const separator = document.createElement('div');
+                    separator.className = 'mx-1.5 text-[var(--meta-divider)] text-sm';
+                    separator.textContent = '/';
+                    tagsWrapper.appendChild(separator);
+                  }
+                  
+                  // Create tag link
+                  const tagLink = document.createElement('a');
+                  tagLink.href = `/archive/tag/${tag.toLowerCase()}/`;
+                  tagLink.className = 'link-lg transition text-50 text-sm font-medium hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap';
+                  tagLink.textContent = tag;
+                  tagsWrapper.appendChild(tagLink);
+                });
+              }
+            }
+            
+            // Update description
+            const descriptionEl = friendPostElement.querySelector('.transition.text-75');
+            if (descriptionEl && entry.data.description) {
+              descriptionEl.textContent = entry.data.description;
+            }
+            
+            // Update word count and reading time
+            const statsElements = friendPostElement.querySelectorAll('.text-sm.text-black\\/30 > div');
+            if (statsElements.length >= 3) {
+              try {
+                const remarkData = entry.render();
+                statsElements[0].textContent = `${remarkData.remarkPluginFrontmatter?.words || '100'} words`;
+                statsElements[2].textContent = `${remarkData.remarkPluginFrontmatter?.minutes || '1'} min read`;
+              } catch (error) {
+                console.warn(`Error setting word count for ${entry.id}:`, error);
+                statsElements[0].textContent = `100 words`;
+                statsElements[2].textContent = `1 min read`;
+              }
+            }
+            
+            // Find the metadata section to place attribution after it
+            const metadataSection = friendPostElement.querySelector('.mb-4');
+            
+            // Check if we need to add a badge (indicator type) - with safety checks
+            if (friendConfig.friendStyling && 
+                friendConfig.friendStyling.indicatorType === 'badge' && 
+                friendPostElement.getAttribute('data-needs-badge') === 'true') {
+              const badge = document.createElement('div');
+              badge.className = 'absolute right-3 top-3 py-1 px-2 rounded-md text-xs font-medium';
+              badge.style.backgroundColor = friendConfig.friendStyling.indicatorColor || '#4f46e5';
+              badge.style.color = 'white';
+              badge.textContent = 'Friend';
+              
+              // Append badge to post element
+              friendPostElement.appendChild(badge);
+            }
+            
+            // Add friend attribution if enabled - with safety checks
+            if (metadataSection && 
+                friendConfig.attribution && 
+                friendConfig.attribution.showAttribution) {
+              
+              // Create friend attribution element
+              const attribution = document.createElement('div');
+              attribution.className = 'flex items-center mb-3';
+              
+              // Build attribution HTML with avatar if enabled
+              let attributionHTML = '';
+              
+              // Add avatar if enabled - with safety checks
+              if (friendConfig.friendStyling && friendConfig.friendStyling.showFriendAvatar) {
+                const avatarSize = friendConfig.friendStyling.avatarSize || 'w-6 h-6';
+                attributionHTML += `
+                  <div class="${avatarSize} bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden mr-2 flex-shrink-0">
+                    ${entry.data.friendAvatar ? `
+                      <img 
+                        src="${entry.data.friendAvatar}" 
+                        alt="${entry.data.friendName || 'Friend'}'s avatar"
+                        class="w-full h-full object-cover"
+                        onerror="this.src='/assets/avatar/avatar.png'"
+                      />
+                    ` : `
+                      <img 
+                        src="/assets/avatar/avatar.png" 
+                        alt="${entry.data.friendName || 'Friend'}'s avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    `}
+                  </div>
+                `;
+              }
+              
+              // Add attribution text with friend name - with safety checks
+              const attributionText = friendConfig.attribution && friendConfig.attribution.attributionText ? 
+                friendConfig.attribution.attributionText.replace('[friendName]', entry.data.friendName || 'Friend') : 
+                `From ${entry.data.friendName || 'Friend'}`;
+              
+              // Add link if enabled - with safety checks
+              if (friendConfig.attribution && friendConfig.attribution.linkToFriendSite) {
+                attributionHTML += `
+                  <span class="text-sm text-neutral-500 dark:text-neutral-400">
+                    ${attributionText.replace(entry.data.friendName || 'Friend', `<a href="${entry.data.friendUrl || '#'}" target="_blank" rel="noopener noreferrer" class="text-[var(--primary)] hover:underline">${entry.data.friendName || 'Friend'}</a>`)}
+                  </span>
+                `;
+              } else {
+                attributionHTML += `
+                  <span class="text-sm text-neutral-500 dark:text-neutral-400">
+                    ${attributionText}
+                  </span>
+                `;
+              }
+              
+              attribution.innerHTML = attributionHTML;
+              
+              // Insert after the metadata section
+              metadataSection.after(attribution);
+            }
+            
+            // Update cover image if present
+            const coverImageWrapper = friendPostElement.querySelector('a.group');
+            const imageElement = coverImageWrapper ? coverImageWrapper.querySelector('img') : null;
+            
+            if (imageElement && entry.data.image) {
+              // Ensure the image is visible and using the post's image
+              imageElement.src = entry.data.image;
+              imageElement.alt = `Cover image for ${entry.data.title}`;
+              
+              if (coverImageWrapper) {
+                coverImageWrapper.classList.remove('!hidden');
+              }
+            }
+            
+            // Add the friend post to the container
+            postsContainer.appendChild(friendPostElement);
+          } catch (error) {
+            console.error(`Error processing friend entry ${entry.id}:`, error);
           }
-          
-          // Add the friend post to the container
-          postsContainer.appendChild(friendPostElement);
         });
         
-        // Handle sorting based on configuration - with safety checks
+        // Log the final set of posts before sorting
         const allPosts = Array.from(postsContainer.children);
+        console.log(`Posts before sorting: ${allPosts.length} total posts`);
+        console.log('First few post timestamps:', allPosts.slice(0, 3).map(post => ({
+          type: post.getAttribute('data-post-type'),
+          timestamp: post.getAttribute('data-post-timestamp'),
+          date: post.getAttribute('data-post-date')
+        })));
+        
         let sortedPosts = [];
         
         // Check sorting method from config
         const sortingMethod = friendConfig.behavior && friendConfig.behavior.sortingMethod ? 
           friendConfig.behavior.sortingMethod : 'date';
         
+        console.log(`Using sorting method: ${sortingMethod}`);
+        
         if (sortingMethod === 'date') {
-          // Sort by date (timestamp)
+          // Sort by date (timestamp) with extra validation
           sortedPosts = allPosts.sort((a, b) => {
             const aTime = parseInt(a.getAttribute('data-post-timestamp') || '0');
             const bTime = parseInt(b.getAttribute('data-post-timestamp') || '0');
+            
+            if (isNaN(aTime) || isNaN(bTime)) {
+              console.warn('Invalid timestamp found during sorting:', { 
+                aTime, 
+                bTime, 
+                aTimestamp: a.getAttribute('data-post-timestamp'),
+                bTimestamp: b.getAttribute('data-post-timestamp')
+              });
+              return 0; // Keep original order if invalid
+            }
+            
             return bTime - aTime; // Descending order (newest first)
           });
         } else if (sortingMethod === 'source') {
           // First local posts, then friend posts grouped by source
           const localPosts = allPosts.filter(post => post.getAttribute('data-post-type') !== 'friend');
           const friendPosts = allPosts.filter(post => post.getAttribute('data-post-type') === 'friend');
+          
+          console.log(`Sorting by source: ${localPosts.length} local, ${friendPosts.length} friend posts`);
           
           // Sort each group by date internally
           localPosts.sort((a, b) => {
@@ -306,6 +405,7 @@
           ];
         } else {
           // Default fallback to date sorting
+          console.log(`Unknown sorting method "${sortingMethod}", falling back to date sorting`);
           sortedPosts = allPosts.sort((a, b) => {
             const aTime = parseInt(a.getAttribute('data-post-timestamp') || '0');
             const bTime = parseInt(b.getAttribute('data-post-timestamp') || '0');
@@ -313,12 +413,20 @@
           });
         }
         
+        // Log the sorting results
+        console.log('Posts after sorting:', sortedPosts.slice(0, 3).map(post => ({
+          type: post.getAttribute('data-post-type'),
+          timestamp: post.getAttribute('data-post-timestamp'),
+          date: post.getAttribute('data-post-date')
+        })));
+        
         // Check if we should merge with local posts - with safety checks
         const mergeWithLocalPosts = friendConfig.behavior && 
           typeof friendConfig.behavior.mergeWithLocalPosts !== 'undefined' ? 
           friendConfig.behavior.mergeWithLocalPosts : true;
         
         if (mergeWithLocalPosts) {
+          console.log('Merging all posts together in sorted order');
           // Clear and reinsert in sorted order
           while (postsContainer.firstChild) {
             postsContainer.removeChild(postsContainer.firstChild);
@@ -328,6 +436,7 @@
             postsContainer.appendChild(post);
           });
         } else {
+          console.log('Keeping friend posts separate');
           // Separate friend posts from local posts
           // First remove friend posts
           const friendPostElements = document.querySelectorAll('[data-friend-content="true"]');
@@ -360,6 +469,7 @@
       }
     }
     
+    // The rest of your code remains the same...
     // Set up Swup integration to handle page transitions
     function setupSwupIntegration() {
       // Function to handle Swup page transitions
