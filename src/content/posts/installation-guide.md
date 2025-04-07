@@ -20,6 +20,8 @@ draft: true
 lang: "en"
 ---
 
+[Temporal Flow Starter Template](https://github.com/dndiy/Temporal-Flow) 
+
 # Installing Temporal Flow
 
 *"Your journey to decentralized content sharing begins with a simple setup." — Temporal Flow*
@@ -53,7 +55,7 @@ Clone the repository and customize locally for more control and advanced configu
 
 1. **Create your repository**
    
-   Go to the [Temporal Flow Starter Template](https://github.com/temporal-flow/starter-template) and click "Use this template" to create your own copy.
+   Go to the [Temporal Flow Starter Template](https://github.com/dndiy/Temporal-Flow) and click "Use this template" to create your own copy.
 
 2. **Name your repository**
    
