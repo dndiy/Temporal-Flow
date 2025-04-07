@@ -18,6 +18,13 @@ jobs:
       - name: Remove template-specific files
         run: |
           rm -f CNAME
+          # Remove posts from potential locations
+          find . -path "*/content/posts/*" -type f -delete
+          find . -path "*/src/content/posts/*" -type f -delete
+          # Make sure directories remain but are empty
+          find . -path "*/content/posts" -type d -exec touch {}/.gitkeep \;
+          find . -path "*/src/content/posts" -type d -exec touch {}/.gitkeep \;
+
           
       - name: Commit changes
         run: |

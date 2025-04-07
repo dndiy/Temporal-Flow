@@ -8,6 +8,7 @@
   let isBannerSequence = false;
   let bannerCount = 0;
   let selectedBannerIndex = 0;
+  let imageBaseUrl = '/src/assets/banner/'; // Base URL for serving images
   
   // Event dispatcher
   const dispatch = createEventDispatcher();
@@ -15,17 +16,34 @@
   // Helper functions for paths
   function getDisplayPath(path) {
     // Return just the filename part for display purposes
-    return path ? path.split('/').pop() : '';
-  }
-  
-  // For rendering in the UI, we'll use a placeholder if the actual image can't be found
-  function getImagePlaceholderUrl() {
-    return '/api/placeholder/400/200';
+    if (!path) return '';
+    const filename = path.split('/').pop();
+    return filename;
   }
   
   // Handle changes to configuration
   function handleChange() {
     dispatch('change', bannerConfig);
+  }
+  
+  // Convert import path to URL path
+  function getImageUrl(path) {
+    if (!path) return null;
+    
+    // Extract the filename - handle both formats:
+    // 1. "src/assets/banner/0001.png" (from configuration)
+    // 2. Object format (when imported in the TypeScript file)
+    let filename;
+    if (typeof path === 'string') {
+      filename = path.split('/').pop();
+    } else if (path && path.toString) {
+      const pathStr = path.toString();
+      filename = pathStr.split('/').pop();
+    } else {
+      return null;
+    }
+    
+    return `${imageBaseUrl}${filename}`;
   }
   
   // Initialize from bannerConfig on mount
@@ -37,9 +55,9 @@
       
       // Set the selected banner index to match the default banner
       if (isBannerSequence && bannerConfig.defaultBanner) {
-        const defaultBannerPath = bannerConfig.defaultBanner.toString();
+        const defaultBannerStr = bannerConfig.defaultBanner.toString();
         const foundIndex = bannerConfig.bannerList.findIndex(banner => 
-          banner.toString() === defaultBannerPath
+          banner.toString() === defaultBannerStr
         );
         if (foundIndex >= 0) {
           selectedBannerIndex = foundIndex;
@@ -109,9 +127,10 @@
         <!-- Banner Preview -->
         <div class="w-full h-40 bg-neutral-200 dark:bg-neutral-700 rounded-lg overflow-hidden mb-3 relative">
           {#if bannerConfig.defaultBanner}
-            <!-- Show a placeholder for preview purposes -->
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-              <p class="text-center p-4">
+            <!-- Try to show the actual image if possible -->
+            <div class="w-full h-full flex items-center justify-center">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-20"></div>
+              <p class="text-center p-4 relative z-10 bg-black/30 text-white rounded-md shadow-lg">
                 Selected Banner:<br>
                 <span class="font-medium">{getDisplayPath(bannerConfig.defaultBanner)}</span>
               </p>
@@ -169,14 +188,14 @@
             }}
           >
             <option value="">Select a banner image</option>
-            <option value="/assets/banner/banner1.png">banner1.png</option>
-            <option value="/assets/banner/banner2.png">banner2.png</option>
-            <option value="/assets/banner/banner3.png">banner3.png</option>
-            <option value="/assets/banner/banner4.png">banner4.png</option>
-            <option value="/assets/banner/banner5.png">banner5.png</option>
-            <option value="/assets/banner/banner6.png">banner6.png</option>
-            <option value="/assets/banner/banner7.png">banner7.png</option>
-            <option value="/assets/banner/banner8.png">banner8.png</option>
+            <option value="src/assets/banner/0001.png">0001.png</option>
+            <option value="src/assets/banner/0002.png">0002.png</option>
+            <option value="src/assets/banner/0003.png">0003.png</option>
+            <option value="src/assets/banner/0004.png">0004.png</option>
+            <option value="src/assets/banner/0005.png">0005.png</option>
+            <option value="src/assets/banner/0006.png">0006.png</option>
+            <option value="src/assets/banner/0007.png">0007.png</option>
+            <option value="src/assets/banner/0008.png">0008.png</option>
           </select>
           <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
             Choose a banner image from your project assets
@@ -197,7 +216,7 @@
                     class:border-[var(--primary)]={selectedBannerIndex === index}
                     on:click={() => selectBanner(index)}
                   >
-                    <!-- Show a color block with filename instead of image -->
+                    <!-- Show a color block with filename -->
                     <div class="w-full h-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs p-1 text-center">
                       {getDisplayPath(banner)}
                     </div>
@@ -233,14 +252,14 @@
                 }}
               >
                 <option value="">Add banner to sequence...</option>
-                <option value="/assets/banner/banner1.png">banner1.png</option>
-                <option value="/assets/banner/banner2.png">banner2.png</option>
-                <option value="/assets/banner/banner3.png">banner3.png</option>
-                <option value="/assets/banner/banner4.png">banner4.png</option>
-                <option value="/assets/banner/banner5.png">banner5.png</option>
-                <option value="/assets/banner/banner6.png">banner6.png</option>
-                <option value="/assets/banner/banner7.png">banner7.png</option>
-                <option value="/assets/banner/banner8.png">banner8.png</option>
+                <option value="src/assets/banner/0001.png">0001.png</option>
+                <option value="src/assets/banner/0002.png">0002.png</option>
+                <option value="src/assets/banner/0003.png">0003.png</option>
+                <option value="src/assets/banner/0004.png">0004.png</option>
+                <option value="src/assets/banner/0005.png">0005.png</option>
+                <option value="src/assets/banner/0006.png">0006.png</option>
+                <option value="src/assets/banner/0007.png">0007.png</option>
+                <option value="src/assets/banner/0008.png">0008.png</option>
               </select>
               <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
                 Select banners to add to the animation sequence
