@@ -23,7 +23,7 @@
     const defaultFriendConfig = {
       friendStyling: {
         indicatorType: 'border',
-        indicatorColor: '#4f46e5', // Default indigo color
+        indicatorColor: '#4f46e5',
         showFriendAvatar: true,
         avatarSize: 'w-6 h-6'
       },
@@ -56,6 +56,8 @@
         
         // Get friend posts as entry-compatible objects
         const friendEntries = getFriendPostsAsEntries();
+        console.log("Raw friend entries:", friendEntries);
+        
         if (friendEntries.length === 0) return;
         
         console.log(`Integrating ${friendEntries.length} friend posts`);
@@ -83,55 +85,81 @@
         const friendConfig = (postCardConfig && postCardConfig.friendPosts) ? 
           postCardConfig.friendPosts : defaultFriendConfig;
         
-        console.log("Using friend config:", friendConfig);
-        
         // For each friend post, clone and modify a local post card
         friendEntries.forEach((entry, index) => {
           try {
-            // Debug friend entry data
-            if (index === 0) {
-              console.log('Sample friend entry:', {
+            // Enhanced debugging for the first few entries
+            if (index < 3) {
+              console.log(`Friend entry ${index} details:`, {
                 id: entry.id,
+                title: entry.data.title,
                 slug: entry.slug,
                 published: entry.data.published,
                 publishedType: typeof entry.data.published,
-                publishedIsDate: entry.data.published instanceof Date
+                publishedIsDate: entry.data.published instanceof Date,
+                publishedValue: entry.data.published instanceof Date 
+                  ? entry.data.published.toISOString() 
+                  : String(entry.data.published),
+                image: entry.data.image,
+                imageType: typeof entry.data.image,
+                sourceUrl: entry.data.sourceUrl,
+                friendName: entry.data.friendName,
+                friendUrl: entry.data.friendUrl
               });
             }
             
-            // Ensure published date is a valid Date object
-            let publishedDate = entry.data.published;
+            // Handle date carefully - make sure we have a valid Date object
+            let publishedDate;
             let timestamp;
             let dateStr;
             
-            try {
-              // If it's already a Date object
-              if (publishedDate instanceof Date) {
-                timestamp = publishedDate.getTime();
-                dateStr = publishedDate.toISOString().split('T')[0];
-              } 
-              // If it's a string, try to parse it
-              else if (typeof publishedDate === 'string') {
-                publishedDate = new Date(publishedDate);
-                if (isNaN(publishedDate.getTime())) {
-                  console.warn(`Invalid date string for post ${entry.id}: ${entry.data.published}`);
-                  publishedDate = new Date(); // Fallback to current date
+            // Case 1: Already a Date object
+            if (entry.data.published instanceof Date) {
+              publishedDate = entry.data.published;
+            }
+            // Case 2: ISO date string
+            else if (typeof entry.data.published === 'string' && entry.data.published.match(/^\d{4}-\d{2}-\d{2}/)) {
+              publishedDate = new Date(entry.data.published);
+            }
+            // Case 3: Other string format
+            else if (typeof entry.data.published === 'string') {
+              // Try parsing with Date.parse
+              const parsedMs = Date.parse(entry.data.published);
+              if (!isNaN(parsedMs)) {
+                publishedDate = new Date(parsedMs);
+              } else {
+                // Try extracting date with regex
+                const dateMatch = entry.data.published.match(/\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4}|\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}/i);
+                if (dateMatch) {
+                  publishedDate = new Date(dateMatch[0]);
+                } else {
+                  console.warn(`Could not parse date: ${entry.data.published}`);
+                  publishedDate = new Date();
                 }
-                timestamp = publishedDate.getTime();
-                dateStr = publishedDate.toISOString().split('T')[0];
-              } 
-              // If something else, use current date
-              else {
-                console.warn(`Unknown date format for post ${entry.id}: ${entry.data.published}`);
-                publishedDate = new Date();
-                timestamp = publishedDate.getTime();
-                dateStr = publishedDate.toISOString().split('T')[0];
               }
-            } catch (error) {
-              console.error(`Error processing date for post ${entry.id}:`, error);
+            }
+            // Default case
+            else {
+              console.warn(`Unknown date format for entry ${entry.id}`);
               publishedDate = new Date();
-              timestamp = publishedDate.getTime();
-              dateStr = publishedDate.toISOString().split('T')[0];
+            }
+            
+            // Check if we got a valid date
+            if (isNaN(publishedDate.getTime())) {
+              console.warn(`Invalid date for entry ${entry.id}: ${entry.data.published}`);
+              publishedDate = new Date();
+            }
+            
+            timestamp = publishedDate.getTime();
+            dateStr = publishedDate.toISOString().split('T')[0];
+            
+            if (index < 3) {
+              console.log(`Friend entry ${index} processed date:`, {
+                original: entry.data.published,
+                parsed: publishedDate,
+                timestamp,
+                dateStr
+              });
             }
             
             // Clone the structure of a local post card
@@ -146,14 +174,6 @@
             friendPostElement.setAttribute('data-post-category', (entry.data.category || 'uncategorized').toLowerCase());
             friendPostElement.setAttribute('data-post-tags', (entry.data.tags || []).join(',').toLowerCase());
             
-            if (index === 0) {
-              console.log('First friend post attributes:', {
-                timestamp: friendPostElement.getAttribute('data-post-timestamp'),
-                date: friendPostElement.getAttribute('data-post-date')
-              });
-            }
-            
-            // Continue with the rest of your code...
             // Apply the configured indicator style (with safety checks)
             if (friendConfig.friendStyling && friendConfig.friendStyling.indicatorType === 'border') {
               friendPostElement.style.borderLeft = `3px solid ${friendConfig.friendStyling.indicatorColor || '#4f46e5'}`;
@@ -170,10 +190,15 @@
               titleLink.textContent = entry.data.title;
             }
             
-            // Update the publication date
+            // Update the publication date with our properly processed date
             const dateElement = friendPostElement.querySelector('.text-sm.font-medium');
             if (dateElement) {
-              dateElement.textContent = dateStr;
+              const formattedDate = publishedDate.toLocaleDateString(undefined, { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+              });
+              dateElement.textContent = formattedDate;
             }
             
             // Update category
@@ -217,24 +242,29 @@
               descriptionEl.textContent = entry.data.description;
             }
             
-            // Update word count and reading time
+            // Update word count and reading time - safer approach
             const statsElements = friendPostElement.querySelectorAll('.text-sm.text-black\\/30 > div');
             if (statsElements.length >= 3) {
               try {
-                const remarkData = entry.render();
-                statsElements[0].textContent = `${remarkData.remarkPluginFrontmatter?.words || '100'} words`;
-                statsElements[2].textContent = `${remarkData.remarkPluginFrontmatter?.minutes || '1'} min read`;
+                const renderResult = entry.render();
+                const wordCount = renderResult?.remarkPluginFrontmatter?.words || 
+                                 (entry.body ? Math.ceil(entry.body.split(/\s+/).length) : 100);
+                const minutes = renderResult?.remarkPluginFrontmatter?.minutes || 
+                               Math.max(1, Math.ceil(wordCount / 200));
+                
+                statsElements[0].textContent = `${wordCount} words`;
+                statsElements[2].textContent = `${minutes} min read`;
               } catch (error) {
                 console.warn(`Error setting word count for ${entry.id}:`, error);
-                statsElements[0].textContent = `100 words`;
-                statsElements[2].textContent = `1 min read`;
+                statsElements[0].textContent = '100 words';
+                statsElements[2].textContent = '1 min read';
               }
             }
             
             // Find the metadata section to place attribution after it
             const metadataSection = friendPostElement.querySelector('.mb-4');
             
-            // Check if we need to add a badge (indicator type) - with safety checks
+            // Check if we need to add a badge
             if (friendConfig.friendStyling && 
                 friendConfig.friendStyling.indicatorType === 'badge' && 
                 friendPostElement.getAttribute('data-needs-badge') === 'true') {
@@ -248,7 +278,7 @@
               friendPostElement.appendChild(badge);
             }
             
-            // Add friend attribution if enabled - with safety checks
+            // Add friend attribution if enabled
             if (metadataSection && 
                 friendConfig.attribution && 
                 friendConfig.attribution.showAttribution) {
@@ -309,17 +339,39 @@
               metadataSection.after(attribution);
             }
             
-            // Update cover image if present
+            // Update cover image if present - improved image handling
             const coverImageWrapper = friendPostElement.querySelector('a.group');
             const imageElement = coverImageWrapper ? coverImageWrapper.querySelector('img') : null;
             
-            if (imageElement && entry.data.image) {
-              // Ensure the image is visible and using the post's image
-              imageElement.src = entry.data.image;
-              imageElement.alt = `Cover image for ${entry.data.title}`;
-              
-              if (coverImageWrapper) {
-                coverImageWrapper.classList.remove('!hidden');
+            if (imageElement) {
+              if (entry.data.image) {
+                let imageUrl = entry.data.image;
+                
+                // Make sure image URL is absolute if it's not already
+                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+                  imageUrl = '/' + imageUrl;
+                }
+                
+                // For external URLs that don't have http/https, add https
+                if (imageUrl && !imageUrl.startsWith('/') && !imageUrl.startsWith('http')) {
+                  imageUrl = 'https://' + imageUrl;
+                }
+                
+                if (index < 3) console.log(`Image URL for post ${index}:`, imageUrl);
+                
+                // Set the image
+                imageElement.src = imageUrl;
+                imageElement.alt = `Cover image for ${entry.data.title}`;
+                
+                // Make sure the image wrapper is visible
+                if (coverImageWrapper) {
+                  coverImageWrapper.classList.remove('!hidden');
+                }
+              } else {
+                // If no image, hide the image wrapper
+                if (coverImageWrapper) {
+                  coverImageWrapper.classList.add('!hidden');
+                }
               }
             }
             
@@ -333,11 +385,6 @@
         // Log the final set of posts before sorting
         const allPosts = Array.from(postsContainer.children);
         console.log(`Posts before sorting: ${allPosts.length} total posts`);
-        console.log('First few post timestamps:', allPosts.slice(0, 3).map(post => ({
-          type: post.getAttribute('data-post-type'),
-          timestamp: post.getAttribute('data-post-timestamp'),
-          date: post.getAttribute('data-post-date')
-        })));
         
         let sortedPosts = [];
         
@@ -413,13 +460,6 @@
           });
         }
         
-        // Log the sorting results
-        console.log('Posts after sorting:', sortedPosts.slice(0, 3).map(post => ({
-          type: post.getAttribute('data-post-type'),
-          timestamp: post.getAttribute('data-post-timestamp'),
-          date: post.getAttribute('data-post-date')
-        })));
-        
         // Check if we should merge with local posts - with safety checks
         const mergeWithLocalPosts = friendConfig.behavior && 
           typeof friendConfig.behavior.mergeWithLocalPosts !== 'undefined' ? 
@@ -470,12 +510,9 @@
     }
     
     // The rest of your code remains the same...
-    // Set up Swup integration to handle page transitions
     function setupSwupIntegration() {
-      // Function to handle Swup page transitions
       const handlePageTransition = () => {
         if (isAuthenticated && friendContentEnabled) {
-          // Use a small delay to ensure DOM is ready
           setTimeout(() => {
             try {
               integrateFriendPosts();
@@ -486,12 +523,9 @@
         }
       };
       
-      // Check if Swup is available
       if (window.swup?.hooks) {
-        // Register with Swup hooks for page transitions
         window.swup.hooks.on('page:view', handlePageTransition);
       } else {
-        // Set up a listener for when Swup becomes available
         document.addEventListener('swup:enable', () => {
           if (window.swup?.hooks) {
             window.swup.hooks.on('page:view', handlePageTransition);
@@ -500,23 +534,19 @@
       }
     }
     
-    // Handle friend content toggle events
     function handleFriendContentToggle(e) {
       const enabled = e.detail?.enabled ?? false;
       
       if (enabled && isAuthenticated) {
         integrateFriendPosts();
       } else {
-        // Remove friend posts if disabled
         const friendPostElements = document.querySelectorAll('[data-friend-content="true"]');
         friendPostElements.forEach(el => el.remove());
       }
     }
     
-    // Listen for content toggle events
     window.addEventListener('friend-content-toggled', handleFriendContentToggle);
     
-    // Initial integration after a delay to ensure local posts are rendered
     setTimeout(() => {
       try {
         integrateFriendPosts();
@@ -525,10 +555,8 @@
       }
     }, 300);
     
-    // Set up for Swup page transitions
     setupSwupIntegration();
     
-    // Cleanup function for when component is destroyed
     return () => {
       window.removeEventListener('friend-content-toggled', handleFriendContentToggle);
     };
