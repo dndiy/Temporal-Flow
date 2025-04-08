@@ -26,25 +26,75 @@ import { dirname, join } from 'path';
 import fs from 'fs';  // Add this for fs.readFileSync
 
 // CORS middleware for friend content sharing
-const corsMiddleware = (_, next) => {
-  return async (context) => {
-    const response = await next(context);
-    
-    // Add CORS headers to RSS feeds and API endpoints
-    if (context.request.url.includes('friend-content.json') || 
-        context.request.url.includes('/api/') ||
-        context.request.url.includes('rss.xml') ||
-        context.request.url.includes('feed.xml') ||
-        context.request.url.includes('/feed') ||
-        context.request.url.includes('/rss') ||
-        context.request.url.includes('atom.xml')) {
-      
-      response.headers.set('Access-Control-Allow-Origin', '*');
-      response.headers.set('Access-Control-Allow-Methods', 'GET');
-      response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+const corsMiddleware = () => {
+  return {
+    name: 'cors-middleware',
+    hooks: {
+      'astro:server:setup': ({ server }) => {
+        server.middlewares.use((req, res, next) => {
+          // Check if the request is for an RSS feed or API endpoint
+          if (req.url.includes('/rss.xml') || 
+              req.url.includes('/feed.xml') || 
+              req.url.includes('/feed') || 
+              req.url.includes('/rss') || 
+              req.url.includes('/atom.xml') ||
+              req.url.includes('/api/') ||
+              req.url.includes('/friend-content.json')) {
+            
+            // Set CORS headers
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+            
+            // Handle preflight requests
+            if (req.method === 'OPTIONS') {
+              res.statusCode = 204;
+              return res.end();
+            }
+          }
+          
+          next();
+        });
+      },
+      'astro:build:done': ({ pages, dir }) => {
+        // Add CORS headers to generated static files during build
+        const files = [
+          'rss.xml', 
+          'feed.xml', 
+          'feed', 
+          'rss', 
+          'atom.xml', 
+          'friend-content.json'
+        ];
+        
+        const outputDir = fileURLToPath(dir.href);
+        
+        files.forEach(file => {
+          const filePath = join(outputDir, file);
+          if (existsSync(filePath)) {
+            try {
+              // Create a .htaccess file in the same directory
+              const htaccessPath = join(outputDir, '.htaccess');
+              const htaccessContent = `
+# Enable CORS for feed files
+<FilesMatch "\\.(xml|json)$">
+  <IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+  </IfModule>
+</FilesMatch>
+              `.trim();
+              
+              fs.writeFileSync(htaccessPath, htaccessContent);
+              console.log(`Created .htaccess file for CORS headers at ${htaccessPath}`);
+            } catch (error) {
+              console.warn(`Error adding CORS headers to ${file}:`, error);
+            }
+          }
+        });
+      }
     }
-    
-    return response;
   };
 };
 
@@ -88,11 +138,8 @@ if (GITHUB_REPOSITORY) {
     console.log(`Detected GitHub Pages deployment: ${siteUrl}${basePath}`);
   } else {
     // Has custom domain, but still need basePath for subpaths
-    if (repo !== username + '.github.io') {
-      // For custom domains, DO NOT use repository name in the path
-      basePath = '/';
-      console.log(`Using custom domain without subpath: ${siteUrl}${basePath}`);
-    }
+    basePath = '/';
+    console.log(`Using custom domain without subpath: ${siteUrl}${basePath}`);
   }
 } else {
   // If not in GitHub Actions, use the default site URL
@@ -104,37 +151,59 @@ export default defineConfig({
   site: siteUrl,
   base: basePath,
   trailingSlash: "always",
-  integrations: [tailwind(
+  integrations: [
+    corsMiddleware(), // Add the CORS middleware as an integration
+    tailwind(
       {
         nesting: true,
       }
-  ), swup({
-    theme: false,
-    animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
-    // the default value `transition-` cause transition delay
-    // when the Tailwind class `transition-all` is used
-    containers: ["main", "#toc", "#banner-wrapper", "#swup-featured-content"],
-    smoothScrolling: true,
-    cache: true,
-    preload: true,
-    accessibility: true,
-    updateHead: true,
-    updateBodyClass: false,
-    globalInstance: true,
-  }), icon({
-    include: {
-      "preprocess: vitePreprocess(),": ["*"],
-      "fa6-brands": ["*"],
-      "fa6-regular": ["*"],
-      "fa6-solid": ["*"],
-    },
-  }), svelte(), sitemap(), Compress({
-    CSS: false,
-    Image: false,
-    Action: {
-      Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
-    },
-  }), mdx()],
+    ), 
+    swup({
+      theme: false,
+      animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
+      // the default value `transition-` cause transition delay
+      // when the Tailwind class `transition-all` is used
+      containers: ["main", "#toc", "#banner-wrapper", "#swup-featured-content"],
+      smoothScrolling: true,
+      cache: true,
+      preload: true,
+      accessibility: true,
+      updateHead: true,
+      updateBodyClass: false,
+      globalInstance: true,
+    }), 
+    icon({
+      include: {
+        "preprocess: viteProcess(),": ["*"],
+        "fa6-brands": ["*"],
+        "fa6-regular": ["*"],
+        "fa6-solid": ["*"],
+      },
+    }), 
+    svelte(), 
+    sitemap({
+      filter: (page) => 
+        !page.includes('/feed') && 
+        !page.includes('/rss') && 
+        !page.includes('/atom') && 
+        page !== '/feed.xml' && 
+        page !== '/rss.xml' && 
+        page !== '/atom.xml',
+      customize: ({ rss }) => {
+        // Add additional <link> tags for alternative feeds
+        rss.stylesheet = '/rss-styles.xsl';
+        return rss;
+      },
+    }), 
+    Compress({
+      CSS: false,
+      Image: false,
+      Action: {
+        Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
+      },
+    }), 
+    mdx()
+  ],
   markdown: {
     remarkPlugins: [
       remarkMath,
@@ -189,7 +258,15 @@ export default defineConfig({
   vite: {
     optimizeDeps: {
       include: ['mammoth']
-    },  
+    },
+    server: {
+      // Add CORS headers to the dev server
+      cors: {
+        origin: '*',
+        methods: ['GET', 'OPTIONS'],
+        allowedHeaders: ['Content-Type'],
+      },
+    },
     build: {
       rollupOptions: {
         onwarn(warning, warn) {

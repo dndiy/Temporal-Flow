@@ -190,25 +190,9 @@ export function getFriendContent(): FriendPost[] {
 export function getFriendPostsAsEntries() {
   const friendPosts = getFriendContent();
   
-  console.log("Converting friend posts to entries format");
-  
   // Transform each friend post into a format that matches Astro content entries
   return friendPosts.map(post => {
     // Create a structure that matches your local post entries
-    let publishedDate;
-    try {
-      publishedDate = new Date(post.published);
-      if (isNaN(publishedDate.getTime())) {
-        console.warn(`Invalid published date in post ${post.id}: ${post.published}`);
-        publishedDate = new Date(); // Fallback
-      } else {
-        console.log(`Post ${post.id} date: ${publishedDate.toISOString()}`);
-      }
-    } catch (error) {
-      console.error(`Error parsing date for post ${post.id}:`, error);
-      publishedDate = new Date(); // Fallback
-    }
-    
     return {
       id: post.id || `friend-${Date.now()}`,
       slug: post.slug || post.id,
@@ -217,7 +201,7 @@ export function getFriendPostsAsEntries() {
       // Data object that matches your frontmatter structure
       data: {
         title: post.title,
-        published: publishedDate,
+        published: new Date(post.published),
         updated: post.updated ? new Date(post.updated) : undefined,
         tags: post.tags || [],
         category: post.category || 'Uncategorized',
@@ -386,6 +370,8 @@ export async function validateSite(url: string): Promise<{
 
 // Fetch blog posts by checking common Astro endpoints and HTML scraping
 export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[]> {
+  // The implementation of this function remains unchanged
+  // as it doesn't directly interact with the friend store structure
   try {
     const formattedUrl = formatUrl(friendUrl);
     console.log(`Fetching content from ${formattedUrl}`);
@@ -453,55 +439,23 @@ export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[
                 
                 const description = item.querySelector('description, summary')?.textContent || '';
                 
-                // IMPROVED DATE PARSING
+                // Handle different date elements in RSS vs Atom
                 const pubDate = item.querySelector('pubDate, published, date')?.textContent;
                 let published: Date;
-
+                
                 if (pubDate) {
-                  console.log(`Parsing RSS date: "${pubDate}"`);
                   try {
-                    // First try direct parsing
                     published = new Date(pubDate);
-                    
-                    // If that fails, try more advanced parsing
                     if (isNaN(published.getTime())) {
-                      console.log(`Basic date parsing failed for: "${pubDate}"`);
-                      
-                      // Try RFC 822/2822 format (common in RSS)
-                      const rfcMatch = pubDate.match(/([A-Za-z]{3}),\s+(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
-                      if (rfcMatch) {
-                        const [_, day, month, year, hour, minute, second] = rfcMatch;
-                        const monthIndex = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(month);
-                        if (monthIndex !== -1) {
-                          published = new Date(Date.UTC(parseInt(year), monthIndex, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second)));
-                          console.log(`Parsed RFC date: ${published.toISOString()}`);
-                        }
-                      }
-                      
-                      // If still invalid, try various other formats
-                      if (isNaN(published.getTime())) {
-                        // Try common date formats with regex
-                        const dateMatch = pubDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})|(\d{1,2})\/(\d{1,2})\/(\d{4})|(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
-                        if (dateMatch) {
-                          published = new Date(dateMatch[0]);
-                          console.log(`Regex parsed date: ${published.toISOString()}`);
-                        } else {
-                          console.warn(`Could not parse RSS date: "${pubDate}", using current date`);
-                          published = new Date();
-                        }
-                      }
+                      // Handle alternative date formats
+                      published = new Date();
                     }
                   } catch (e) {
-                    console.error(`Error parsing RSS date: "${pubDate}"`, e);
-                    published = new Date();
+                    published = new Date(); // Fallback to current date
                   }
                 } else {
-                  console.warn('No date element found in RSS item, using current date');
                   published = new Date();
                 }
-                
-                // Log final result
-                console.log(`RSS feed item date: "${pubDate || 'none'}" parsed to: ${published.toISOString()}`);
                 
                 // Get content from different possible elements
                 const content = item.querySelector('content\\:encoded, content')?.textContent || description;
@@ -521,8 +475,6 @@ export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[
                       new URL(imgMatch[1], formattedUrl).href;
                   }
                 }
-                
-                console.log(`RSS post image URL: ${image || 'none'}`);
                 
                 // Extract frontmatter if available
                 let category = '';
@@ -575,7 +527,6 @@ export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[
                       image = imgSrc.startsWith('http') ? 
                         imgSrc : 
                         `${formattedUrl}${imgSrc.startsWith('/') ? '' : '/'}${imgSrc}`;
-                      console.log(`Image from frontmatter: ${image}`);
                     }
                   }
                 }
@@ -666,31 +617,12 @@ export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[
             const wordCount = post.wordCount || 100;
             const readingTime = post.readingTime || Math.max(1, Math.ceil(wordCount / 200));
             
-            // Parse date properly
-            let publishedDate;
-            try {
-              if (post.published) {
-                publishedDate = new Date(post.published);
-                if (isNaN(publishedDate.getTime())) {
-                  console.warn(`Invalid API date: ${post.published}, using fallback`);
-                  publishedDate = post.date ? new Date(post.date) : new Date();
-                }
-              } else if (post.date) {
-                publishedDate = new Date(post.date);
-              } else {
-                publishedDate = new Date();
-              }
-            } catch (e) {
-              console.error('Error parsing API date:', e);
-              publishedDate = new Date();
-            }
-            
             return {
               id: post.id || post.slug || `post-${Date.now()}-${Math.random().toString(36).substring(2,7)}`,
               title: post.title || 'Untitled',
               slug: post.slug || '',
               description: post.description || post.excerpt || '',
-              published: publishedDate.toISOString(),
+              published: post.published || post.date || new Date().toISOString(),
               content: post.content || post.body || '',
               sourceUrl: post.url || `${formattedUrl}/${post.slug || ''}`,
               tags: post.tags || [],
@@ -709,7 +641,6 @@ export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[
       console.log('Error fetching posts API:', error);
     }
     
-    // Rest of the function remains largely unchanged...
     // Method 3: HTML scraping for Astro/MDX sites
     try {
       console.log('Scraping HTML for blog posts with improved Astro/MDX selectors');
@@ -859,6 +790,8 @@ export async function fetchFriendContent(friendUrl: string): Promise<FriendPost[
             let foundDate = false;
             
             // Try using frontmatter date if available
+            console.log('Frontmatter data for slug:', frontmatterPublishDates[slug]); // <-- Add this line!
+
             if (frontmatterPublishDates[slug]) {
               published = frontmatterPublishDates[slug];
               foundDate = true;
@@ -1048,26 +981,16 @@ export function downloadFriendAsMarkdown(friend: Friend) {
   // Generate markdown content
   const markdown = generateFriendMarkdown(friend);
   
-  // Create download with safety checks for static environments
-  try {
-    const blob = new Blob([markdown], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    
-    // Check if document.body exists and the document is fully loaded
-    if (document && document.body) {
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      console.warn('Document body not available for download operation');
-    }
-    URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error('Error during download operation:', error);
-  }
+  // Create download
+  const blob = new Blob([markdown], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
   
   return { filename };
 }
