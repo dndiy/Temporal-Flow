@@ -58,7 +58,12 @@
         const friendEntries = getFriendPostsAsEntries();
         if (friendEntries.length === 0) return;
         
-        console.log(`Integrating ${friendEntries.length} friend posts`);
+        console.log(`Integrating ${friendEntries.length} friend posts with these images:`, 
+          friendEntries.map(entry => ({
+            title: entry.data.title,
+            image: entry.data.image
+          }))
+        );
         
         // Find a local PostCard to clone its structure
         const localPostCard = postsContainer.querySelector('.card-base');
@@ -235,20 +240,57 @@
             metadataSection.after(attribution);
           }
           
-          // Update cover image if present
+          // Update cover image if present - ENHANCED IMAGE HANDLING
           const coverImageWrapper = friendPostElement.querySelector('a.group');
-          const imageElement = coverImageWrapper ? coverImageWrapper.querySelector('img') : null;
           
-          if (imageElement && entry.data.image) {
-            // Ensure the image is visible and using the post's image
-            imageElement.src = entry.data.image;
-            imageElement.alt = `Cover image for ${entry.data.title}`;
+          if (coverImageWrapper && entry.data.image) {
+            console.log(`Processing image for "${entry.data.title}":`, entry.data.image);
             
-            if (coverImageWrapper) {
-              coverImageWrapper.classList.remove('!hidden');
+            // First try direct access to the img element
+            let imageElement = coverImageWrapper.querySelector('img');
+            
+            // If not found, look deeper inside any wrappers, with null checks
+            if (!imageElement) {
+              const firstChild = coverImageWrapper.querySelector('*');
+              if (firstChild) {
+                imageElement = firstChild.querySelector('img');
+              }
             }
-          }
-          
+            
+            // Still not found, try other selectors
+            if (!imageElement) {
+              // Try to find image anywhere in the card
+              imageElement = friendPostElement.querySelector('img');
+            }
+            
+            // Still not found, try creating a new img element
+            if (!imageElement) {
+              console.log('Image element not found, creating new one');
+              // Empty the wrapper and create a new image
+              imageElement = document.createElement('img');
+              imageElement.className = 'w-full h-full object-cover';
+              coverImageWrapper.appendChild(imageElement);
+            }
+            
+            if (imageElement) {
+              // Ensure the image is visible and using the post's image
+              console.log('Setting image src to:', entry.data.image);
+              imageElement.src = entry.data.image;
+              imageElement.alt = `Cover image for ${entry.data.title}`;
+              imageElement.style.objectFit = 'cover';
+              imageElement.style.width = '100%';
+              imageElement.style.height = '100%';
+              
+              // Make sure any wrapper is visible
+              coverImageWrapper.classList.remove('!hidden');
+              coverImageWrapper.style.display = 'block';
+            } else {
+              console.log('Failed to find or create image element');
+            }
+          } else {
+            console.log(`No image wrapper or data for "${entry.data.title}"`, 
+                       { wrapper: !!coverImageWrapper, image: entry.data.image });
+          }          
           // Add the friend post to the container
           postsContainer.appendChild(friendPostElement);
         });
@@ -360,35 +402,6 @@
       }
     }
     
-    // Set up Swup integration to handle page transitions
-    function setupSwupIntegration() {
-      // Function to handle Swup page transitions
-      const handlePageTransition = () => {
-        if (isAuthenticated && friendContentEnabled) {
-          // Use a small delay to ensure DOM is ready
-          setTimeout(() => {
-            try {
-              integrateFriendPosts();
-            } catch (error) {
-              console.error('Error integrating friend posts after page transition:', error);
-            }
-          }, 500);
-        }
-      };
-      
-      // Check if Swup is available
-      if (window.swup?.hooks) {
-        // Register with Swup hooks for page transitions
-        window.swup.hooks.on('page:view', handlePageTransition);
-      } else {
-        // Set up a listener for when Swup becomes available
-        document.addEventListener('swup:enable', () => {
-          if (window.swup?.hooks) {
-            window.swup.hooks.on('page:view', handlePageTransition);
-          }
-        });
-      }
-    }
     
     // Handle friend content toggle events
     function handleFriendContentToggle(e) {

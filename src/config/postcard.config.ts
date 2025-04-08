@@ -104,7 +104,7 @@
       avatarSize: "w-5 h-5"
     },
     attribution: {
-      showAttribution: true,
+      showAttribution: false,
       attributionText: "Shared from [friendName]",
       linkToFriendSite: true
     },
