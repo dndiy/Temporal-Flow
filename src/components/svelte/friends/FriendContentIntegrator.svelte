@@ -23,7 +23,7 @@
     const defaultFriendConfig = {
       friendStyling: {
         indicatorType: 'border',
-        indicatorColor: '#4f46e5',
+        indicatorColor: '#4f46e5', // Default indigo color
         showFriendAvatar: true,
         avatarSize: 'w-6 h-6'
       },
@@ -108,60 +108,6 @@
               });
             }
             
-            // Handle date carefully - make sure we have a valid Date object
-            let publishedDate;
-            let timestamp;
-            let dateStr;
-            
-            // Case 1: Already a Date object
-            if (entry.data.published instanceof Date) {
-              publishedDate = entry.data.published;
-            }
-            // Case 2: ISO date string
-            else if (typeof entry.data.published === 'string' && entry.data.published.match(/^\d{4}-\d{2}-\d{2}/)) {
-              publishedDate = new Date(entry.data.published);
-            }
-            // Case 3: Other string format
-            else if (typeof entry.data.published === 'string') {
-              // Try parsing with Date.parse
-              const parsedMs = Date.parse(entry.data.published);
-              if (!isNaN(parsedMs)) {
-                publishedDate = new Date(parsedMs);
-              } else {
-                // Try extracting date with regex
-                const dateMatch = entry.data.published.match(/\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4}|\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}/i);
-                if (dateMatch) {
-                  publishedDate = new Date(dateMatch[0]);
-                } else {
-                  console.warn(`Could not parse date: ${entry.data.published}`);
-                  publishedDate = new Date();
-                }
-              }
-            }
-            // Default case
-            else {
-              console.warn(`Unknown date format for entry ${entry.id}`);
-              publishedDate = new Date();
-            }
-            
-            // Check if we got a valid date
-            if (isNaN(publishedDate.getTime())) {
-              console.warn(`Invalid date for entry ${entry.id}: ${entry.data.published}`);
-              publishedDate = new Date();
-            }
-            
-            timestamp = publishedDate.getTime();
-            dateStr = publishedDate.toISOString().split('T')[0];
-            
-            if (index < 3) {
-              console.log(`Friend entry ${index} processed date:`, {
-                original: entry.data.published,
-                parsed: publishedDate,
-                timestamp,
-                dateStr
-              });
-            }
-            
             // Clone the structure of a local post card
             const friendPostElement = localPostCard.cloneNode(true);
             
@@ -169,8 +115,94 @@
             friendPostElement.setAttribute('data-friend-content', 'true');
             friendPostElement.setAttribute('data-post-id', entry.id);
             friendPostElement.setAttribute('data-post-type', 'friend');
-            friendPostElement.setAttribute('data-post-timestamp', timestamp);
-            friendPostElement.setAttribute('data-post-date', dateStr);
+            
+            // Update the publication date with much better date handling
+            let dateElement = friendPostElement.querySelector('.text-sm.font-medium');
+            if (dateElement) {
+              try {
+                // Case 1: Already a Date object
+                if (entry.data.published instanceof Date) {
+                  const timestamp = entry.data.published.getTime();
+                  const dateStr = entry.data.published.toISOString().split('T')[0];
+                  
+                  // Format the date for display
+                  const displayDate = entry.data.published.toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  });
+                  
+                  friendPostElement.setAttribute('data-post-timestamp', timestamp.toString());
+                  friendPostElement.setAttribute('data-post-date', dateStr);
+                  dateElement.textContent = displayDate;
+                  
+                  if (index < 3) {
+                    console.log(`Entry ${index} date processed from Date object: ${displayDate}`);
+                  }
+                }
+                // Case 2: It's a string, try to parse it
+                else if (typeof entry.data.published === 'string') {
+                  console.warn(`Entry ${index} has string date: ${entry.data.published}`);
+                  // First try with Date constructor
+                  let parsedDate = new Date(entry.data.published);
+                  
+                  // If that fails, try more formats
+                  if (isNaN(parsedDate.getTime())) {
+                    // Try common date formats
+                    const dateMatch = entry.data.published.match(/\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4}|\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}/i);
+                    if (dateMatch) {
+                      parsedDate = new Date(dateMatch[0]);
+                    } else {
+                      console.warn(`Cannot parse date string: ${entry.data.published}`);
+                      parsedDate = new Date(); // Fallback
+                    }
+                  }
+                  
+                  // Format the date for display
+                  const displayDate = parsedDate.toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'short', 
+                    day: 'numeric'
+                  });
+                  
+                  // Set attributes for sorting
+                  const timestamp = parsedDate.getTime();
+                  friendPostElement.setAttribute('data-post-timestamp', timestamp.toString());
+                  friendPostElement.setAttribute('data-post-date', parsedDate.toISOString().split('T')[0]);
+                  dateElement.textContent = displayDate;
+                  
+                  if (index < 3) {
+                    console.log(`Entry ${index} date processed from string: ${displayDate}`);
+                  }
+                }
+                // Case 3: Unknown type
+                else {
+                  console.warn(`Unknown date type for ${entry.id}: ${typeof entry.data.published}`);
+                  dateElement.textContent = 'Unknown date';
+                  // Use current date for sorting as fallback
+                  const now = new Date();
+                  friendPostElement.setAttribute('data-post-timestamp', now.getTime().toString());
+                  friendPostElement.setAttribute('data-post-date', now.toISOString().split('T')[0]);
+                }
+              } catch (error) {
+                console.error(`Error formatting date for ${entry.id}:`, error);
+                dateElement.textContent = 'Date error';
+                // Use current date for sorting as fallback
+                const now = new Date();
+                friendPostElement.setAttribute('data-post-timestamp', now.getTime().toString());
+                friendPostElement.setAttribute('data-post-date', now.toISOString().split('T')[0]);
+              }
+              
+              // Add visual indication if date is today's date (likely a fallback)
+              const parsedDate = new Date(friendPostElement.getAttribute('data-post-date') || '');
+              const today = new Date();
+              if (parsedDate.toDateString() === today.toDateString()) {
+                // This is today's date - might be a fallback - add a hint
+                dateElement.title = "Note: This may not be the actual publication date";
+                dateElement.style.color = "#999";  // Dimmed color for questionable dates
+              }
+            }
+            
             friendPostElement.setAttribute('data-post-category', (entry.data.category || 'uncategorized').toLowerCase());
             friendPostElement.setAttribute('data-post-tags', (entry.data.tags || []).join(',').toLowerCase());
             
@@ -188,17 +220,6 @@
             if (titleLink) {
               titleLink.href = entry.data.sourceUrl || `/friend/${entry.slug}`;
               titleLink.textContent = entry.data.title;
-            }
-            
-            // Update the publication date with our properly processed date
-            const dateElement = friendPostElement.querySelector('.text-sm.font-medium');
-            if (dateElement) {
-              const formattedDate = publishedDate.toLocaleDateString(undefined, { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-              });
-              dateElement.textContent = formattedDate;
             }
             
             // Update category
@@ -509,10 +530,12 @@
       }
     }
     
-    // The rest of your code remains the same...
+    // Set up Swup integration to handle page transitions
     function setupSwupIntegration() {
+      // Function to handle Swup page transitions
       const handlePageTransition = () => {
         if (isAuthenticated && friendContentEnabled) {
+          // Use a small delay to ensure DOM is ready
           setTimeout(() => {
             try {
               integrateFriendPosts();
@@ -523,9 +546,12 @@
         }
       };
       
+      // Check if Swup is available
       if (window.swup?.hooks) {
+        // Register with Swup hooks for page transitions
         window.swup.hooks.on('page:view', handlePageTransition);
       } else {
+        // Set up a listener for when Swup becomes available
         document.addEventListener('swup:enable', () => {
           if (window.swup?.hooks) {
             window.swup.hooks.on('page:view', handlePageTransition);
@@ -534,19 +560,23 @@
       }
     }
     
+    // Handle friend content toggle events
     function handleFriendContentToggle(e) {
       const enabled = e.detail?.enabled ?? false;
       
       if (enabled && isAuthenticated) {
         integrateFriendPosts();
       } else {
+        // Remove friend posts if disabled
         const friendPostElements = document.querySelectorAll('[data-friend-content="true"]');
         friendPostElements.forEach(el => el.remove());
       }
     }
     
+    // Listen for content toggle events
     window.addEventListener('friend-content-toggled', handleFriendContentToggle);
     
+    // Initial integration after a delay to ensure local posts are rendered
     setTimeout(() => {
       try {
         integrateFriendPosts();
@@ -555,8 +585,10 @@
       }
     }, 300);
     
+    // Set up for Swup page transitions
     setupSwupIntegration();
     
+    // Cleanup function for when component is destroyed
     return () => {
       window.removeEventListener('friend-content-toggled', handleFriendContentToggle);
     };
