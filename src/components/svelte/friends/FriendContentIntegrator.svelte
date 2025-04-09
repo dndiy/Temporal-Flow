@@ -428,9 +428,6 @@
       }
     }, 300);
     
-    // Set up for Swup page transitions
-    setupSwupIntegration();
-    
     // Cleanup function for when component is destroyed
     return () => {
       window.removeEventListener('friend-content-toggled', handleFriendContentToggle);
