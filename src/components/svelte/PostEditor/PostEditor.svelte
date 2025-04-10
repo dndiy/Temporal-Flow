@@ -9,24 +9,28 @@
   import ImportPanel from './components/ImportPanel.svelte';
   import GithubIntegration from './components/GithubIntegration.svelte';
   
-  // Import utility functions (separate type imports)
+  // Import utility functions correctly
   import { 
     createEmptyPost, 
     generateFrontmatter, 
     saveCachedPost, 
     getCachedPosts
-  } from './utils/postUtils.js';
+  } from './utils/postUtils';
+  
+  // Use import type for TypeScript interfaces
   import type { Post, PostMetadata } from './utils/postUtils';
   
   import { 
     initializeGithubService, 
     fetchGitHubPosts
-  } from './utils/githubUtils.js';
+  } from './utils/githubUtils';
+  
   import type { GitHubService } from './utils/githubUtils';
   
   import { 
     generateMdxFile
-  } from './utils/fileUtils.js';
+  } from './utils/fileUtils';
+  
   import type { FileImportResult } from './utils/fileUtils';
   
   // Tab state
@@ -197,7 +201,9 @@
         
         const filepath = selectedPost.filepath;
         const file = await githubService.getFile(filepath);
-        const { parseMdxFile } = await import('./utils/postUtils.js');
+        
+        // Import parseMdxFile function
+        const { parseMdxFile } = await import('./utils/postUtils');
         const { frontmatter, content } = parseMdxFile(file.content);
         
         // Create a full post object
@@ -463,10 +469,10 @@
     }
     
     // Add window event listener
-    window.addEventListener('save-to-github', handleSaveToGithub);
+    window.addEventListener('save-to-github', handleSaveToGithub as EventListener);
     
     return () => {
-      window.removeEventListener('save-to-github', handleSaveToGithub);
+      window.removeEventListener('save-to-github', handleSaveToGithub as EventListener);
     };
   });
   
@@ -708,4 +714,5 @@
   :global(.post-card:hover) {
     @apply transform -translate-y-0.5 shadow-md;
   }
+  
 </style>

@@ -1,5 +1,5 @@
 // Types for post-related data structures
-export interface PostAdvancedOptions {
+export type PostAdvancedOptions = {
   avatarImage: string;
   authorName: string;
   authorBio: string;
@@ -8,7 +8,7 @@ export interface PostAdvancedOptions {
   bannerImage: string;
 }
 
-export interface TimelineData {
+export type TimelineData = {
   enabled: boolean;
   year?: number;
   era: string;
@@ -16,13 +16,13 @@ export interface TimelineData {
   isKeyEvent: boolean;
 }
 
-export interface BannerData {
+export type BannerData = {
   type: string;
   videoId: string;
   timelineCategory: string;
 }
 
-export interface Post {
+export type Post = {
   title: string;
   description: string;
   slug: string;
@@ -39,7 +39,7 @@ export interface Post {
   filepath: string;
 }
 
-export interface PostMetadata {
+export type PostMetadata = {
   id: string;
   title: string;
   description: string;
@@ -54,7 +54,7 @@ export interface PostMetadata {
   error?: boolean;
 }
 
-export interface FrontmatterData {
+export type FrontmatterData = {
   title?: string;
   description?: string;
   slug?: string;

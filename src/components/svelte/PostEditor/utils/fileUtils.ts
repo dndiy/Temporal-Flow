@@ -1,4 +1,5 @@
-import { Post, createEmptyPost, generateSlugFromTitle, parseMdxFile, generateFrontmatter } from './postUtils';
+import { createEmptyPost, generateSlugFromTitle, parseMdxFile, generateFrontmatter } from './postUtils';
+import type { Post, FrontmatterData } from './postUtils';
 
 export interface FileImportResult {
   fileType: string;

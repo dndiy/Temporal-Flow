@@ -2,10 +2,10 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import GithubAuthForm from '../../admin/GithubAuthForm.svelte';
   
-  // Import from .ts files (without .js extension)
+  // Import from .ts files without extension
   import { savePostToGitHub, triggerSiteRebuild } from '../utils/githubUtils';
   
-  // Use the types from our types.d.ts file
+  // Use the types correctly with import type
   import type { GitHubService, Post } from '../types';
   
   // Initialize event dispatcher

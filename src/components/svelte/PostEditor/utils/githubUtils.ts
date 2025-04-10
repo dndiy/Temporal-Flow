@@ -1,4 +1,5 @@
-import { Post, PostMetadata, parseMdxFile, generateFrontmatter } from './postUtils';
+import { parseMdxFile, generateFrontmatter } from './postUtils';
+import type { Post, PostMetadata } from './postUtils';
 
 export interface GitHubServiceConfig {
   owner: string;
