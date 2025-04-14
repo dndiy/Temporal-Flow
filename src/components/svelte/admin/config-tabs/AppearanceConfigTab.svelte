@@ -13,11 +13,17 @@
   // Event dispatcher
   const dispatch = createEventDispatcher();
   
-  // Handle change events from child components
-  function handleChange(event) {
-    // Forward the change event to the parent
+// Handle change events from child components
+function handleChange(event) {
+  // Forward the change event to the parent with the correct data
+  if (event.detail && event.detail === bannerConfig) {
+    dispatch('change', { type: 'banner', data: bannerConfig });
+  } else if (event.detail && event.detail === postCardConfig) {
+    dispatch('change', { type: 'postCard', data: postCardConfig });
+  } else {
     dispatch('change', event.detail || siteConfig);
   }
+}
 </script>
 
 <div class="appearance-config-tab">
