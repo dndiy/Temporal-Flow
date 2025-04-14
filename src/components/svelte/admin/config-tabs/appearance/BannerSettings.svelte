@@ -3,6 +3,16 @@
   
   // Props
   export let bannerConfig;
+
+  // Initialize navbarSpacing if it doesn't exist
+  if (!bannerConfig.navbarSpacing) {
+    bannerConfig.navbarSpacing = {
+      standard: '0',
+      timeline: '4.5rem',
+      video: '4.5rem',
+      image: '4.5rem'
+    };
+  }
   
   // Local state
   let isBannerSequence = false;
