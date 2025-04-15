@@ -4,6 +4,7 @@
   import BannerSettings from './appearance/BannerSettings.svelte';
   import PostCardSettings from './appearance/PostCardSettings.svelte';
   import FaviconSettings from './appearance/FaviconSettings.svelte';
+  import TransparencySettings from './appearance/TransparencySettings.svelte';
   
   // Props
   export let siteConfig;
@@ -13,17 +14,11 @@
   // Event dispatcher
   const dispatch = createEventDispatcher();
   
-// Handle change events from child components
-function handleChange(event) {
-  // Forward the change event to the parent with the correct data
-  if (event.detail && event.detail === bannerConfig) {
-    dispatch('change', { type: 'banner', data: bannerConfig });
-  } else if (event.detail && event.detail === postCardConfig) {
-    dispatch('change', { type: 'postCard', data: postCardConfig });
-  } else {
+  // Handle change events from child components
+  function handleChange(event) {
+    // Forward the change event to the parent
     dispatch('change', event.detail || siteConfig);
   }
-}
 </script>
 
 <div class="appearance-config-tab">
@@ -38,6 +33,12 @@ function handleChange(event) {
   <AppearanceThemeSettings 
     bind:siteConfig={siteConfig} 
     on:change={handleChange} 
+  />
+  
+  <!-- Transparency Settings Section -->
+  <TransparencySettings
+    bind:siteConfig={siteConfig}
+    on:change={handleChange}
   />
   
   <!-- Banner Settings Section -->

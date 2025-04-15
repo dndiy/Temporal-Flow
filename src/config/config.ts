@@ -16,6 +16,7 @@ export const siteConfig: SiteConfig = {
     hue: 0,
     fixed: false
   },
+  transparency: 0.9, // Single value from 0 to 1
   defaultTheme: LIGHT_MODE,
   banner: {
     enable: false,
